@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 
-import bobabox.main.Screens.Game;
+import bobabox.main.Screens.GamMenu;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -47,6 +47,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new Game();
+                return new GamMenu();
         }
 }
