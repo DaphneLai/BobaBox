@@ -3,7 +3,7 @@ package bobabox.main.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-import bobabox.main.Screens.GamMenu;
+import bobabox.main.GamMenu;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
