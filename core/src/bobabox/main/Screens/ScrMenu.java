@@ -3,12 +3,11 @@ package bobabox.main.Screens;
 import com.badlogic.gdx.Screen;
 import bobabox.main.GamMenu;
 
-public class scrGame implements Screen {
+
+public class ScrMenu implements Screen {
     GamMenu gammenu;
 
-    public scrGame(GamMenu gammenu) {gammenu = gammenu;}
-
-
+    public ScrMenu(GamMenu gammenu) {gammenu = gammenu;}
     @Override
     public void show() {
 

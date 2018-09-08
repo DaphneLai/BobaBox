@@ -4,10 +4,13 @@ import com.badlogic.gdx.Screen;
 import bobabox.main.GamMenu;
 
 
-public class scrEnd implements Screen{
+public class ScrEnd implements Screen{
     GamMenu gammenu;
 
-    public scrEnd(GamMenu gammenu) {gammenu = gammenu;}
+    public ScrEnd(GamMenu _gammenu) {
+        gammenu = _gammenu;
+
+    }
 
     @Override
     public void show() {

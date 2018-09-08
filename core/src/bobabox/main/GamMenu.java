@@ -2,56 +2,60 @@ package bobabox.main;
 
 
 import com.badlogic.gdx.Game;
-import bobabox.main.Screens.scrGame;
-import bobabox.main.Screens.scrEnd;
-import  bobabox.main.Screens.scrMenu;
+
+import bobabox.main.Scratches.SctTap;
+import bobabox.main.Screens.ScrGame;
+import bobabox.main.Screens.ScrEnd;
+import bobabox.main.Screens.ScrMenu;
 
 
+public class GamMenu extends Game{
 
-public class GamMenu extends Game {
     int nScreen;
-    scrGame scrGame;
-    scrEnd scrEnd;
-    scrMenu scrMenu;
-	
+    ScrGame scrGame;
+    ScrEnd scrEnd;
+    ScrMenu scrMenu;
+    SctTap sctTap;
 
+//Kieran's code (modified)
+    public void updateScreen(int _nScreen) {
+        nScreen = _nScreen;
+        switch (nScreen) {
+            case 0:
+                setScreen(scrGame);
+                break;
+            case 1:
+                setScreen(scrEnd);
+                break;
+            case 2:
+                setScreen(scrMenu);
+                break;
+            case 10:
+                setScreen(sctTap);
+                break;
+            default:
+                break;
+        }
+    }
 
-    public void updateScreen (int nScreen){
-	    nScreen = nScreen;
-	    if(nScreen ==0){
-	        setScreen(scrGame);
-        }
-        else if(nScreen==1){
-	        setScreen(scrEnd);
-        }
-        else if(nScreen==2){
-	        setScreen(scrMenu);
-        }
+    public void create() {
+        nScreen = 10;
+        scrGame = new ScrGame(this);
+        scrEnd = new ScrEnd(this);
+        scrMenu = new ScrMenu(this);
+        sctTap = new SctTap(this);
+
+        updateScreen(10);
 
     }
-	public void create () {
-    nScreen = 0;
-    scrGame = new scrGame(this);
-    scrEnd = new scrEnd(this);
-    scrMenu = new scrMenu(this);
-    updateScreen(0);
-
-	}
-
-	@Override
-	public void render () {
-    super.render();
-	}
 
     @Override
-    public void resume () {
-
+    public void render() {
+        super.render();
     }
-    @Override
-    public void resize (int width, int height) {
 
-    }	@Override
-    public void dispose () {
-    super.dispose();
+    @Override
+    public void dispose() {
+        super.dispose();
     }
 }
