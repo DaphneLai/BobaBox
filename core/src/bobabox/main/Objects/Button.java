@@ -1,4 +1,4 @@
-package bobabox.main.Screens.Objects;
+package bobabox.main.Objects;
 
 public class Button {
 }
