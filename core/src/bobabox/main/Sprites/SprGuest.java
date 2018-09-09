@@ -16,9 +16,9 @@ public class SprGuest extends Sprite {
         setPosition(fX, fY);
         setSize(100,120);
     }
-    public void goDown() {
-        fY -= fYSpeed;
-        fYSpeed -= fGravity;
-        setY(fY);
-    }
+//    public void goDown() {
+//        fY -= fYSpeed;
+//        fYSpeed -= fGravity;
+//        setY(fY);
+//    }
 }

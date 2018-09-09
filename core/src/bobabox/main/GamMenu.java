@@ -18,11 +18,8 @@ public class GamMenu extends Game{
     ScrEnd scrEnd;
     ScrMenu scrMenu;
     SctTap sctTap;
-<<<<<<< HEAD
     ScrTut scrTut;
-=======
     SctGuests sctGuests;
->>>>>>> feature
 
 //Kieran's code (modified)
     public void updateScreen(int _nScreen) {
@@ -57,15 +54,11 @@ public class GamMenu extends Game{
         scrEnd = new ScrEnd(this);
         scrMenu = new ScrMenu(this);
         sctTap = new SctTap(this);
-<<<<<<< HEAD
         scrTut = new ScrTut(this);
 
         updateScreen(2);
-=======
-        sctGuests = new SctGuests(this);
 
-        updateScreen(20);
->>>>>>> feature
+
 
     }
 
