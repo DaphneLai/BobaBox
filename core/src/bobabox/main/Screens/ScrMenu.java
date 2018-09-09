@@ -19,7 +19,6 @@ public class ScrMenu implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private Vector3 touchPoint;
     Sprite sPlay, sTut;
-    ScrGame scrGame;
 
 
     public ScrMenu(GamMenu _gammenu) {
@@ -33,7 +32,6 @@ public class ScrMenu implements Screen, InputProcessor {
         nW = Gdx.graphics.getWidth();
         nH = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
@@ -58,7 +56,7 @@ public class ScrMenu implements Screen, InputProcessor {
         Button(sPlay, sTut);
     }
 
-    public void Button(Sprite sButton, Sprite sButton2) {
+    private void Button(Sprite sButton, Sprite sButton2) {
         if (Gdx.input.isTouched()) {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (sButton.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
@@ -67,9 +65,6 @@ public class ScrMenu implements Screen, InputProcessor {
             }if (sButton2.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
                System.out.println("Tutorial");
                 gammenu.updateScreen(3);
-            }
-            if (sButton2.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Tutorial");
             }
         }
     }
