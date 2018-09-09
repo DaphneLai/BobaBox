@@ -8,66 +8,73 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
-//Made by Daphne Sept.07/18
-//https://www.youtube.com/watch?v=qlJUrcpQXo8
+import bobabox.main.Sprites.SprGuest;
 
-public class SctTap implements Screen, InputProcessor {
+public class SctGuests implements Screen, InputProcessor {
 
     private OrthographicCamera camera;
-    private ShapeRenderer sr;
-    private Vector3 pos; //vect with 3 values (position)
+    private Texture txtBG;
+    private SpriteBatch batch;
+    private SprGuest sprGuest;
 
-    public SctTap(Game game) {
-
-        sr = new ShapeRenderer();
+    public SctGuests(Game game) {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //y values will increase going up
-
-        pos = new Vector3(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
-
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
+        batch = new SpriteBatch();
+        sprGuest = new SprGuest(10, Gdx.graphics.getHeight()-130, "Guest_spr.png");
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void show() {
     }
 
+    @Override
     public void render(float delta) {
-
         //Logic
         camera.update();
-        if (Gdx.input.isTouched()) {
-            pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(pos);
-        }
+        batch.begin();
 
         //Drawing
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.draw(txtBG, 0, 0);
+        sprGuest.draw(batch);
 
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.setColor(Color.BLUE);
-        sr.circle(pos.x, pos.y, 64);
-        sr.end();
+
+        batch.end();
     }
 
-    public void show() {
+    @Override
+    public void resize(int width, int height) {
+
     }
 
-    public void hide() {
-    }
-
+    @Override
     public void pause() {
+
     }
 
+    @Override
     public void resume() {
+
     }
 
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
     public void dispose() {
-        sr.dispose();
+        txtBG.dispose();
+        batch.dispose();
+
     }
 
     @Override

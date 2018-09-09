@@ -3,6 +3,7 @@ package bobabox.main;
 
 import com.badlogic.gdx.Game;
 
+import bobabox.main.Scratches.SctGuests;
 import bobabox.main.Scratches.SctTap;
 import bobabox.main.Screens.ScrGame;
 import bobabox.main.Screens.ScrEnd;
@@ -16,6 +17,7 @@ public class GamMenu extends Game{
     ScrEnd scrEnd;
     ScrMenu scrMenu;
     SctTap sctTap;
+    SctGuests sctGuests;
 
 //Kieran's code (modified)
     public void updateScreen(int _nScreen) {
@@ -33,19 +35,23 @@ public class GamMenu extends Game{
             case 10:
                 setScreen(sctTap);
                 break;
+            case 20:
+                setScreen(sctGuests);
+                break;
             default:
                 break;
         }
     }
 
     public void create() {
-        nScreen = 10;
+        nScreen = 20;
         scrGame = new ScrGame(this);
         scrEnd = new ScrEnd(this);
         scrMenu = new ScrMenu(this);
         sctTap = new SctTap(this);
+        sctGuests = new SctGuests(this);
 
-        updateScreen(10);
+        updateScreen(20);
 
     }
 
