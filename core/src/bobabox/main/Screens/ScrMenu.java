@@ -64,8 +64,10 @@ public class ScrMenu implements Screen {
             camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
             if (sButton.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
                 System.out.println("Play");
+                gammenu.updateScreen(0);
             }if (sButton2.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
                System.out.println("Tutorial");
+                gammenu.updateScreen(3);
             }
         }
     }
