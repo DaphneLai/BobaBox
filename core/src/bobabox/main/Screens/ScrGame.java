@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector3;
 import bobabox.main.Objects.Button;
-
 import bobabox.main.GamMenu;
 import bobabox.main.Sprites.SprGuest;
 
@@ -17,29 +14,24 @@ public class ScrGame implements Screen {
 
     GamMenu gammenu;
 
-    Texture txtBg, txtPause;
+    Texture txtBg;
     int nW, nH;
     SpriteBatch batch;
-    Sprite sPause;
     private SprGuest sprGuest;
-    Button button;
+    Button btnPause;
     private OrthographicCamera camera;
-    private Vector3 touchPoint;
-
 
     public ScrGame(GamMenu _gammenu) {
         gammenu = _gammenu;
 
         sprGuest = new SprGuest("Guest_spr.png");
         txtBg = new Texture("Test_img.jpg");
-        txtPause = new Texture("pause_btn.png");
         nW = Gdx.graphics.getWidth();
         nH = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
-        sPause = new Sprite(txtPause);
+        btnPause = new Button(200, 25, "Pause_btn.png");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        touchPoint=new Vector3();
     }
 
 
@@ -50,12 +42,14 @@ public class ScrGame implements Screen {
 
 //TEXTURES
         batch.draw(txtBg, 0, 0, nW, nH);
-        batch.draw(txtPause, 200, 25, 50, 50);
+        btnPause.draw(batch);
         sprGuest.Patience();
         sprGuest.walkDown();
         sprGuest.draw(batch);
         batch.end();
-        sPause.setBounds(200, 25, 50, 50);
+        if(btnPause.isMousedOver() && Gdx.input.isTouched()) {
+            System.out.println("Pause");
+        }
     }
 
     @Override

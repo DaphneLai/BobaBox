@@ -45,9 +45,9 @@ public class ScrMenu implements Screen, InputProcessor {
         btnTut.draw(batch);
         batch.end();
         if(btnPlay.isMousedOver() && Gdx.input.isTouched()) {
-            System.out.println("Play");
+            gammenu.updateScreen(0);
         }if(btnTut.isMousedOver() && Gdx.input.isTouched()) {
-            System.out.println("Tutorial");
+            gammenu.updateScreen(3);
         }
 
     }
