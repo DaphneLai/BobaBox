@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import bobabox.main.Objects.Button;
 
 
 public class ScrTut implements Screen {
@@ -18,6 +19,7 @@ public class ScrTut implements Screen {
     Sprite sPlay, sBack;
     private OrthographicCamera camera;
     private Vector3 touchPoint;
+    Button button;
 
     public ScrTut(GamMenu _gammenu) {
         gammenu = _gammenu;
@@ -30,7 +32,7 @@ public class ScrTut implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
-
+        button = new Button();
     }
 
     @Override
@@ -49,19 +51,8 @@ public class ScrTut implements Screen {
         batch.end();
         sPlay.setBounds(550, 25, 50, 50);
         sBack.setBounds(50, 25, 50, 50);
-        Button(sPlay, sBack);
-    }
-    private void Button(Sprite sButton, Sprite sButton2) {
-        if (Gdx.input.isTouched()) {
-            camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (sButton.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-               System.out.println("Play");
-                gammenu.updateScreen(0);
-            } if (sButton2.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-                   System.out.println("Menu");
-                gammenu.updateScreen(2);
-            }
-        }
+        button.ClickButton(sPlay, 0, camera, touchPoint, gammenu);
+        button.ClickButton(sBack, 2, camera, touchPoint, gammenu);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import bobabox.main.Objects.Button;
 
 import bobabox.main.GamMenu;
 
@@ -18,7 +19,7 @@ public class ScrEnd implements Screen{
     Sprite sMenu;
     private OrthographicCamera camera;
     private Vector3 touchPoint;
-
+    Button button;
 
     public ScrEnd(GamMenu _gammenu) {
         gammenu = _gammenu;
@@ -29,6 +30,7 @@ public class ScrEnd implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
+        button = new Button();
 
     }
 
@@ -46,16 +48,7 @@ public class ScrEnd implements Screen{
         batch.draw(txtMenu, 550, 25, 50, 50);
         batch.end();
         sMenu.setBounds(550, 25, 50, 50);
-        Button(sMenu);
-    }
-    private void Button(Sprite sButton) {
-        if (Gdx.input.isTouched()) {
-            camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (sButton.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Menu");
-                gammenu.updateScreen(2);
-            }
-        }
+        button.ClickButton(sMenu, 2, camera, touchPoint, gammenu);
     }
 
             @Override
