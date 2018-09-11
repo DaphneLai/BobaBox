@@ -47,9 +47,9 @@ public class ScrGame implements Screen {
         batch.begin();
 //TEXTURES
         batch.draw(txtBg, 0, 0, nW, nH);
-        batch.draw(txtPause, 50, 25, 50, 50);
+        batch.draw(txtPause, 200, 25, 50, 50);
         batch.end();
-        sPause.setBounds(50, 25, 50, 50);
+        sPause.setBounds(200, 25, 50, 50);
         Button(sPause);
     }
     private void Button(Sprite sButton) {

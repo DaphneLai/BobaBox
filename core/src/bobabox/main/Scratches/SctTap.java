@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
-//Made by Daphne Sept.07/18
 //https://www.youtube.com/watch?v=qlJUrcpQXo8
 
 public class SctTap implements Screen, InputProcessor {
@@ -40,7 +39,7 @@ public class SctTap implements Screen, InputProcessor {
         //Logic
         camera.update();
         if (Gdx.input.isTouched()) {
-            pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(pos);
         }
 
