@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 
 public class SprGuest extends Sprite {
 
@@ -30,9 +31,14 @@ public class SprGuest extends Sprite {
         }
         //Seated
         if (Gdx.input.isTouched()) {
-            setX(Gdx.input.getX() - 50);
-            setY(Gdx.graphics.getHeight() - Gdx.input.getY() - 60);
-            nTimer = 0;
+//            if (Gdx.input.getX() > fX+100 && Gdx.input.getY() > fY ) {
+//                setX(fX);
+//                setY(fY);
+//            } else {
+                setX(Gdx.input.getX() - 50);
+                setY(Gdx.graphics.getHeight() - Gdx.input.getY() - 60);
+                nTimer = 0;
+//            }
         }
         //Hearts
         if (nTimer > 0 && nTimer < 300) {

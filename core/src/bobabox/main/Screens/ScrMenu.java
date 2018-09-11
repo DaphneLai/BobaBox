@@ -52,7 +52,12 @@ public class ScrMenu implements Screen, InputProcessor {
         batch.draw(txtBack, 0, 0, nW, nH);
         batch.draw(txtPlay, 50, 25, 50, 50);
         batch.draw(txtTut, 550, 25, 50, 50);
+
+
+
         batch.end();
+
+
         sPlay.setBounds(50, 25, 50, 50);
         sTut.setBounds(550, 25, 50, 50);
         button.ClickButton(sPlay, 0, camera, touchPoint, gammenu);
