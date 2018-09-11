@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import bobabox.main.Sprites.SprGuest;
 
-public class SctGuests implements Screen, InputProcessor {
+public class SctGuests implements Screen {
 
     private OrthographicCamera camera;
     private Texture txtBG;
@@ -27,11 +27,7 @@ public class SctGuests implements Screen, InputProcessor {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         batch = new SpriteBatch();
-        sprGuest = new SprGuest(10, Gdx.graphics.getHeight()-130, "Guest_spr.png");
-    }
-
-    @Override
-    public void show() {
+        sprGuest = new SprGuest( "Guest_spr.png");
     }
 
     @Override
@@ -44,10 +40,23 @@ public class SctGuests implements Screen, InputProcessor {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.draw(txtBG, 0, 0);
+        sprGuest.Patience();
+        sprGuest.walkDown();
         sprGuest.draw(batch);
 
 
         batch.end();
+    }
+
+    @Override
+    public void dispose() {
+        txtBG.dispose();
+        batch.dispose();
+
+    }
+
+    @Override
+    public void show() {
     }
 
     @Override
@@ -68,52 +77,5 @@ public class SctGuests implements Screen, InputProcessor {
     @Override
     public void hide() {
 
-    }
-
-    @Override
-    public void dispose() {
-        txtBG.dispose();
-        batch.dispose();
-
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }
