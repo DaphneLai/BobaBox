@@ -1,26 +1,41 @@
 package bobabox.main.Objects;
 
+//Brain's (Joel and Alex) code (modified)
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector3;
-import bobabox.main.GamMenu;
+import com.badlogic.gdx.graphics.Texture;
 
 
 
-public class Button {
-    public void ClickButton(Sprite _sButton, int _nScreen, OrthographicCamera _camera, Vector3 _touchpoint, GamMenu _gammenu) {
-        Sprite sButton = _sButton;
-        int nScreen = _nScreen;
-        OrthographicCamera camera = _camera;
-        Vector3 touchpoint = _touchpoint;
-        GamMenu gamMenu = _gammenu;
-        if (Gdx.input.isTouched()) {
-            camera.unproject(touchpoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (sButton.getBoundingRectangle().contains(touchpoint.x, touchpoint.y)) {
-                gamMenu.updateScreen(nScreen);
+public class Button extends Sprite {
+
+    int nX, nY;
+    float fW, fH;
+
+    public Button(int _nX, int _nY, String sFile) {
+
+        super(new Texture(Gdx.files.internal(sFile)));
+        nX = _nX;
+        nY = _nY;
+        fW = getWidth();
+        fH = getHeight();
+        setPosition(nX, nY);
+        setFlip(false, false);
+
+    }
+
+
+
+    public boolean isMousedOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
+        if(Gdx.input.getX() > nX && Gdx.input.getX() < nX + fW){
+            if(Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() > nY && Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() < nY + fH){
+                return true;
             }
 
         }
+
+        return false;
+
     }
+
 }

@@ -33,10 +33,10 @@ public class ScrMenu implements Screen, InputProcessor {
         nW = Gdx.graphics.getWidth();
         nH = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
-       camera = new OrthographicCamera();
+        camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
-        button = new Button();
+      //  button = new Button();
     }
 
     @Override
@@ -55,8 +55,8 @@ public class ScrMenu implements Screen, InputProcessor {
         batch.end();
         sPlay.setBounds(50, 25, 50, 50);
         sTut.setBounds(550, 25, 50, 50);
-        button.ClickButton(sPlay, 0, camera, touchPoint, gammenu);
-        button.ClickButton(sTut, 3, camera, touchPoint, gammenu);
+     //   button.ClickButton(sPlay, 0, camera, touchPoint, gammenu);
+     //   button.ClickButton(sTut, 3, camera, touchPoint, gammenu);
 
     }
 
