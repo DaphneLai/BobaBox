@@ -40,7 +40,6 @@ public class ScrGame implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
-        button = new Button();
     }
 
 
@@ -57,7 +56,6 @@ public class ScrGame implements Screen {
         sprGuest.draw(batch);
         batch.end();
         sPause.setBounds(200, 25, 50, 50);
-        button.ClickButton(sPause, 2, camera, touchPoint, gammenu); //pause button leads to menu right now
     }
 
     @Override

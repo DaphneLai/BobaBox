@@ -17,11 +17,11 @@ public class Button extends Sprite {
         super(new Texture(Gdx.files.internal(sFile)));
         nX = _nX;
         nY = _nY;
-        fW = getWidth();
-        fH = getHeight();
+        fW = 50;
+        fH = 50;
+        setSize(fW, fH);
         setPosition(nX, nY);
         setFlip(false, false);
-
     }
 
 

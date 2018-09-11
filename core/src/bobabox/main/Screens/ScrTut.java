@@ -32,7 +32,7 @@ public class ScrTut implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
-        button = new Button();
+       // button = new Button();
     }
 
     @Override
@@ -51,8 +51,6 @@ public class ScrTut implements Screen {
         batch.end();
         sPlay.setBounds(550, 25, 50, 50);
         sBack.setBounds(50, 25, 50, 50);
-        button.ClickButton(sPlay, 0, camera, touchPoint, gammenu);
-        button.ClickButton(sBack, 2, camera, touchPoint, gammenu);
     }
 
     @Override

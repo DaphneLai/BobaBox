@@ -30,7 +30,7 @@ public class ScrEnd implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
-        button = new Button();
+       // button = new Button();
 
     }
 
@@ -48,7 +48,7 @@ public class ScrEnd implements Screen{
         batch.draw(txtMenu, 550, 25, 50, 50);
         batch.end();
         sMenu.setBounds(550, 25, 50, 50);
-        button.ClickButton(sMenu, 2, camera, touchPoint, gammenu);
+       // button.ClickButton(sMenu, 2, camera, touchPoint, gammenu);
     }
 
             @Override
