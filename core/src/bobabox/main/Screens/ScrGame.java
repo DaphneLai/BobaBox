@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
+import bobabox.main.Objects.Button;
 
 import bobabox.main.GamMenu;
 
@@ -17,7 +18,7 @@ public class ScrGame implements Screen {
     SpriteBatch batch;
     int nW, nH;
     Sprite sPause;
-
+    Button button;
     private OrthographicCamera camera;
     private Vector3 touchPoint;
 
@@ -34,6 +35,7 @@ public class ScrGame implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         touchPoint=new Vector3();
+        button = new Button();
     }
 
 
@@ -50,15 +52,7 @@ public class ScrGame implements Screen {
         batch.draw(txtPause, 200, 25, 50, 50);
         batch.end();
         sPause.setBounds(200, 25, 50, 50);
-        Button(sPause);
-    }
-    private void Button(Sprite sButton) {
-        if (Gdx.input.isTouched()) {
-            camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-            if (sButton.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-                System.out.println("Pause Game and drop down menu that allows you to quit");;
-            }
-        }
+        button.ClickButton(sPause, 2, camera, touchPoint, gammenu); //pause button leads to menu right now
     }
             @Override
     public void resize(int width, int height) {
