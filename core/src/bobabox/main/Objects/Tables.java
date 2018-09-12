@@ -36,6 +36,18 @@ public class Tables extends Sprite {
         }
         return true;
     }
+
+    public boolean isMouseOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
+        if(Gdx.input.getX() > nX && Gdx.input.getX() < nX + fW){
+            if(Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() > nY && Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() < nY + fH){
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
 }
 
 
