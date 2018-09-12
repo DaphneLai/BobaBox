@@ -39,9 +39,9 @@ public class ScrTut implements Screen {
         btnBack.draw(batch);
         btnPlay.draw(batch);
         batch.end();
-        if(btnPlay.isMousedOver() && Gdx.input.isTouched()) {
+        if(btnPlay.isMousedOver() && Gdx.input.justTouched()) {
             gammenu.updateScreen(0);
-        }if(btnBack.isMousedOver() && Gdx.input.isTouched()) {
+        }if(btnBack.isMousedOver() && Gdx.input.justTouched()) {
             gammenu.updateScreen(2);
         }
     }

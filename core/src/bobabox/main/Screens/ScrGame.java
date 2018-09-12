@@ -30,7 +30,7 @@ public class ScrGame implements Screen {
         nW = Gdx.graphics.getWidth();
         nH = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
-        btnPause = new Button(200, 25, "Pause_btn.png");
+        btnPause = new Button(50, 25, "Pause_btn.png");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table = new Tables(200, 100, "rectangle-stroked.png");
@@ -50,7 +50,7 @@ public class ScrGame implements Screen {
         sprGuest.draw(batch);
         table.draw(batch);
         batch.end();
-        if(btnPause.isMousedOver() && Gdx.input.isTouched()) {
+        if(btnPause.isMousedOver() && Gdx.input.justTouched()) {
             System.out.println("Pause");
         }
         if(table.isOpen(sprGuest)==false) {
