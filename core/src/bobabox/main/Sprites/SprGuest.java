@@ -29,17 +29,16 @@ public class SprGuest extends Sprite {
         if (isWait == true) {
             nTimer++;
         }
-        //Seated
+        //Dragged
         if (Gdx.input.isTouched()) {
-//            if (Gdx.input.getX() > fX+100 && Gdx.input.getY() > fY ) {
-//                setX(fX);
-//                setY(fY);
-//            } else {
                 setX(Gdx.input.getX() - 50);
                 setY(Gdx.graphics.getHeight() - Gdx.input.getY() - 60);
                 nTimer = 0;
-//            }
         }
+//        //Seated
+//        if(true){
+//
+//        }
         //Hearts
         if (nTimer > 0 && nTimer < 300) {
             System.out.println(3 + " Hearts");
