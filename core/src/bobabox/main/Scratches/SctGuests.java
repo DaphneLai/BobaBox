@@ -27,7 +27,6 @@ public class SctGuests implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
-        txtTable = new Texture(Gdx.files.internal("rectangle-stroked.png"));
         batch = new SpriteBatch();
         sprGuest = new SprGuest("Guest_spr.png");
         table = new Tables(200, 100, "rectangle-stroked.png");
