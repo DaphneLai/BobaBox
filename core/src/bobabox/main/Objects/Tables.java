@@ -32,6 +32,7 @@ public class Tables extends Sprite {
         if (fGX > nX && fGX < nX + fW) {
             if (fGY > nY && fGY < nY + fW) {
                 return false;
+
             }
         }
         return true;
