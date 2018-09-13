@@ -54,15 +54,16 @@ public class GamMenu extends Game{
     }
 
     public void create() {
-        nScreen = 20;
+        nScreen = 2;
         scrGame = new ScrGame(this);
         scrEnd = new ScrEnd(this);
         scrMenu = new ScrMenu(this);
-        sctTap = new SctTap(this);
         scrTut = new ScrTut(this);
+        sctTap = new SctTap(this);
+        sctGuests = new SctGuests(this);
         sctWaiter = new SctWaiter(this);
 
-        updateScreen(30);
+        updateScreen(2);
 
     }
 

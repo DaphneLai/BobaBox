@@ -10,19 +10,19 @@ import bobabox.main.Objects.Button;
 
 
 public class ScrTut implements Screen {
-    GamMenu gammenu;
+    GamMenu gamMenu;
     Texture txtBg;
     SpriteBatch batch;
     private OrthographicCamera camera;
     Button btnPlay, btnBack;
 
-    public ScrTut(GamMenu _gammenu) {
-        gammenu = _gammenu;
+    public ScrTut(GamMenu _gamMenu) {
+        gamMenu = _gamMenu;
         txtBg = new Texture("Test_img.jpg");
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        btnPlay = new Button(550, 25, "Play_btn.png");
+        btnPlay = new Button(550, 25, "Start_btn.png");
         btnBack = new Button(50, 25, "Back_btn.png");
     }
 
@@ -40,9 +40,9 @@ public class ScrTut implements Screen {
         btnPlay.draw(batch);
         batch.end();
         if(btnPlay.isMousedOver() && Gdx.input.justTouched()) {
-            gammenu.updateScreen(0);
+            gamMenu.updateScreen(0);
         }if(btnBack.isMousedOver() && Gdx.input.justTouched()) {
-            gammenu.updateScreen(2);
+            gamMenu.updateScreen(2);
         }
     }
 

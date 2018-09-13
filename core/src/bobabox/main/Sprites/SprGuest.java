@@ -13,6 +13,7 @@ public class SprGuest extends Sprite {
     boolean isWait = false;
 
     public SprGuest(String sFile) {
+
         super(new Texture(Gdx.files.internal(sFile)));
         fX = 10;
         fY = Gdx.graphics.getHeight() - 130;

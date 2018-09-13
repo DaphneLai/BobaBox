@@ -15,11 +15,11 @@ public class Tables extends Sprite {
         super(new Texture(Gdx.files.internal(sFile)));
         nX = _nX;
         nY = _nY;
-        fW = 200;
-        fH = 200;
-        setSize(fW, fH);
+        fW = 150;
+        fH = 80;
         setPosition(nX, nY);
         setFlip(false, false);
+        setSize(fW, fH);
     }
 
 

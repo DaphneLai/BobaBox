@@ -8,22 +8,26 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import bobabox.main.Objects.Button;
 
 import bobabox.main.GamMenu;
+import sun.security.jgss.GSSCaller;
 
 
 public class ScrEnd implements Screen{
-    GamMenu gammenu;
+    GamMenu gamMenu;
     Texture txtBg;
     SpriteBatch batch;
     private OrthographicCamera camera;
     Button btnMenu;
+    int nW, nH;
 
-    public ScrEnd(GamMenu _gammenu) {
-        gammenu = _gammenu;
+    public ScrEnd(GamMenu _gamMenu) {
+        gamMenu = _gamMenu;
         txtBg = new Texture("Test_img.jpg");
         batch = new SpriteBatch();
+        nW = Gdx.graphics.getWidth();
+        nH = Gdx.graphics.getHeight();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        btnMenu = new Button(550, 25, "Menu_btn.png");
+        camera.setToOrtho(false, nW, nH);
+        btnMenu = new Button(nW/2 - 319, nH /2 - 638, "Home_btn.png");
     }
 
     @Override
@@ -40,7 +44,7 @@ public class ScrEnd implements Screen{
         btnMenu.draw(batch);
         batch.end();
         if(btnMenu.isMousedOver() && Gdx.input.isTouched()) {
-            gammenu.updateScreen(2);
+            gamMenu.updateScreen(2);
         }
     }
 

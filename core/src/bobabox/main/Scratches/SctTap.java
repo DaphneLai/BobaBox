@@ -20,7 +20,7 @@ public class SctTap implements Screen, InputProcessor {
     private ShapeRenderer sr;
     private Vector3 pos; //vect with 3 values (position)
 
-    public SctTap(Game game) {
+    public SctTap(Game _gammenu) {
 
         sr = new ShapeRenderer();
         camera = new OrthographicCamera();

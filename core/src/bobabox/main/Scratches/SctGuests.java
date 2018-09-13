@@ -17,19 +17,19 @@ import bobabox.main.Sprites.SprGuest;
 public class SctGuests implements Screen {
 
     private OrthographicCamera camera;
-    private Texture txtBG, txtTable;
+    private Texture txtBG;
     private SpriteBatch batch;
     private SprGuest sprGuest;
     Tables table;
 
-    public SctGuests(Game game) {
+    public SctGuests(Game _gammenu) {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         batch = new SpriteBatch();
         sprGuest = new SprGuest("Guest_spr.png");
-        table = new Tables(200, 100, "rectangle-stroked.png");
+        table = new Tables(200, 100, "Table3_obj.png");
     }
 
     @Override

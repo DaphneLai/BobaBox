@@ -13,17 +13,18 @@ import bobabox.main.Objects.Tables;
 
 public class ScrGame implements Screen {
 
-    GamMenu gammenu;
+    GamMenu gamMenu;
     Texture txtBg;
     int nW, nH;
+    float fTW, fTH;
     SpriteBatch batch;
     private SprGuest sprGuest;
     Button btnPause;
     private OrthographicCamera camera;
     Tables table;
 
-    public ScrGame(GamMenu _gammenu) {
-        gammenu = _gammenu;
+    public ScrGame(GamMenu _gamMenu) {
+        gamMenu = _gamMenu;
 
         sprGuest = new SprGuest("Guest_spr.png");
         txtBg = new Texture("Test_img.jpg");
@@ -33,7 +34,9 @@ public class ScrGame implements Screen {
         btnPause = new Button(50, 25, "Pause_btn.png");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        table = new Tables(200, 100, "rectangle-stroked.png");
+        table = new Tables(200, 100, "Table1_obj.png");
+        fTW = table.getWidth();
+        fTH = table.getHeight();
     }
 
 
@@ -54,12 +57,12 @@ public class ScrGame implements Screen {
             System.out.println("Pause");
         }
         if(table.isOpen(sprGuest)==false) {
-            table.setBounds(200, 100, 200, 200);
+            table.setBounds(200, 100, fTW, fTH);
             if(Gdx.input.isTouched()){
-                table.setBounds(150, 50, 300, 300);
+                table.setBounds(150, 50, fTW + 50, fTH + 50);
             }
         }if(table.isOpen(sprGuest)==true) {
-            table.setBounds(200, 100, 200, 200);
+            table.setBounds(200, 100, fTW, fTH);
         }
     }
 
