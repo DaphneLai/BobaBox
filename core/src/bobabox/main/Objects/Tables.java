@@ -35,21 +35,27 @@ public class Tables extends Sprite {
 
         if (fGX > nX && fGX < nX + fW) {
             if (fGY > nY && fGY < nY + fW) {
+                super.setBounds(nX, nY, fW, fH);
+                if (Gdx.input.isTouched()) {
+                    super.setBounds(nX - 35, nY - 20, fW + 50, fH + 50);
+                }
                 return false;
             }
         }
+        super.setBounds(nX, nY, fW, fH);
         return true;
     }
-
-    public boolean isMouseOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
-
+    public boolean isMouseOver() {
         if(Gdx.input.getX() > nX && Gdx.input.getX() < nX + fW){
-            if(Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() > nY && Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() < nY + fH){
-                return true;
-            }
+        if(Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() > nY && Gdx.input.getY()*(-1)+Gdx.graphics.getHeight() < nY + fH){
+            return true;
         }
-        return false;
+
     }
+
+        return false;
+
+}
 
 }
 
