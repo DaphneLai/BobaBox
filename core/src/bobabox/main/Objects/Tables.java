@@ -17,8 +17,8 @@ public class Tables extends Sprite {
         super(new Texture(Gdx.files.internal(sFile)));
         nX = _nX;
         nY = _nY;
-        fW = 150;
-        fH = 80;
+        fW = 220;
+        fH = 132;
         setPosition(nX, nY);
         setSize(fW, fH);
         setFlip(false, false);
@@ -34,10 +34,10 @@ public class Tables extends Sprite {
         fGX = sprGuest.getX();
 
         if (fGX > nX && fGX < nX + fW) {
-            if (fGY > nY && fGY < nY + fW) {
+            if (fGY > nY && fGY < nY +fH) {
                 super.setBounds(nX, nY, fW, fH);
                 if (Gdx.input.isTouched()) {
-                    super.setBounds(nX - 35, nY - 20, fW + 50, fH + 50);
+                    super.setBounds(nX - 10, nY - 10, fW + 20, fH + 20);
                 }
                 return false;
             }
