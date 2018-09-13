@@ -68,16 +68,16 @@ public class ScrGame implements Screen {
         if (btnPause.isMousedOver() && Gdx.input.justTouched()) {
             System.out.println("Pause");
         }
+        table.isOpen(sprGuest);
         //Tables
-        if (table.isOpen(sprGuest) == false) {
+       /* if (table.isOpen(sprGuest) == false) {
             table.setBounds(nW/2, nH/2, fTW, fTH);
             if (Gdx.input.isTouched()) {
                 table.setBounds(nW/2 - 35, nH/2 - 20, fTW + 50, fTH + 50);
             }
-        }
-        if (table.isOpen(sprGuest) == true) {
+        }if (table.isOpen(sprGuest) == true) {
             table.setBounds(nW/2, nH/2, fTW, fTH);
-        }
+        }*/
     }
 
     @Override
