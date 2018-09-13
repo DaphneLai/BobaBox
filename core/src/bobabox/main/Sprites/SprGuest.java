@@ -11,6 +11,7 @@ public class SprGuest extends Sprite {
     float fX, fXSpeed, fY, fYSpeed, fDown;
     int nTimer = 0;
     boolean isWait = false;
+    Texture txtHeart3, txtHeart2, txtHeart1, txtHeart0;
 
     public SprGuest(String sFile) {
 
@@ -23,7 +24,13 @@ public class SprGuest extends Sprite {
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(100, 120);
+        txtHeart0 = new Texture("Hearts-4.png");
+        txtHeart1 = new Texture("Hearts-3.png");
+        txtHeart2 = new Texture("Hearts-2.png");
+        txtHeart3 = new Texture("Hearts-1.png");
+
     }
+
 
     public void Patience() {
 
