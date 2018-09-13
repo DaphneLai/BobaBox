@@ -7,14 +7,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 //https://www.youtube.com/watch?v=qlJUrcpQXo8
 
-public class SctTap implements Screen, InputProcessor {
+public class SctTap implements Screen {
 
     private OrthographicCamera camera;
     private ShapeRenderer sr;
@@ -25,7 +23,6 @@ public class SctTap implements Screen, InputProcessor {
         sr = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //y values will increase going up
-
         pos = new Vector3(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
 
     }
@@ -39,7 +36,7 @@ public class SctTap implements Screen, InputProcessor {
         //Logic
         camera.update();
         if (Gdx.input.isTouched()) {
-                pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(pos);
         }
 
@@ -67,45 +64,5 @@ public class SctTap implements Screen, InputProcessor {
 
     public void dispose() {
         sr.dispose();
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }

@@ -26,6 +26,7 @@ public class SprGuest extends Sprite {
     }
 
     public void Patience() {
+
         //Entered
         if (isWait == true) {
             nTimer++;

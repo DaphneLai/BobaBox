@@ -2,26 +2,34 @@ package bobabox.main.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+
 import bobabox.main.GamMenu;
+
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import bobabox.main.Objects.Button;
 
 
 public class ScrTut implements Screen {
+
     GamMenu gamMenu;
-    Texture txtBg;
-    SpriteBatch batch;
+    //Logic
     private OrthographicCamera camera;
+    SpriteBatch batch;
+    //Assets
+    Texture txtBg;
     Button btnPlay, btnBack;
 
     public ScrTut(GamMenu _gamMenu) {
         gamMenu = _gamMenu;
-        txtBg = new Texture("Test_img.jpg");
-        batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch = new SpriteBatch();
+
+        txtBg = new Texture("Test_img.jpg");
         btnPlay = new Button(550, 25, "Start_btn.png");
         btnBack = new Button(50, 25, "Back_btn.png");
     }
@@ -33,15 +41,22 @@ public class ScrTut implements Screen {
 
     @Override
     public void render(float delta) {
+
         batch.begin();
-        //TEXTURES
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Drawing
         batch.draw(txtBg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         btnBack.draw(batch);
         btnPlay.draw(batch);
+
         batch.end();
-        if(btnPlay.isMousedOver() && Gdx.input.justTouched()) {
+
+        //Button
+        if (btnPlay.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(0);
-        }if(btnBack.isMousedOver() && Gdx.input.justTouched()) {
+        }
+        if (btnBack.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(2);
         }
     }
@@ -68,6 +83,7 @@ public class ScrTut implements Screen {
 
     @Override
     public void dispose() {
-
+        batch.dispose();
+        txtBg.dispose();
     }
 }
