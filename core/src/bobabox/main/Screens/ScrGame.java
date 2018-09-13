@@ -72,7 +72,7 @@ public class ScrGame implements Screen {
         if (table.isOpen(sprGuest) == false) {
             table.setBounds(nW/2, nH/2, fTW, fTH);
             if (Gdx.input.isTouched()) {
-                table.setBounds(nW/2, nH/2, fTW + 50, fTH + 50);
+                table.setBounds(nW/2 - 35, nH/2 - 20, fTW + 50, fTH + 50);
             }
         }
         if (table.isOpen(sprGuest) == true) {

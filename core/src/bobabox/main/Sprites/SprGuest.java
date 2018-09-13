@@ -55,7 +55,7 @@ public class SprGuest extends Sprite {
 
     public void walkDown() {
         if (isWait == false) {
-            fY -= fDown;
+            fY -= fDown + 2;
             setY(fY);
             if (fY <= 10) {
                 fDown = 0;
