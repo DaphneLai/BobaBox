@@ -40,9 +40,8 @@ public class ScrGame implements Screen {
 
         txtBg = new Texture("GameBG_img.png");
         sprGuest = new SprGuest("Guest_spr.png");
-        table = new Tables(nW/2, nH/2, "Table1_obj.png");
+        table = new Tables(630, 178, "Table1_obj.png");
         btnPause = new Button(50, 25, "Pause_btn.png");
-
         fTW = table.getWidth();
         fTH = table.getHeight();
     }
@@ -69,15 +68,6 @@ public class ScrGame implements Screen {
             System.out.println("Pause");
         }
         table.isOpen(sprGuest);
-        //Tables
-       /* if (table.isOpen(sprGuest) == false) {
-            table.setBounds(nW/2, nH/2, fTW, fTH);
-            if (Gdx.input.isTouched()) {
-                table.setBounds(nW/2 - 35, nH/2 - 20, fTW + 50, fTH + 50);
-            }
-        }if (table.isOpen(sprGuest) == true) {
-            table.setBounds(nW/2, nH/2, fTW, fTH);
-        }*/
     }
 
     @Override
