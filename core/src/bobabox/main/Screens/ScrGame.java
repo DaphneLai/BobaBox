@@ -38,7 +38,7 @@ public class ScrGame implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
 
-        txtBg = new Texture("Test_img.jpg");
+        txtBg = new Texture("GameBG_img.png");
         sprGuest = new SprGuest("Guest_spr.png");
         table = new Tables(nW/2, nH/2, "Table1_obj.png");
         btnPause = new Button(50, 25, "Pause_btn.png");
