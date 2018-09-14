@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import bobabox.main.Objects.Button;
 import bobabox.main.GamMenu;
@@ -21,6 +22,7 @@ public class ScrGame implements Screen {
     float fTW, fTH;
     //Logic
     private OrthographicCamera camera;
+    private Viewport viewport;
     SpriteBatch batch;
     //Assets
     Texture txtBg;
@@ -28,14 +30,15 @@ public class ScrGame implements Screen {
     Tables table;
     Button btnPause;
 
-    public ScrGame(GamMenu _gamMenu) {
+    public ScrGame(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
+        viewport = _viewport;
+        camera = _camera;
+        resize(GamMenu.WIDTH,GamMenu.HEIGHT);
         nW = Gdx.graphics.getWidth();
         nH = Gdx.graphics.getHeight();
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
 
         txtBg = new Texture("GameBG_img.png");
@@ -50,7 +53,9 @@ public class ScrGame implements Screen {
     @Override
     public void render(float delta) {
 
+        camera.update();
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
@@ -77,7 +82,8 @@ public class ScrGame implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        return;
+        viewport.update(width, height);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
     }
 
     @Override

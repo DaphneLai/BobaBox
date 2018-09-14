@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import bobabox.main.Objects.Button;
 
@@ -18,15 +19,18 @@ public class ScrTut implements Screen {
     GamMenu gamMenu;
     //Logic
     private OrthographicCamera camera;
+    private Viewport viewport; //how it's seen
     SpriteBatch batch;
     //Assets
     Texture txtBg;
     Button btnPlay, btnBack;
 
-    public ScrTut(GamMenu _gamMenu) {
+    public ScrTut(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        viewport = _viewport;
+        camera = _camera;
+        resize(GamMenu.WIDTH,GamMenu.HEIGHT);
         batch = new SpriteBatch();
 
         txtBg = new Texture("Test_img.jpg");
@@ -46,7 +50,7 @@ public class ScrTut implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
-        batch.draw(txtBg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(txtBg, 0, 0, GamMenu.WIDTH, GamMenu.HEIGHT);
         btnBack.draw(batch);
         btnPlay.draw(batch);
 
@@ -63,6 +67,8 @@ public class ScrTut implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        viewport.update(width, height);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
     }
 
