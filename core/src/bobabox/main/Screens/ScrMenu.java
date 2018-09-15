@@ -21,11 +21,11 @@ import bobabox.main.Objects.Button;
 import static com.badlogic.gdx.Gdx.graphics;
 
 
-public class ScrMenu implements Screen {
+public class ScrMenu implements Screen, InputProcessor{
 
     GamMenu gamMenu;
     //Values
-    int nW, nH;
+    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
     //Logic
     private OrthographicCamera camera; // what's seen
     private Viewport viewport; //how it's seen
@@ -38,16 +38,17 @@ public class ScrMenu implements Screen {
         gamMenu = _gamMenu;
 
         viewport = _viewport;
+        viewport.apply();
         camera = _camera;
-        resize(GamMenu.WIDTH, GamMenu.HEIGHT);
-        nW = graphics.getWidth();
-        nH = graphics.getHeight();
+        camera.setToOrtho(false);
+        camera.position.set(nW/ 2, nH/ 2, 0); //camera looks at the center of the screen
+        resize(nW, nH);
 
         batch = new SpriteBatch();
 
         txtBack = new Texture("Main_bg.png");
-        btnStart = new Button(0, 0, "Start_btn.png");
-        btnTut = new Button(nW / 2, nH / 2, "Tutorial_btn.png");
+        btnStart = new Button(nW/2, nH /3+50, "Start_btn.png");
+        btnTut = new Button(nW / 2, nH /4, "Tutorial_btn.png");
     }
 
     @Override
@@ -65,7 +66,7 @@ public class ScrMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
-        batch.draw(txtBack, 0, 0, GamMenu.WIDTH, GamMenu.HEIGHT);
+        batch.draw(txtBack, 0, 0, nW, nH);
         btnStart.draw(batch);
         btnTut.draw(batch);
 
@@ -109,4 +110,43 @@ public class ScrMenu implements Screen {
         txtBack.dispose();
     }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
 }

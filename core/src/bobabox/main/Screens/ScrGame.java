@@ -18,7 +18,7 @@ public class ScrGame implements Screen {
 
     GamMenu gamMenu;
     //Values
-    int nW, nH;
+    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
     float fTW, fTH;
     //Logic
     private OrthographicCamera camera;
@@ -35,18 +35,14 @@ public class ScrGame implements Screen {
 
         viewport = _viewport;
         camera = _camera;
-        resize(GamMenu.WIDTH,GamMenu.HEIGHT);
-        nW = Gdx.graphics.getWidth();
-        nH = Gdx.graphics.getHeight();
-
+        resize(nW, nH);
         batch = new SpriteBatch();
+
 
         txtBg = new Texture("GameBG_img.png");
         sprGuest = new SprGuest("Guest_spr.png");
-        table = new Tables(630, 178, "Table1_obj.png");
+        table = new Tables(nW/2+40, nH/3, "Table1_obj.png");
         btnPause = new Button(50, 25, "Pause_btn.png");
-        fTW = table.getWidth();
-        fTH = table.getHeight();
     }
 
 
@@ -83,7 +79,7 @@ public class ScrGame implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.position.set(nW / 2, nH / 2, 0);
     }
 
     @Override

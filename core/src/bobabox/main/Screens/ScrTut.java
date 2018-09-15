@@ -17,6 +17,8 @@ import bobabox.main.Objects.Button;
 public class ScrTut implements Screen {
 
     GamMenu gamMenu;
+    //Values
+    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
     //Logic
     private OrthographicCamera camera;
     private Viewport viewport; //how it's seen
@@ -30,7 +32,7 @@ public class ScrTut implements Screen {
 
         viewport = _viewport;
         camera = _camera;
-        resize(GamMenu.WIDTH,GamMenu.HEIGHT);
+        resize(nW, nH);
         batch = new SpriteBatch();
 
         txtBg = new Texture("Test_img.jpg");
@@ -50,7 +52,7 @@ public class ScrTut implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
-        batch.draw(txtBg, 0, 0, GamMenu.WIDTH, GamMenu.HEIGHT);
+        batch.draw(txtBg, 0, 0, nW, nH);
         btnBack.draw(batch);
         btnPlay.draw(batch);
 

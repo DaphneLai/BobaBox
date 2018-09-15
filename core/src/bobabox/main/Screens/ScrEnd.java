@@ -17,7 +17,7 @@ public class ScrEnd implements Screen {
 
     GamMenu gamMenu;
     //Values
-    int nW, nH;
+    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
     //Logic
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -32,11 +32,11 @@ public class ScrEnd implements Screen {
 
         viewport = _viewport;
         camera = _camera;
-        resize(GamMenu.WIDTH,GamMenu.HEIGHT);
+        resize(nW, nH);
         batch = new SpriteBatch();
 
         txtBg = new Texture("Test_img.jpg");
-        btnMenu = new Button(nW / 2 - 319, nH / 2 - 638, "Home_btn.png");
+        btnMenu = new Button(nW / 2, nH / 2, "Home_btn.png");
 
     }
 
@@ -52,7 +52,7 @@ public class ScrEnd implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
-        batch.draw(txtBg, 0, 0, GamMenu.WIDTH, GamMenu.HEIGHT);
+        batch.draw(txtBg, 0, 0, nW, nH);
         btnMenu.draw(batch);
 
         batch.end();

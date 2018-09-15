@@ -19,8 +19,8 @@ import bobabox.main.Scratches.SctWaiter;
 
 public class GamMenu extends Game {
 
-    public static final int WIDTH = 1000;
-    public static final int HEIGHT = 500;
+    public static final int WORLD_WIDTH = 1000;
+    public static final int WORLD_HEIGHT = 500;
     private OrthographicCamera camera; // what's seen
     private Viewport viewport; //how it's seen
 
@@ -64,11 +64,8 @@ public class GamMenu extends Game {
     }
 
     public void create() {
-        camera = new OrthographicCamera(WIDTH, HEIGHT);
-        camera.setToOrtho(false);
-        viewport = new StretchViewport(WIDTH, HEIGHT,camera);
-        viewport.apply();
-        camera.position.set(WIDTH / 2, HEIGHT / 2, 0); //camera looks at the center of the screen
+        camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT,camera);
 
         nScreen = 2;
         scrGame = new ScrGame(this, viewport, camera);
