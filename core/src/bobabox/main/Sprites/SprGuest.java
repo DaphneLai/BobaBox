@@ -1,17 +1,14 @@
 package bobabox.main.Sprites;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 
 public class SprGuest extends Sprite {
 
     float fX, fXSpeed, fY, fYSpeed, fDown;
     int nTimer = 0;
     boolean isWait = false;
-    Texture txtHeart3, txtHeart2, txtHeart1, txtHeart0;
 
     public SprGuest(String sFile) {
 
@@ -24,15 +21,10 @@ public class SprGuest extends Sprite {
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(100, 120);
-        txtHeart0 = new Texture("Hearts-4.png");
-        txtHeart1 = new Texture("Hearts-3.png");
-        txtHeart2 = new Texture("Hearts-2.png");
-        txtHeart3 = new Texture("Hearts-1.png");
 
     }
 
-
-    public void Patience() {
+    public void Drag() {
 
         //Entered
         if (isWait == true) {
@@ -44,22 +36,7 @@ public class SprGuest extends Sprite {
                 setY(Gdx.graphics.getHeight() - Gdx.input.getY() - 60);
                 nTimer = 0;
         }
-//        //Seated
-//        if(true){
-//
-//        }
-        //Hearts
-        if (nTimer > 0 && nTimer < 300) {
-            System.out.println(3 + " Hearts");
-        } else if (nTimer > 300 && nTimer < 600) {
-            System.out.println(2 + " Hearts");
-        } else if (nTimer > 600 && nTimer < 900) {
-            System.out.println(1 + " Heart");
-        } else if (nTimer > 900) {
-            System.out.println("This is horrible service!");
-        }
     }
-
     public void walkDown() {
         if (isWait == false) {
             fY -= fDown + 2;
