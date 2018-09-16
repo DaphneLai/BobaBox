@@ -19,7 +19,7 @@ public class SctGuests implements Screen {
     private Texture txtBG;
     private SprGuest sprGuest;
     Tables tbl1;
-    private Hearts hearts;
+    Hearts hearts3, hearts2, hearts1, hearts0;
 
     public SctGuests(Game _gammenu) {
 
@@ -29,7 +29,10 @@ public class SctGuests implements Screen {
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         sprGuest = new SprGuest("Guest_spr.png");
         tbl1 = new Tables(200, 100, "Table3_obj.png");
-        hearts = new Hearts("Hearts-01.png");
+        hearts3 = new Hearts("Hearts-01.png");
+        hearts2 = new Hearts("Hearts-02.png");
+        hearts1 = new Hearts("Hearts-03.png");
+        hearts0 = new Hearts("Hearts-04.png");
     }
 
     @Override
@@ -44,14 +47,20 @@ public class SctGuests implements Screen {
         sprGuest.Drag();
         sprGuest.walkDown();
         sprGuest.draw(batch);
-        hearts.walkDown();
-        hearts.Patience();
-        hearts.draw(batch);
-     /*   if (hearts.nHearts == 3) {
-            System.out.println(3);
-        } if (hearts.nHearts == 2) {
-            System.out.println(2);
-        }*/
+        hearts3.walkDown();
+        hearts3.Patience();
+        if (hearts3.nHearts == 3) {
+            hearts3.draw(batch);
+        } if (hearts3.nHearts == 2) {
+            hearts2.draw(batch);
+            hearts2.setPosition(hearts3.getX(), hearts3.getY());
+        }if (hearts3.nHearts == 1) {
+            hearts1.draw(batch);
+            hearts1.setPosition(hearts3.getX(), hearts3.getY());
+        }if (hearts3.nHearts == 0) {
+            hearts0.draw(batch);
+            hearts0.setPosition(hearts3.getX(), hearts3.getY());
+        }
         batch.end();
 
 

@@ -8,7 +8,7 @@ public class SprGuest extends Sprite {
 
     float fX, fXSpeed, fY, fYSpeed, fDown;
     int nTimer = 0;
-    boolean isWait = false;
+    boolean isWait = false, canDrag = false;
 
     public SprGuest(String sFile) {
 
@@ -21,13 +21,6 @@ public class SprGuest extends Sprite {
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(100, 120);
-<<<<<<< HEAD
-=======
-//        txtHeart0 = new Texture("Hearts-4.png");
-//        txtHeart1 = new Texture("Hearts-3.png");
-//        txtHeart2 = new Texture("Hearts-2.png");
-//        txtHeart3 = new Texture("Hearts-1.png");
->>>>>>> 83d0ceccc3e6b11927b8475efe6554475bf91349
 
     }
 
@@ -37,11 +30,12 @@ public class SprGuest extends Sprite {
         if (isWait == true) {
             nTimer++;
         }
-        //Dragged
-        if (Gdx.input.isTouched()) {
+        if (canDrag == true) {
+            if (Gdx.input.isTouched()) {
                 setX(Gdx.input.getX() - 50);
                 setY(Gdx.graphics.getHeight() - Gdx.input.getY() - 60);
                 nTimer = 0;
+            }
         }
     }
     public void walkDown() {
@@ -51,6 +45,7 @@ public class SprGuest extends Sprite {
             if (fY <= 10) {
                 fDown = 0;
                 isWait = true;
+                canDrag = true;
             }
         }
     }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import bobabox.main.Objects.Button;
 import bobabox.main.GamMenu;
+import bobabox.main.Objects.Hearts;
 import bobabox.main.Sprites.SprGuest;
 import bobabox.main.Objects.Tables;
 
@@ -29,6 +30,7 @@ public class ScrGame implements Screen {
     private SprGuest sprGuest;
     Tables table;
     Button btnPause;
+    Hearts hearts3, hearts2, hearts1, hearts0;
 
     public ScrGame(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -43,6 +45,10 @@ public class ScrGame implements Screen {
         sprGuest = new SprGuest("Guest_spr.png");
         table = new Tables(nW/2+40, nH/3, "Table1_obj.png");
         btnPause = new Button(50, 25, "Pause_btn.png");
+        hearts3 = new Hearts("Hearts-01.png");
+        hearts2 = new Hearts("Hearts-02.png");
+        hearts1 = new Hearts("Hearts-03.png");
+        hearts0 = new Hearts("Hearts-04.png");
     }
 
 
@@ -57,11 +63,24 @@ public class ScrGame implements Screen {
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         table.draw(batch);
-        sprGuest.Patience();
+        sprGuest.Drag();
         sprGuest.walkDown();
         sprGuest.draw(batch);
         btnPause.draw(batch);
-
+        hearts3.walkDown();
+        hearts3.Patience();
+        if (hearts3.nHearts == 3) {
+            hearts3.draw(batch);
+        } if (hearts3.nHearts == 2) {
+            hearts2.draw(batch);
+            hearts2.setPosition(hearts3.getX(), hearts3.getY());
+        }if (hearts3.nHearts == 1) {
+            hearts1.draw(batch);
+            hearts1.setPosition(hearts3.getX(), hearts3.getY());
+        }if (hearts3.nHearts == 0) {
+            hearts0.draw(batch);
+            hearts0.setPosition(hearts3.getX(), hearts3.getY());
+        }
         batch.end();
 
         //Button

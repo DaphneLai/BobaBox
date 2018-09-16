@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Hearts extends Sprite{
-    public float fX, fXSpeed, fY, fYSpeed, fDown;
+    public float fX, fXSpeed, fY, fYSpeed, fDown, fYup, fXup;
     int nTimer = 0;
     public int  nHearts = 3;
-    boolean isWait = false;
+    boolean isWait = false, canDrag = false;
 
     public Hearts(String sFile) {
         super(new Texture(Gdx.files.internal(sFile)));
@@ -28,10 +28,12 @@ public class Hearts extends Sprite{
         if (isWait == true) {
             nTimer++;
         }
-        if (Gdx.input.isTouched()) {
-            setX(Gdx.input.getX() - 50);
-            setY(Gdx.graphics.getHeight() - Gdx.input.getY() + 60);
-            nTimer = 0;
+        if (canDrag == true) {
+            if (Gdx.input.isTouched()) {
+                setX(Gdx.input.getX() - 50);
+                setY(Gdx.graphics.getHeight() - Gdx.input.getY() + 60);
+                nTimer = 0;
+            }
         }
         if (nTimer > 0 && nTimer < 300) {
             nHearts = 3;
@@ -51,6 +53,7 @@ public class Hearts extends Sprite{
             if (fY <= 130) {
                 fDown = 0;
                 isWait = true;
+                canDrag = true;
             }
         }
     }

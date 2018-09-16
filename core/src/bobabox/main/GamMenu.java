@@ -66,8 +66,6 @@ public class GamMenu extends Game {
     public void create() {
         camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT,camera);
-
-        nScreen = 2;
         scrGame = new ScrGame(this, viewport, camera);
         scrEnd = new ScrEnd(this, viewport, camera);
         scrMenu = new ScrMenu(this, viewport, camera);
