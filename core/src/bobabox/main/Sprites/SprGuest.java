@@ -21,6 +21,13 @@ public class SprGuest extends Sprite {
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(100, 120);
+<<<<<<< HEAD
+=======
+//        txtHeart0 = new Texture("Hearts-4.png");
+//        txtHeart1 = new Texture("Hearts-3.png");
+//        txtHeart2 = new Texture("Hearts-2.png");
+//        txtHeart3 = new Texture("Hearts-1.png");
+>>>>>>> 83d0ceccc3e6b11927b8475efe6554475bf91349
 
     }
 

@@ -2,6 +2,11 @@ package bobabox.main;
 
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import bobabox.main.Scratches.SctGuests;
 import bobabox.main.Scratches.SctTap;
@@ -12,7 +17,12 @@ import bobabox.main.Screens.ScrTut;
 import bobabox.main.Scratches.SctWaiter;
 
 
-public class GamMenu extends Game{
+public class GamMenu extends Game {
+
+    public static final int WORLD_WIDTH = 1000;
+    public static final int WORLD_HEIGHT = 500;
+    private OrthographicCamera camera; // what's seen
+    private Viewport viewport; //how it's seen
 
     int nScreen;
     ScrGame scrGame;
@@ -23,7 +33,7 @@ public class GamMenu extends Game{
     SctGuests sctGuests;
     SctWaiter sctWaiter;
 
-//Kieran's code (modified)
+    //Kieran's code (modified)
     public void updateScreen(int _nScreen) {
         nScreen = _nScreen;
         switch (nScreen) {
@@ -54,11 +64,14 @@ public class GamMenu extends Game{
     }
 
     public void create() {
+        camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT,camera);
+
         nScreen = 2;
-        scrGame = new ScrGame(this);
-        scrEnd = new ScrEnd(this);
-        scrMenu = new ScrMenu(this);
-        scrTut = new ScrTut(this);
+        scrGame = new ScrGame(this, viewport, camera);
+        scrEnd = new ScrEnd(this, viewport, camera);
+        scrMenu = new ScrMenu(this, viewport, camera);
+        scrTut = new ScrTut(this, viewport, camera);
         sctTap = new SctTap(this);
         sctGuests = new SctGuests(this);
         sctWaiter = new SctWaiter(this);

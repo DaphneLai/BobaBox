@@ -6,36 +6,37 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
 import bobabox.main.Objects.Button;
 
 import bobabox.main.GamMenu;
-
 
 
 public class ScrEnd implements Screen {
 
     GamMenu gamMenu;
     //Values
-    int nW, nH;
+    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
     //Logic
     private OrthographicCamera camera;
+    private Viewport viewport;
     SpriteBatch batch;
     //Assets
     Texture txtBg;
     Button btnMenu;
 
-    public ScrEnd(GamMenu _gamMenu) {
+    public ScrEnd(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
+
         gamMenu = _gamMenu;
 
-        nW = Gdx.graphics.getWidth();
-        nH = Gdx.graphics.getHeight();
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, nW, nH);
+        viewport = _viewport;
+        camera = _camera;
+        resize(nW, nH);
         batch = new SpriteBatch();
 
         txtBg = new Texture("Test_img.jpg");
-        btnMenu = new Button(nW/2 - 319, nH /2 - 638, "Home_btn.png");
+        btnMenu = new Button(nW / 2, nH / 2, "Home_btn.png");
 
     }
 
@@ -51,19 +52,21 @@ public class ScrEnd implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
-        batch.draw(txtBg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(txtBg, 0, 0, nW, nH);
         btnMenu.draw(batch);
 
         batch.end();
 
         //Button
-        if(btnMenu.isMousedOver() && Gdx.input.isTouched()) {
+        if (btnMenu.isMousedOver() && Gdx.input.isTouched()) {
             gamMenu.updateScreen(2);
         }
     }
 
-            @Override
+    @Override
     public void resize(int width, int height) {
+        viewport.update(width, height);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 
     }
 
@@ -84,7 +87,7 @@ public class ScrEnd implements Screen {
 
     @Override
     public void dispose() {
-    batch.dispose();
-    txtBg.dispose();
+        batch.dispose();
+        txtBg.dispose();
     }
 }
