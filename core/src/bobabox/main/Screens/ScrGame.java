@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import bobabox.main.Objects.Button;
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.Hearts;
@@ -21,6 +20,7 @@ public class ScrGame implements Screen {
     //Values
     int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
     float fTW, fTH;
+    boolean isSitting = false;
     //Logic
     private OrthographicCamera camera;
     private Viewport viewport;
@@ -67,6 +67,8 @@ public class ScrGame implements Screen {
         sprGuest.walkDown();
         sprGuest.draw(batch);
         btnPause.draw(batch);
+
+        //Hearts
         hearts3.walkDown();
         hearts3.Patience();
         if (hearts3.nHearts == 3) {
@@ -87,7 +89,17 @@ public class ScrGame implements Screen {
         if (btnPause.isMousedOver() && Gdx.input.justTouched()) {
             System.out.println("Pause");
         }
+        //Table
         table.isOpen(sprGuest);
+        if (table.isOpen(sprGuest) == false && table.isTouch == false) {
+            isSitting = true;
+            System.out.println("is sitting =" + isSitting);
+        }
+        if(isSitting == true) {
+            if (hearts3.isReady == true) {
+                System.out.println("Ready to order");
+            }
+        }
     }
 
     @Override

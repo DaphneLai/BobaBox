@@ -11,6 +11,7 @@ public class Tables extends Sprite {
 
     float fX, fY, fW, fH; //table
     float fGY, fGX, fGW, fGH; //guest
+    public boolean isTouch = true;
 
     public Tables(float _nX, float _nY, String sFile) {
 
@@ -38,7 +39,10 @@ public class Tables extends Sprite {
                 super.setBounds(fX, fY, fW, fH);
                 if (Gdx.input.isTouched()) {
                     super.setBounds(fX - 10, fY - 10, fW + 20, fH + 20);
+                    isTouch = true;
+                    return true;
                 }
+                isTouch = false;
                 return false;
             }
         }
