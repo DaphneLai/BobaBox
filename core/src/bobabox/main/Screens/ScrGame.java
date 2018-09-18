@@ -83,21 +83,8 @@ public class ScrGame implements Screen, InputProcessor {
         //Hearts
         hearts3.walkDown();
         hearts3.Patience();
-        if (hearts3.nHearts == 3) {
-            hearts3.draw(batch);
-        }
-        if (hearts3.nHearts == 2) {
-            hearts2.draw(batch);
-            hearts2.setPosition(hearts3.getX(), hearts3.getY());
-        }
-        if (hearts3.nHearts == 1) {
-            hearts1.draw(batch);
-            hearts1.setPosition(hearts3.getX(), hearts3.getY());
-        }
-        if (hearts3.nHearts == 0) {
-            hearts0.draw(batch);
-            hearts0.setPosition(hearts3.getX(), hearts3.getY());
-        }
+        Hearts();
+
         batch.end();
 
         //Button
@@ -124,7 +111,23 @@ public class ScrGame implements Screen, InputProcessor {
         camera.position.set(nW / 2, nH / 2, 0);
     }
 
-
+    public void Hearts(){
+        if (hearts3.nHearts == 3) {
+            hearts3.draw(batch);
+        }
+        if (hearts3.nHearts == 2) {
+            hearts2.draw(batch);
+            hearts2.setPosition(hearts3.getX(), hearts3.getY());
+        }
+        if (hearts3.nHearts == 1) {
+            hearts1.draw(batch);
+            hearts1.setPosition(hearts3.getX(), hearts3.getY());
+        }
+        if (hearts3.nHearts == 0) {
+            hearts0.draw(batch);
+            hearts0.setPosition(hearts3.getX(), hearts3.getY());
+        }
+    }
     @Override
     public void pause() {
         return;
