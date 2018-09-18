@@ -25,7 +25,7 @@ public class ScrTut implements Screen {
     SpriteBatch batch;
     //Assets
     Texture txtBg;
-    Button btnPlay, btnBack;
+    Button btnStart, btnHome;
 
     public ScrTut(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -36,8 +36,8 @@ public class ScrTut implements Screen {
         batch = new SpriteBatch();
 
         txtBg = new Texture("Test_img.jpg");
-        btnPlay = new Button(550, 25, "Start_btn.png");
-        btnBack = new Button(50, 25, "Back_btn.png");
+        btnStart = new Button(70, 70, 260/2, 70/2, "Start_btn.png");
+        btnHome = new Button(70, 30, 260/2, 70/2,"Home_btn.png");
     }
 
     @Override
@@ -53,16 +53,16 @@ public class ScrTut implements Screen {
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        btnBack.draw(batch);
-        btnPlay.draw(batch);
+        btnHome.draw(batch);
+        btnStart.draw(batch);
 
         batch.end();
 
         //Button
-        if (btnPlay.isMousedOver() && Gdx.input.justTouched()) {
+        if (btnStart.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(0);
         }
-        if (btnBack.isMousedOver() && Gdx.input.justTouched()) {
+        if (btnHome.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(2);
         }
     }

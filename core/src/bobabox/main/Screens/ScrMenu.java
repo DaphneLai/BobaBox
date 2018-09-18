@@ -11,44 +11,49 @@ import bobabox.main.GamMenu;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.sun.org.apache.xpath.internal.operations.Or;
 
 import bobabox.main.Objects.Button;
 
 import static com.badlogic.gdx.Gdx.graphics;
 
 
-public class ScrMenu implements Screen, InputProcessor{
+public class ScrMenu implements Screen, InputProcessor {
 
     GamMenu gamMenu;
     //Values
     int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
     //Logic
+    Vector3 vTouch;
     private OrthographicCamera camera; // what's seen
     private Viewport viewport; //how it's seen
     SpriteBatch batch;
     //Assets
     Texture txtBack;
-    Button btnStart, btnTut;
+    Button btnStart, btnTut, btnScratch;
 
     public ScrMenu(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
+        Gdx.input.setInputProcessor(this);
+        vTouch = new Vector3();
         viewport = _viewport;
         viewport.apply();
+
         camera = _camera;
         camera.setToOrtho(false);
-        camera.position.set(nW/ 2, nH/ 2, 0); //camera looks at the center of the screen
+        camera.position.set(camera.viewportWidth/ 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         resize(nW, nH);
 
         batch = new SpriteBatch();
 
         txtBack = new Texture("Main_bg.png");
-        btnStart = new Button(nW/2, nH /3+50, "Start_btn.png");
-        btnTut = new Button(nW / 2, nH /4, "Tutorial_btn.png");
+        btnStart = new Button(nW / 2, nH / 3 + 50, 260, 70, "Start_btn.png");
+        btnTut = new Button(nW / 2, nH / 4 + 10, 260, 70, "Tutorial_btn.png");
+        btnScratch = new Button(nW / 2, 50, 110, 70, "Scratch_btn.png");
     }
 
     @Override
@@ -69,6 +74,7 @@ public class ScrMenu implements Screen, InputProcessor{
         batch.draw(txtBack, 0, 0, nW, nH);
         btnStart.draw(batch);
         btnTut.draw(batch);
+        btnScratch.draw(batch);
 
         batch.end();
 
@@ -78,6 +84,9 @@ public class ScrMenu implements Screen, InputProcessor{
         }
         if (btnTut.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(3);
+        }
+        if (btnScratch.isMousedOver() && Gdx.input.justTouched()) {
+            gamMenu.updateScreen(20);
         }
     }
 
@@ -111,6 +120,15 @@ public class ScrMenu implements Screen, InputProcessor{
     }
 
     @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        viewport.unproject(vTouch.set(screenX,(screenY*(-1) + nH), 0));
+        System.out.println("x: " + screenX);
+        System.out.println("y: " + (screenY*-1 + GamMenu.WORLD_HEIGHT));
+
+        return false;
+    }
+
+    @Override
     public boolean keyDown(int keycode) {
         return false;
     }
@@ -123,11 +141,6 @@ public class ScrMenu implements Screen, InputProcessor{
     @Override
     public boolean keyTyped(char character) {
         return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true;
     }
 
     @Override

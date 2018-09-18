@@ -44,7 +44,7 @@ public class ScrGame implements Screen {
         txtBg = new Texture("GameBG_img.png");
         sprGuest = new SprGuest("Guest_spr.png");
         table = new Tables(nW/2+40, nH/3, "Table1_obj.png");
-        btnPause = new Button(50, 25, "Pause_btn.png");
+        btnPause = new Button(50, 25, 260, 70, "Pause_btn.png");
         hearts3 = new Hearts("Hearts-01.png");
         hearts2 = new Hearts("Hearts-02.png");
         hearts1 = new Hearts("Hearts-03.png");
@@ -86,6 +86,7 @@ public class ScrGame implements Screen {
         //Button
         if (btnPause.isMousedOver() && Gdx.input.justTouched()) {
             System.out.println("Pause");
+            gamMenu.updateScreen(1);
         }
         table.isOpen(sprGuest);
     }

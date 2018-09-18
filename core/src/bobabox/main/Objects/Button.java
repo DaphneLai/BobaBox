@@ -10,17 +10,15 @@ import bobabox.main.GamMenu;
 
 public class Button extends Sprite {
 
-    int nX, nY;
-    float fW, fH;
-
-    public Button(int _nX, int _nY, String sFile) {
+    float fX, fY, fW, fH;
+    public Button(float _fX, float _fY, float _fW, float _fH,String sFile) {
 
         super(new Texture(Gdx.files.internal(sFile)));
-        nX = _nX - 130;
-        nY = _nY - 35;
-        fW = 260;
-        fH = 70;
-        setPosition(nX, nY);
+        fW = _fW;
+        fH = _fH;
+        fX = _fX - fW/2;
+        fY = _fY - fH/2;
+        setPosition(fX, fY);
         setSize(fW, fH);
         setFlip(false, false);
 
@@ -30,8 +28,8 @@ public class Button extends Sprite {
 
     public boolean isMousedOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
 
-        if(Gdx.input.getX() > nX && Gdx.input.getX() < nX + fW){
-            if(Gdx.input.getY()*(-1)+ GamMenu.WORLD_HEIGHT > nY && Gdx.input.getY()*(-1)+ GamMenu.WORLD_HEIGHT < nY + fH){
+        if(Gdx.input.getX() > fX && Gdx.input.getX() < fX + fW){
+            if(Gdx.input.getY()*(-1)+ GamMenu.WORLD_HEIGHT > fY && Gdx.input.getY()*(-1)+ GamMenu.WORLD_HEIGHT < fY + fH){
                 return true;
             }
         }

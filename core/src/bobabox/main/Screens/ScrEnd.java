@@ -24,7 +24,7 @@ public class ScrEnd implements Screen {
     SpriteBatch batch;
     //Assets
     Texture txtBg;
-    Button btnMenu;
+    Button btnHome;
 
     public ScrEnd(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
 
@@ -35,8 +35,8 @@ public class ScrEnd implements Screen {
         resize(nW, nH);
         batch = new SpriteBatch();
 
-        txtBg = new Texture("Test_img.jpg");
-        btnMenu = new Button(nW / 2, nH / 2, "Home_btn.png");
+        txtBg = new Texture("EndBG_img.png");
+        btnHome = new Button(nW / 2, nH/4, 260, 70,"Home_btn.png");
 
     }
 
@@ -53,12 +53,12 @@ public class ScrEnd implements Screen {
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        btnMenu.draw(batch);
+        btnHome.draw(batch);
 
         batch.end();
 
         //Button
-        if (btnMenu.isMousedOver() && Gdx.input.isTouched()) {
+        if (btnHome.isMousedOver() && Gdx.input.isTouched()) {
             gamMenu.updateScreen(2);
         }
     }
