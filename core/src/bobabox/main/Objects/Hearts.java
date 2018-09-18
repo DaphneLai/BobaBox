@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Hearts extends Sprite{
-    public float fX, fXSpeed, fY, fYSpeed, fDown, fYup, fXup;
+    public float fX, fXSpeed, fY, fYSpeed, fDown;
     int nTimer = 0;
     public int  nHearts = 3;
     public boolean isWait = false, canDrag = false, isReady = false;

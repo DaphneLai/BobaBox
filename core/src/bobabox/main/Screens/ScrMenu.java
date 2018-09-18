@@ -26,8 +26,8 @@ public class ScrMenu implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
-    //Logic
     Vector3 vTouch;
+    //Logic
     private OrthographicCamera camera; // what's seen
     private Viewport viewport; //how it's seen
     SpriteBatch batch;
@@ -42,12 +42,10 @@ public class ScrMenu implements Screen, InputProcessor {
         vTouch = new Vector3();
         viewport = _viewport;
         viewport.apply();
-
         camera = _camera;
         camera.setToOrtho(false);
-        camera.position.set(camera.viewportWidth/ 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         resize(nW, nH);
-
         batch = new SpriteBatch();
 
         txtBack = new Texture("Main_bg.png");
@@ -65,7 +63,6 @@ public class ScrMenu implements Screen, InputProcessor {
     public void render(float delta) {
 
         camera.update();
-
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -121,9 +118,9 @@ public class ScrMenu implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        viewport.unproject(vTouch.set(screenX,(screenY*(-1) + nH), 0));
+        viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
         System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY*-1 + GamMenu.WORLD_HEIGHT));
+        System.out.println("y: " + (screenY * -1 + GamMenu.WORLD_HEIGHT));
 
         return false;
     }
