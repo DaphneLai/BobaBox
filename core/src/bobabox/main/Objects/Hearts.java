@@ -8,7 +8,7 @@ public class Hearts extends Sprite{
     public float fX, fXSpeed, fY, fYSpeed, fDown, fYup, fXup;
     int nTimer = 0;
     public int  nHearts = 3;
-    boolean isWait = false, canDrag = false;
+    public boolean isWait = false, canDrag = false, isReady = false;
 
     public Hearts(String sFile) {
         super(new Texture(Gdx.files.internal(sFile)));
@@ -39,6 +39,7 @@ public class Hearts extends Sprite{
             nHearts = 3;
         } else if (nTimer > 300 && nTimer < 600) {
             nHearts = 2;
+            isReady = true;
         } else if (nTimer > 600 && nTimer < 900) {
             nHearts = 1;
         } else if (nTimer > 900) {
@@ -48,7 +49,7 @@ public class Hearts extends Sprite{
     }
     public void walkDown() {
         if (isWait == false) {
-            fY -= fDown + 2;
+            fY -= fDown + 10;
             setY(fY);
             if (fY <= 130) {
                 fDown = 0;
