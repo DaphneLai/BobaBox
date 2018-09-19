@@ -71,7 +71,7 @@ public class Hearts extends Sprite {
 
     public void walkDown() {
         if (isWait == false) {
-            fY -= fDown + 10;
+            fY -= fDown + 5;
             setY(fY);
             if (fY <= 130) {
                 fDown = 0;

@@ -78,7 +78,6 @@ public class ScrGame implements Screen, InputProcessor {
         sprGuest.walkDown();
         sprGuest.draw(batch);
         btnPause.draw(batch);
-
         hearts.walkDown();
         hearts.Patience(batch, isSitting);
 
