@@ -70,7 +70,6 @@ public class ScrGame implements Screen, InputProcessor {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         table.draw(batch);
@@ -89,8 +88,7 @@ public class ScrGame implements Screen, InputProcessor {
             gamMenu.updateScreen(1);
         }
         //Table
-        table.isOpen(sprGuest);
-        if (table.isOpen(sprGuest) == false && table.isTouch == false) {
+        if (table.isOpen(sprGuest) == false) {
             isSitting = true;
             System.out.println("is sitting =" + isSitting);
         }
