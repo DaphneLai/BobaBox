@@ -52,7 +52,7 @@ public class ScrGame implements Screen, InputProcessor {
         txtBg = new Texture("GameBG_img.png");
         sprGuest = new SprGuest("Guest_spr.png");
         table = new Tables(nW / 2 + 40, nH / 3, "Table1_obj.png");
-        btnPause = new Button(50, 25, 260, 70, "Pause_btn.png");
+        btnPause = new Button(950, 40, 70, 70, "Pause_btn.png");
         hearts = new Hearts();
 
     }
