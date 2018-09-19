@@ -52,7 +52,7 @@ public class ScrGame implements Screen, InputProcessor {
         txtBg = new Texture("GameBG_img.png");
         sprGuest = new SprGuest("Guest_spr.png");
         table = new Tables(nW / 2 + 40, nH / 3, "Table1_obj.png");
-        btnPause = new Button(50, 25, 260, 70, "Pause_btn.png");
+        btnPause = new Button(950, 40, 70, 70, "Pause_btn.png");
         hearts = new Hearts();
 
     }
@@ -70,7 +70,6 @@ public class ScrGame implements Screen, InputProcessor {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         table.draw(batch);
@@ -78,7 +77,6 @@ public class ScrGame implements Screen, InputProcessor {
         sprGuest.walkDown();
         sprGuest.draw(batch);
         btnPause.draw(batch);
-
         hearts.walkDown();
         hearts.Patience(batch, isSitting);
 
@@ -90,8 +88,7 @@ public class ScrGame implements Screen, InputProcessor {
             gamMenu.updateScreen(1);
         }
         //Table
-        table.isOpen(sprGuest);
-        if (table.isOpen(sprGuest) == false && table.isTouch == false) {
+        if (table.isOpen(sprGuest) == false) {
             isSitting = true;
             System.out.println("is sitting =" + isSitting);
         }

@@ -5,12 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import bobabox.main.Screens.ScrGame;
-
 public class Hearts extends Sprite {
     private float fX, fY, fDown;
     private SpriteBatch batch;
-    private int nTimer = 0, nHearts = 3;
+    private int nTimer = 0;
     private Texture txt3, txt2, txt1, txt0;
     private boolean isWait = false, canDrag = false, isReady = false, isSitting;
 
@@ -63,7 +61,6 @@ public class Hearts extends Sprite {
 
         } else if (nTimer > 900) {
             System.out.println("This is horrible service!");
-            nHearts = 0;
             batch.draw(txt0, fX, fY, 100, 30);
 
         }
@@ -71,7 +68,7 @@ public class Hearts extends Sprite {
 
     public void walkDown() {
         if (isWait == false) {
-            fY -= fDown + 10;
+            fY -= fDown + 5;
             setY(fY);
             if (fY <= 130) {
                 fDown = 0;

@@ -20,7 +20,7 @@ public class SctGuests implements Screen {
     private SprGuest sprGuest;
     private  boolean isSitting = false;
     Tables tbl1;
-    Hearts hearts3;
+    Hearts hearts;
 
     public SctGuests(Game _gammenu) {
 
@@ -30,6 +30,7 @@ public class SctGuests implements Screen {
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         sprGuest = new SprGuest("Guest_spr.png");
         tbl1 = new Tables(200, 100, "Table3_obj.png");
+        hearts = new Hearts();
     }
 
     @Override
@@ -44,8 +45,8 @@ public class SctGuests implements Screen {
         sprGuest.Drag();
         sprGuest.walkDown();
         sprGuest.draw(batch);
-        hearts3.walkDown();
-        hearts3.Patience(batch, isSitting);
+        hearts.walkDown();
+        hearts.Patience(batch, isSitting);
 
         batch.end();
 

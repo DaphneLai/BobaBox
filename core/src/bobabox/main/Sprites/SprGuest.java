@@ -6,15 +6,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class SprGuest extends Sprite {
 
-    private float fX, fY, fDown;
-    private boolean isWait = false, canDrag = false;
+    float fX, fY, fMove;
+    boolean canDrag = false, isDown = false, isLeft = false, isUp = false;
 
     public SprGuest(String sFile) {
 
         super(new Texture(Gdx.files.internal(sFile)));
         fX = 10;
         fY = Gdx.graphics.getHeight() - 130;
-        fDown = 1.0f;
+        fMove = 1.0f;
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(100, 120);
@@ -32,15 +32,32 @@ public class SprGuest extends Sprite {
         }
     }
     public void walkDown() {
-        if (isWait == false) {
-            fY -= fDown + 10;
+        if (isDown == false) {
+            fY -= fMove + 5;
             setY(fY);
             if (fY <= 10) {
-                fDown = 0;
-                isWait = true;
+                isDown = true;
                 canDrag = true;
             }
         }
+
     }
+/*    public void Leave() {
+        if (isLeft == false) {
+            fX-= fMove + 2;
+            setX(fX);
+            if (fX == 115) {
+                isLeft = true;
+               /* if (isUp == false) {
+                    fY += fMove + 2;
+                    setY(fY);
+                    if (fY == 170) {
+                        isUp = true;
+                    }
+
+                }
+            }//x = 115, y = 170
+        }
+    }*/
 
 }
