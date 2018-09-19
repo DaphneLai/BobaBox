@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import bobabox.main.Objects.Button;
@@ -23,13 +24,13 @@ public class ScrEnd implements Screen, InputProcessor {
     Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
-    private Viewport viewport;
+    private StretchViewport viewport;
     SpriteBatch batch;
     //Assets
     Texture txtBg;
     Button btnHome;
 
-    public ScrEnd(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
+    public ScrEnd(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
         Gdx.input.setInputProcessor(this);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import bobabox.main.Objects.Button;
@@ -22,20 +23,20 @@ public class ScrGame implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
-    boolean isSitting = false;
+    public boolean isSitting = false;
     Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
-    private Viewport viewport;
+    private StretchViewport viewport;
     SpriteBatch batch;
     //Assets
     Texture txtBg;
     private SprGuest sprGuest;
     Tables table;
     Button btnPause;
-    Hearts hearts3, hearts2, hearts1, hearts0;
+    Hearts hearts;
 
-    public ScrGame(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
+    public ScrGame(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
         Gdx.input.setInputProcessor(this);
@@ -52,10 +53,8 @@ public class ScrGame implements Screen, InputProcessor {
         sprGuest = new SprGuest("Guest_spr.png");
         table = new Tables(nW / 2 + 40, nH / 3, "Table1_obj.png");
         btnPause = new Button(50, 25, 260, 70, "Pause_btn.png");
-        hearts3 = new Hearts("Hearts-01.png");
-        hearts2 = new Hearts("Hearts-02.png");
-        hearts1 = new Hearts("Hearts-03.png");
-        hearts0 = new Hearts("Hearts-04.png");
+        hearts = new Hearts();
+
     }
 
 
@@ -80,24 +79,9 @@ public class ScrGame implements Screen, InputProcessor {
         sprGuest.draw(batch);
         btnPause.draw(batch);
 
-        //Hearts
-        hearts3.walkDown();
-        hearts3.Patience();
-        if (hearts3.nHearts == 3) {
-            hearts3.draw(batch);
-        }
-        if (hearts3.nHearts == 2) {
-            hearts2.draw(batch);
-            hearts2.setPosition(hearts3.getX(), hearts3.getY());
-        }
-        if (hearts3.nHearts == 1) {
-            hearts1.draw(batch);
-            hearts1.setPosition(hearts3.getX(), hearts3.getY());
-        }
-        if (hearts3.nHearts == 0) {
-            hearts0.draw(batch);
-            hearts0.setPosition(hearts3.getX(), hearts3.getY());
-        }
+        hearts.walkDown();
+        hearts.Patience(batch, isSitting);
+
         batch.end();
 
         //Button
@@ -111,11 +95,7 @@ public class ScrGame implements Screen, InputProcessor {
             isSitting = true;
             System.out.println("is sitting =" + isSitting);
         }
-        if (isSitting == true) {
-            if (hearts3.isReady == true) {
-                System.out.println("Ready to order");
-            }
-        }
+
     }
 
     @Override

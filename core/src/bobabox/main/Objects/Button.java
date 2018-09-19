@@ -10,7 +10,8 @@ import bobabox.main.GamMenu;
 
 public class Button extends Sprite {
 
-    float fX, fY, fW, fH;
+    private float fX, fY, fW, fH;
+
     public Button(float _fX, float _fY, float _fW, float _fH,String sFile) {
 
         super(new Texture(Gdx.files.internal(sFile)));
