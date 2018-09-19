@@ -22,7 +22,7 @@ public class GamMenu extends Game {
     public static final int WORLD_WIDTH = 1000;
     public static final int WORLD_HEIGHT = 500;
     private OrthographicCamera camera; // what's seen
-    private Viewport viewport; //how it's seen
+    private StretchViewport viewport; //how it's seen
 
     int nScreen;
     ScrGame scrGame;

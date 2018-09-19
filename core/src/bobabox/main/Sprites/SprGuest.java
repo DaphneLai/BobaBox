@@ -6,16 +6,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class SprGuest extends Sprite {
 
-    float fX, fXSpeed, fY, fYSpeed, fDown;
-    boolean isWait = false, canDrag = false;
+    private float fX, fY, fDown;
+    private boolean isWait = false, canDrag = false;
 
     public SprGuest(String sFile) {
 
         super(new Texture(Gdx.files.internal(sFile)));
         fX = 10;
         fY = Gdx.graphics.getHeight() - 130;
-        fXSpeed = 0;
-        fYSpeed = 0;
         fDown = 1.0f;
         setPosition(fX, fY);
         setFlip(false, false);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import bobabox.main.Objects.Button;
@@ -24,13 +25,13 @@ public class ScrTut implements Screen , InputProcessor{
     Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
-    private Viewport viewport; //how it's seen
+    private StretchViewport viewport; //how it's seen
     SpriteBatch batch;
     //Assets
     Texture txtBg;
     Button btnStart, btnHome;
 
-    public ScrTut(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
+    public ScrTut(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
         Gdx.input.setInputProcessor(this);

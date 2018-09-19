@@ -9,8 +9,8 @@ import bobabox.main.Sprites.SprGuest;
 
 public class Tables extends Sprite {
 
-    float fX, fY, fW, fH; //table
-    float fGY, fGX, fGW, fGH; //guest
+    private float fX, fY, fW, fH; //table
+    private float fGY, fGX; //guest
     public boolean isTouch = true;
 
     public Tables(float _nX, float _nY, String sFile) {
@@ -29,8 +29,6 @@ public class Tables extends Sprite {
 
     public boolean isOpen(SprGuest sprGuest) { // Checks if the spr is over the table
 
-        fGH = sprGuest.getHeight();
-        fGW = sprGuest.getWidth();
         fGY = sprGuest.getY();
         fGX = sprGuest.getX();
 

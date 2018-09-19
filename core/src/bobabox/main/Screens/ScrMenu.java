@@ -29,24 +29,26 @@ public class ScrMenu implements Screen, InputProcessor {
     Vector3 vTouch;
     //Logic
     private OrthographicCamera camera; // what's seen
-    private Viewport viewport; //how it's seen
+    private StretchViewport viewport; //how it's seen
     SpriteBatch batch;
     //Assets
     Texture txtBack;
     Button btnStart, btnTut, btnScratch;
 
-    public ScrMenu(GamMenu _gamMenu, Viewport _viewport, OrthographicCamera _camera) {
+    public ScrMenu(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
-        Gdx.input.setInputProcessor(this);
         vTouch = new Vector3();
-        viewport = _viewport;
-        viewport.apply();
         camera = _camera;
         camera.setToOrtho(false);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
+        viewport = _viewport;
+        viewport.apply();
+        camera.position.set(nW / 2, nH / 2, 0); //camera looks at the center of the screen
         resize(nW, nH);
+        Gdx.input.setInputProcessor(this);
         batch = new SpriteBatch();
+        batch.setProjectionMatrix(camera.combined);
+
 
         txtBack = new Texture("Main_bg.png");
         btnStart = new Button(nW / 2, nH / 3 + 50, 260, 70, "Start_btn.png");
@@ -64,7 +66,6 @@ public class ScrMenu implements Screen, InputProcessor {
 
         camera.update();
         batch.begin();
-        batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
@@ -91,8 +92,7 @@ public class ScrMenu implements Screen, InputProcessor {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-
+        camera.position.set(nW / 2, nH / 2, 0);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class ScrMenu implements Screen, InputProcessor {
         System.out.println("x: " + screenX);
         System.out.println("y: " + (screenY * -1 + GamMenu.WORLD_HEIGHT));
 
-        return false;
+        return true;
     }
 
     @Override
