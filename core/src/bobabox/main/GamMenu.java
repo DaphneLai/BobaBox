@@ -2,12 +2,8 @@ package bobabox.main;
 
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
 import bobabox.main.Scratches.SctGuests;
 import bobabox.main.Scratches.SctTap;
 import bobabox.main.Screens.ScrGame;
