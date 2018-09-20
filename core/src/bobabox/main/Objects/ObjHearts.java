@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Hearts extends Sprite {
+public class ObjHearts extends Sprite {
     private float fX, fY, fDown;
     private SpriteBatch batch;
     private int nTimer = 0;
     private Texture txt3, txt2, txt1, txt0;
     private boolean isWait = false, canDrag = false, isReady = false, isSitting;
 
-    public Hearts() {
+    public ObjHearts() {
         fX = 10;
         fY = Gdx.graphics.getHeight() - 10;
         fDown = 1.0f;

@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import bobabox.main.Objects.Tables;
+
+import bobabox.main.Objects.ObjHearts;
+import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprGuest;
-import bobabox.main.Objects.Hearts;
 
 
 public class SctGuests implements Screen {
@@ -19,8 +20,8 @@ public class SctGuests implements Screen {
     private Texture txtBG;
     private SprGuest sprGuest;
     private  boolean isSitting = false;
-    Tables tbl1;
-    Hearts hearts;
+    private ObjTables objTable;
+    private ObjHearts objHearts;
 
     public SctGuests(Game _gammenu) {
 
@@ -29,8 +30,8 @@ public class SctGuests implements Screen {
         batch = new SpriteBatch();
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         sprGuest = new SprGuest("Guest_spr.png");
-        tbl1 = new Tables(200, 100, "Table3_obj.png");
-        hearts = new Hearts();
+        objTable = new ObjTables(200, 100, "Table3_obj.png");
+        objHearts = new ObjHearts();
     }
 
     @Override
@@ -41,17 +42,17 @@ public class SctGuests implements Screen {
         batch.begin();
         //Drawing
         batch.draw(txtBG, 0, 0);
-        tbl1.draw(batch);
+        objTable.draw(batch);
         sprGuest.Drag();
         sprGuest.walkDown();
         sprGuest.draw(batch);
-        hearts.walkDown();
-        hearts.Patience(batch, isSitting);
+        objHearts.walkDown();
+        objHearts.Patience(batch, isSitting);
 
         batch.end();
 
 
-        if (tbl1.isOpen(sprGuest) == false) {
+        if (objTable.isOpen(sprGuest) == false) {
             System.out.println("HERE!");
         }
 

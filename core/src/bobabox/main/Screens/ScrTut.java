@@ -12,24 +12,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-import bobabox.main.Objects.Button;
+import bobabox.main.Objects.ObjButton;
 
 
 public class ScrTut implements Screen , InputProcessor{
 
     GamMenu gamMenu;
     //Values
-    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
+    int nW = 1000, nH = 500;
     Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport; //how it's seen
-    SpriteBatch batch;
+    private SpriteBatch batch;
     //Assets
     Texture txtBg;
-    Button btnStart, btnHome;
+    ObjButton btnStart, btnHome;
 
     public ScrTut(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -45,8 +44,8 @@ public class ScrTut implements Screen , InputProcessor{
         batch = new SpriteBatch();
 
         txtBg = new Texture("Test_img.jpg");
-        btnStart = new Button(70, 70, 260/2, 70/2, "Start_btn.png");
-        btnHome = new Button(70, 30, 260/2, 70/2,"Home_btn.png");
+        btnStart = new ObjButton(70, 70, 260/2, 70/2, "Start_btn.png");
+        btnHome = new ObjButton(70, 30, 260/2, 70/2,"Home_btn.png");
     }
 
     @Override
@@ -69,7 +68,7 @@ public class ScrTut implements Screen , InputProcessor{
 
         batch.end();
 
-        //Button
+        //ObjButton
         if (btnStart.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(0);
         }
@@ -110,7 +109,7 @@ public class ScrTut implements Screen , InputProcessor{
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
         System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY * -1 + GamMenu.WORLD_HEIGHT));
+        System.out.println("y: " + (screenY * -1 + 500));
 
         return false;
     }

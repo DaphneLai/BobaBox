@@ -8,8 +8,9 @@ import bobabox.main.GamMenu;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new GamMenu(), config);
 		config.width = 1000;
-		config.height = 500;
-	}
+        config.height = 500;
+        config.resizable = false;
+        new LwjglApplication(new GamMenu(), config);
+    }
 }

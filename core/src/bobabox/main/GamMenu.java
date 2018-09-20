@@ -19,8 +19,9 @@ import bobabox.main.Scratches.SctWaiter;
 
 public class GamMenu extends Game {
 
-    public static final int WORLD_WIDTH = 1000;
-    public static final int WORLD_HEIGHT = 500;
+    //https://youtu.be/D7u5B2Oh9r0
+    public final int WORLD_WIDTH = 1000;
+    public final int WORLD_HEIGHT = 500;
     private OrthographicCamera camera; // what's seen
     private StretchViewport viewport; //how it's seen
 
@@ -74,7 +75,7 @@ public class GamMenu extends Game {
         sctGuests = new SctGuests(this);
         sctWaiter = new SctWaiter(this);
 
-        updateScreen(30);
+        updateScreen(2);
 
     }
 

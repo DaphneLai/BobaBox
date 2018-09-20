@@ -7,12 +7,12 @@ import bobabox.main.Sprites.SprGuest;
 
 
 
-public class Tables extends Sprite {
+public class ObjTables extends Sprite {
 
     private float fX, fY, fW, fH; //table
     private float fGY, fGX; //guest
 
-    public Tables(float _nX, float _nY, String sFile) {
+    public ObjTables(float _nX, float _nY, String sFile) {
 
         super(new Texture(Gdx.files.internal(sFile)));
         fW = 187;

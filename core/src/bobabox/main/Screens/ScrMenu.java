@@ -1,9 +1,9 @@
 package bobabox.main.Screens;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
@@ -12,38 +12,34 @@ import bobabox.main.GamMenu;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-import bobabox.main.Objects.Button;
-
-import static com.badlogic.gdx.Gdx.graphics;
+import bobabox.main.Objects.ObjButton;
 
 
-public class ScrMenu implements Screen, InputProcessor {
-
+public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
     GamMenu gamMenu;
+
     //Values
-    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
+    int nW = 1000, nH = 500;
     Vector3 vTouch;
     //Logic
-    private OrthographicCamera camera; // what's seen
-    private StretchViewport viewport; //how it's seen
-    SpriteBatch batch;
+    private OrthographicCamera camera;
+    private StretchViewport viewport;
+    private SpriteBatch batch;
     //Assets
     Texture txtBack;
-    Button btnStart, btnTut, btnScratch;
+    ObjButton btnStart, btnTut, btnScratch;
 
     public ScrMenu(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
-        vTouch = new Vector3();
         camera = _camera;
         camera.setToOrtho(false);
         viewport = _viewport;
+        viewport.setCamera(camera);
         viewport.apply();
-        camera.position.set(nW / 2, nH / 2, 0); //camera looks at the center of the screen
+        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         resize(nW, nH);
         Gdx.input.setInputProcessor(this);
         batch = new SpriteBatch();
@@ -51,9 +47,18 @@ public class ScrMenu implements Screen, InputProcessor {
 
 
         txtBack = new Texture("Main_bg.png");
-        btnStart = new Button(nW / 2, nH / 3 + 50, 260, 70, "Start_btn.png");
-        btnTut = new Button(nW / 2, nH / 4 + 10, 260, 70, "Tutorial_btn.png");
-        btnScratch = new Button(nW / 2, 50, 110, 70, "Scratch_btn.png");
+        btnStart = new ObjButton(nW / 2, nH / 3 + 50, 260, 70, "Start_btn.png");
+        btnTut = new ObjButton(nW / 2, nH / 4 + 10, 260, 70, "Tutorial_btn.png");
+        btnScratch = new ObjButton(nW / 2, 50, 110, 70, "Scratch_btn.png");
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        System.out.println(width);
+        System.out.println(height);
+        viewport.update(width, height);
+        camera.update();
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
     }
 
     @Override
@@ -64,9 +69,9 @@ public class ScrMenu implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
 
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Drawing
         batch.draw(txtBack, 0, 0, nW, nH);
@@ -76,7 +81,7 @@ public class ScrMenu implements Screen, InputProcessor {
 
         batch.end();
 
-        //Button
+        //ObjButton
         if (btnStart.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(0);
         }
@@ -90,9 +95,13 @@ public class ScrMenu implements Screen, InputProcessor {
 
 
     @Override
-    public void resize(int width, int height) {
-        viewport.update(width, height);
-        camera.position.set(nW / 2, nH / 2, 0);
+    public void create() {
+
+    }
+
+    @Override
+    public void render() {
+
     }
 
     @Override
@@ -120,7 +129,7 @@ public class ScrMenu implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
         System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY * -1 + GamMenu.WORLD_HEIGHT));
+        System.out.println("y: " + (screenY * -1 + 500));
 
         return true;
     }

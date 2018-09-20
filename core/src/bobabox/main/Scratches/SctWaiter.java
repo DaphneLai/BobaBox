@@ -1,8 +1,6 @@
 package bobabox.main.Scratches;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,27 +9,25 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 
-
 import bobabox.main.GamMenu;
-import bobabox.main.Objects.Tables;
+import bobabox.main.Objects.ObjTables;
 
 
 public class SctWaiter implements Screen {
 
-    OrthographicCamera oc;
-    SpriteBatch batch;
-    Texture txWaiter, txBG;
-    Sprite sprWaiter;
-    Tables tbl1;
-    float fWX, fWY, fDx =0, fDy =0, fTabX, fTabY, fWaitX, fWaitY;
-    Vector2 vVelocity, vAcc;
-    boolean  isAtTable;
-    int nTableTapped=0;
+    private OrthographicCamera oc;
+    private SpriteBatch batch;
+    private Texture txWaiter, txBG;
+    private Sprite sprWaiter;
+    private ObjTables objTable;
+    private float fWX, fWY, fDx = 0, fDy = 0, fTabX, fTabY, fWaitX, fWaitY;
+    private boolean isAtTable;
+    private int nTableTapped = 0;
 
     public SctWaiter(GamMenu _gammenu) {
 
-        fWX = GamMenu.WORLD_WIDTH;
-        fWY = GamMenu.WORLD_HEIGHT;
+        fWX = 1000;
+        fWY = 500;
 
         oc = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         oc.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -43,16 +39,12 @@ public class SctWaiter implements Screen {
 
         sprWaiter = new Sprite(txWaiter);
         sprWaiter.setSize(100, 100);
-        fWaitX = fWX/2*0;
-        fWaitY = fWY/2*0;
+        fWaitX = fWX / 2 * 0;
+        fWaitY = fWY / 2 * 0;
         sprWaiter.setPosition(fWaitX, fWaitY);
-       // sprWaiter.setFlip(false, true);
+        // sprWaiter.setFlip(false, true);
 
-        tbl1 = new Tables(fWX/2, fWY/2, "Table2_obj.png");
-        vVelocity = new Vector2();
-        vAcc = new Vector2();
-
-
+        objTable = new ObjTables(fWX / 2, fWY / 2, "Table2_obj.png");
 
 
     }
@@ -70,15 +62,15 @@ public class SctWaiter implements Screen {
 
 
         sprWaiter.draw(batch);
-        tbl1.draw(batch);
-        if (tbl1.isMouseOver() == true && Gdx.input.justTouched()) {
+        objTable.draw(batch);
+        if (objTable.isMouseOver() == true && Gdx.input.justTouched()) {
             nTableTapped = 1;
         }
-        if(nTableTapped ==1) {
-            isAtTable = CheckPos(sprWaiter.getX(), sprWaiter.getY(), tbl1.getX(), tbl1.getY());
+        if (nTableTapped == 1) {
+            isAtTable = CheckPos(sprWaiter.getX(), sprWaiter.getY(), objTable.getX(), objTable.getY());
             fDx = 1;
-            fTabX = tbl1.getX();
-            fTabY = tbl1.getY();
+            fTabX = objTable.getX();
+            fTabY = objTable.getY();
             if (isAtTable == false) {
                 System.out.println(" NOT EQUAL");
                 fWaitX += fDx;
@@ -86,8 +78,8 @@ public class SctWaiter implements Screen {
                 sprWaiter.setX(fWaitX);
             } else {
                 System.out.println(" EQUAL");
-                fDx=0;
-                nTableTapped =0;
+                fDx = 0;
+                nTableTapped = 0;
 
             }
         }
@@ -97,16 +89,15 @@ public class SctWaiter implements Screen {
     }
 
 
-
     @Override
     public void resize(int width, int height) {
 
     }
 
-    public static boolean CheckPos (float fXWait, float fYWait, float fXTab, float fYTab){
-        if(fXWait != fXTab){
+    public static boolean CheckPos(float fXWait, float fYWait, float fXTab, float fYTab) {
+        if (fXWait != fXTab) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }

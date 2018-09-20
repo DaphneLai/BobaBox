@@ -9,32 +9,31 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-import bobabox.main.Objects.Button;
+import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
-import bobabox.main.Objects.Hearts;
+import bobabox.main.Objects.ObjHearts;
 import bobabox.main.Sprites.SprGuest;
-import bobabox.main.Objects.Tables;
+import bobabox.main.Objects.ObjTables;
 
 
 public class ScrGame implements Screen, InputProcessor {
 
     GamMenu gamMenu;
     //Values
-    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
+    int nW = 1000, nH = 500;
     public boolean isSitting = false;
     Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
-    SpriteBatch batch;
+    private SpriteBatch batch;
     //Assets
     Texture txtBg;
     private SprGuest sprGuest;
-    Tables table;
-    Button btnPause;
-    Hearts hearts;
+    ObjTables objTable;
+    ObjButton btnPause;
+    ObjHearts objHearts;
 
     public ScrGame(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -51,9 +50,9 @@ public class ScrGame implements Screen, InputProcessor {
 
         txtBg = new Texture("GameBG_img.png");
         sprGuest = new SprGuest("Guest_spr.png");
-        table = new Tables(nW / 2 + 40, nH / 3, "Table1_obj.png");
-        btnPause = new Button(950, 40, 70, 70, "Pause_btn.png");
-        hearts = new Hearts();
+        objTable = new ObjTables(nW / 2 + 40, nH / 3, "Table1_obj.png");
+        btnPause = new ObjButton(950, 40, 70, 70, "Pause_btn.png");
+        objHearts = new ObjHearts();
 
     }
 
@@ -72,23 +71,23 @@ public class ScrGame implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        table.draw(batch);
+        objTable.draw(batch);
         sprGuest.Drag();
         sprGuest.walkDown();
         sprGuest.draw(batch);
         btnPause.draw(batch);
-        hearts.walkDown();
-        hearts.Patience(batch, isSitting);
+        objHearts.walkDown();
+        objHearts.Patience(batch, isSitting);
 
         batch.end();
 
-        //Button
+        //ObjButton
         if (btnPause.isMousedOver() && Gdx.input.justTouched()) {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
         //Table
-        if (table.isOpen(sprGuest) == false) {
+        if (objTable.isOpen(sprGuest) == false) {
             isSitting = true;
             System.out.println("is sitting =" + isSitting);
         }
@@ -142,7 +141,7 @@ public class ScrGame implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
         System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY * -1 + GamMenu.WORLD_HEIGHT));
+        System.out.println("y: " + (screenY * -1 + 500));
 
         return false;
     }

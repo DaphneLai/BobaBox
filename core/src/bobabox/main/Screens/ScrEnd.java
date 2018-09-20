@@ -9,9 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-import bobabox.main.Objects.Button;
+import bobabox.main.Objects.ObjButton;
 
 import bobabox.main.GamMenu;
 
@@ -20,15 +19,15 @@ public class ScrEnd implements Screen, InputProcessor {
 
     GamMenu gamMenu;
     //Values
-    int nW = GamMenu.WORLD_WIDTH, nH = GamMenu.WORLD_HEIGHT;
+    int nW = 1000, nH = 500;
     Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
-    SpriteBatch batch;
+    private SpriteBatch batch;
     //Assets
     Texture txtBg;
-    Button btnHome;
+    ObjButton btnHome;
 
     public ScrEnd(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -44,7 +43,7 @@ public class ScrEnd implements Screen, InputProcessor {
         batch = new SpriteBatch();
 
         txtBg = new Texture("EndBG_img.png");
-        btnHome = new Button(nW / 2, nH/4, 260, 70,"Home_btn.png");
+        btnHome = new ObjButton(nW / 2, nH/4, 260, 70,"Home_btn.png");
 
     }
 
@@ -67,7 +66,7 @@ public class ScrEnd implements Screen, InputProcessor {
 
         batch.end();
 
-        //Button
+        //ObjButton
         if (btnHome.isMousedOver() && Gdx.input.isTouched()) {
             gamMenu.updateScreen(2);
         }
@@ -105,7 +104,7 @@ public class ScrEnd implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
         System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY * -1 + GamMenu.WORLD_HEIGHT));
+        System.out.println("y: " + (screenY * -1 + 500));
 
         return false;
     }
