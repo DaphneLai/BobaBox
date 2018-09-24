@@ -6,16 +6,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ObjHearts extends Sprite {
-    private float fX, fY, fDown;
+    private float fX, fY, fMove;
     private SpriteBatch batch;
     private int nTimer = 0;
     private Texture txt3, txt2, txt1, txt0;
-    private boolean isWait = false, canDrag = false, isReady = false, isSitting;
+    private boolean isWait = false, canDrag = false, isReady = false, isSitting, isLeft = false, isUp = false;
 
     public ObjHearts() {
         fX = 10;
         fY = Gdx.graphics.getHeight() - 10;
-        fDown = 1.0f;
+        fMove = 1.0f;
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(100, 30);
@@ -43,6 +43,7 @@ public class ObjHearts extends Sprite {
         }
         //Ordering
         if (isSitting == true) {
+          //  canDrag = false;
             if (isReady == true) {
                 System.out.println("Ready to order");
             }
@@ -62,18 +63,39 @@ public class ObjHearts extends Sprite {
         } else if (nTimer > 900) {
             System.out.println("This is horrible service!");
             batch.draw(txt0, fX, fY, 100, 30);
+            if (isSitting == true) {
+                Leave(fX, fY);
+            }
 
         }
     }
 
     public void walkDown() {
         if (isWait == false) {
-            fY -= fDown + 5;
+            fY -= fMove + 5;
             setY(fY);
             if (fY <= 130) {
-                fDown = 0;
+                fMove = 0;
                 isWait = true;
                 canDrag = false;
+            }
+        }
+    }
+    public void Leave(float fX_, float fY_) {
+        fX = fX_;
+        fY = fY_;
+        if (isLeft == false) {
+            fX -= fMove + 5;
+            setX(fX);
+            if (fX <= 70) {
+                isLeft = true;
+            }
+        }
+        if (isUp == false && isLeft == true) {
+            fY += fMove + 5;
+            setY(fY);
+            if (fY >= 450) {
+                isUp = true;
             }
         }
     }

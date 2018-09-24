@@ -9,7 +9,7 @@ import bobabox.main.Sprites.SprGuest;
 
 public class ObjTables extends Sprite {
 
-    private float fX, fY, fW, fH; //table
+    private float fX, fY, fW, fH; //tablefvf
     private float fGY, fGX; //guest
 
     public ObjTables(float _nX, float _nY, String sFile) {

@@ -72,7 +72,7 @@ public class ScrGame implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         objTable.draw(batch);
-        sprGuest.Drag();
+        sprGuest.Drag(isSitting);
         sprGuest.walkDown();
         sprGuest.draw(batch);
         btnPause.draw(batch);
