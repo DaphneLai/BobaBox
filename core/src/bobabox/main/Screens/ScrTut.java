@@ -44,8 +44,8 @@ public class ScrTut implements Screen , InputProcessor{
         batch = new SpriteBatch();
 
         txtBg = new Texture("Test_img.jpg");
-        btnStart = new ObjButton(70, 70, 260/2, 70/2, "Start_btn.png");
-        btnHome = new ObjButton(70, 30, 260/2, 70/2,"Home_btn.png");
+        btnStart = new ObjButton(70, 70, 260/2, 70/2, "Start_btn.png", viewport);
+        btnHome = new ObjButton(70, 30, 260/2, 70/2,"Home_btn.png",viewport);
     }
 
     @Override
