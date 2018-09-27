@@ -45,11 +45,10 @@ public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
 
-
         txtBack = new Texture("Main_bg.png");
-        btnStart = new ObjButton(nW / 2, nH / 3 + 50, 260, 70, "Start_btn.png");
-        btnTut = new ObjButton(nW / 2, nH / 4 + 10, 260, 70, "Tutorial_btn.png");
-        btnScratch = new ObjButton(nW / 2, 50, 110, 70, "Scratch_btn.png");
+        btnStart = new ObjButton(nW / 2, nH / 3 + 50, 260, 70, "Start_btn.png", viewport);
+        btnTut = new ObjButton(nW / 2, nH / 4 + 10, 260, 70, "Tutorial_btn.png", viewport);
+        btnScratch = new ObjButton(nW / 2, 50, 110, 70, "Scratch_btn.png", viewport);
     }
 
     @Override
@@ -68,10 +67,12 @@ public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
 
     @Override
     public void render(float delta) {
-
+        //Set-up
+        Gdx.input.setInputProcessor(this);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.begin();
+
 
         //Drawing
         batch.draw(txtBack, 0, 0, nW, nH);
@@ -91,6 +92,7 @@ public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
         if (btnScratch.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(20);
         }
+
     }
 
 
@@ -127,10 +129,17 @@ public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
-        System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY * -1 + 500));
-
+        vTouch = new Vector3(screenX, screenY, 0);
+        //Readjusts input coordinates (vTouch.x and vTouch.y are our new input coordinates)
+        viewport.unproject(vTouch);
+        System.out.println("vTouchX: " + vTouch.x);
+        System.out.println("vTouchY: " + vTouch.y);
+//        System.out.println("Screenx: " + screenX);
+//        System.out.println("Screeny: " + screenY);
+//        System.out.println("InputX: " + Gdx.input.getX());
+//        System.out.println("InputY: " + Gdx.input.getY());
+//        System.out.println("ButtonX: " + btnStart.getX());
+//        System.out.println("ButtonY: " + btnStart.getX());
         return true;
     }
 

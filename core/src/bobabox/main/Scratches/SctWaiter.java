@@ -13,7 +13,8 @@ import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjTables;
 
 //Sarah
-//Help from Grondin & Daph ;)
+//Help from Grondin & Daph
+//Screen is not used in game currently
 public class SctWaiter implements Screen, InputProcessor{
 
 
@@ -38,19 +39,19 @@ public class SctWaiter implements Screen, InputProcessor{
         oc.update();
 
         //textures
-        txWaiter = new Texture("Guest_spr.png");
+        txWaiter = new Texture("Waiter_spr.png");
         txBG = new Texture("Test_img.jpg");
 
         //sprites
         batch = new SpriteBatch();
         sprWaiter = new Sprite(txWaiter);
-        sprWaiter.setSize(100, 100);
-        fWaitX = fWX / 2 * 0;
-        fWaitY = fWY / 2 * 0;
+        sprWaiter.setSize(150, 160);
+        fWaitX = fWX /-400;
+        fWaitY = fWY / 2-400 ;
         sprWaiter.setPosition(fWaitX, fWaitY);
 
 
-        objTable = new ObjTables(fWX / 2, fWY / 2, "Table2_obj.png");
+        objTable = new ObjTables(fWX / 2+100, fWY / 2-100, "Table2_obj.png");
 
 
     }
@@ -86,13 +87,19 @@ public class SctWaiter implements Screen, InputProcessor{
 
                 if (isAtTable == false) {
                     System.out.println(" NOT EQUAL");
-                    // System.out.println(fTabX+ " TABLE");
-                    //  System.out.println(fWaitX + " WAITER");
-                    fWaitX += fDx;
-                    sprWaiter.setX(fWaitX);
+                     fTabX+=35;
+                     System.out.println(fTabX+ " TABLE");
+                     System.out.println(fWaitX + " WAITER");
+                    if(fWaitX<fTabX){
+                       fWaitX+=fDx;
+                        sprWaiter.setX(fWaitX);
+                    }else if (fWaitX>fTabX){
+                        fWaitX -= fDx;
+                        sprWaiter.setX(fWaitX);
+                    }
                 } else {
                     System.out.println(" EQUAL");
-                    fDx = 0;
+                    fDx=0;
                     nDirectionCheck = 2;
 
                 }
@@ -105,10 +112,16 @@ public class SctWaiter implements Screen, InputProcessor{
                 fTabY = objTable.getY();
                 if (isAtTable == false) {
                     System.out.println(" NOT EQUAL");
-                    //  System.out.println(fTabY+ " TABLE");
-                    //  System.out.println(fWaitY + " WAITER");
-                    fWaitY += fDy;
-                    sprWaiter.setY(fWaitY);
+                    fTabY+=75;
+                      System.out.println(fTabY+ " TABLE");
+                      System.out.println(fWaitY + " WAITER");
+                    if(fTabY < fWaitY){
+                        fWaitY-=fDy;
+                        sprWaiter.setY(fWaitY);
+                    }else {
+                        fWaitY+=fDy;
+                        sprWaiter.setY(fWaitY);
+                    }
                 } else {
                     System.out.println(" EQUAL");
                     fDy = 0;
@@ -125,7 +138,7 @@ public class SctWaiter implements Screen, InputProcessor{
 
 
     public static boolean CheckPosX ( float fXWait, float fXTab){
-            if (Math.round(fXWait) != Math.round(fXTab)) {
+            if (Math.round(fXWait) != Math.round(fXTab)+35) {
                 return false;
             } else {
                 return true;
@@ -133,7 +146,7 @@ public class SctWaiter implements Screen, InputProcessor{
         }
 
         public static boolean CheckPosY ( float fYWait, float fYTab){
-            if (Math.round(fYWait) != Math.round(fYTab)) {
+            if (Math.round(fYWait) != Math.round(fYTab)+75) {
                 return false;
             } else {
 
@@ -204,3 +217,4 @@ public class SctWaiter implements Screen, InputProcessor{
     }
 }
 
+//405.5, 195.0

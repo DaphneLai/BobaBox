@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+import javax.swing.ViewportLayout;
 
 import bobabox.main.Objects.ObjHearts;
 import bobabox.main.Objects.ObjTables;
@@ -16,6 +20,7 @@ import bobabox.main.Sprites.SprGuest;
 public class SctGuests implements Screen {
 
     private OrthographicCamera camera;
+    private StretchViewport viewport;
     private SpriteBatch batch;
     private Texture txtBG;
     private SprGuest sprGuest;
@@ -26,10 +31,14 @@ public class SctGuests implements Screen {
     public SctGuests(Game _gammenu) {
 
         camera = new OrthographicCamera();
+        viewport = new StretchViewport(1000, 500, camera);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport.apply();
+        camera.setToOrtho(false);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         batch = new SpriteBatch();
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
-        sprGuest = new SprGuest("Guest_spr.png");
+        sprGuest = new SprGuest("Guest_spr.png", viewport);
         objTable = new ObjTables(200, 100, "Table3_obj.png");
         objHearts = new ObjHearts();
     }

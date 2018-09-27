@@ -3,16 +3,21 @@ package bobabox.main.Sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class SprGuest extends Sprite {
 
    private float fX, fY, fMove;
    private boolean bCanDrag = false, isDown = false, isLeft = false, isUp = false, isSitting;
    private int nTimer = 0;
+   private StretchViewport viewport;
+   private Vector3 vTouch;
 
-    public SprGuest(String sFile) {
+    public SprGuest(String sFile, StretchViewport _viewport) {
 
         super(new Texture(Gdx.files.internal(sFile)));
+        viewport = _viewport;
         fX = 10;
         fY = Gdx.graphics.getHeight() - 130;
         fMove = 1.0f;
@@ -32,8 +37,10 @@ public class SprGuest extends Sprite {
 
         if (bCanDrag == true) {
             if (Gdx.input.isTouched()) {
-                setX(Gdx.input.getX() - 50);
-                setY(Gdx.graphics.getHeight() - Gdx.input.getY() - 60);
+                vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                viewport.unproject(vTouch);
+                setX(vTouch.x - 50);
+                setY(vTouch.y - 60);
                 nTimer = 0;
             }
         }
