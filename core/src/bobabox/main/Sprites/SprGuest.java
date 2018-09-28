@@ -63,15 +63,17 @@ public class SprGuest extends Sprite {
             bCanDrag = true;
             nTimer++;
         }
-        if (bCanDrag == true) {
-            if (Gdx.input.isTouched()) {
-                vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-                viewport.unproject(vTouch);
-                fX = vTouch.x - 50;
-                fY = vTouch.y - 60;
-                setX(fX);
-                setY(fY);
-                nTimer = 0;
+        if (isSitting == false) {
+            if (bCanDrag == true) {
+                if (Gdx.input.isTouched()) {
+                    vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+                    viewport.unproject(vTouch);
+                    fX = vTouch.x - 50;
+                    fY = vTouch.y - 60;
+                    setX(fX);
+                    setY(fY);
+                    nTimer = 0;
+                }
             }
         }
         if (nTimer > 900) {
@@ -79,6 +81,13 @@ public class SprGuest extends Sprite {
             if (isSitting == true) {
                 leave(getX(), getY());
             }
+        }
+    }
+    //Checks if guest is Sitting
+    public void sittingdown(boolean isSitting_) {
+        isSitting = isSitting_;
+        if (isSitting == true) {
+            System.out.println("is sitting =" + isSitting);
         }
     }
 
@@ -100,7 +109,6 @@ public class SprGuest extends Sprite {
 
         //Ordering
         if (isSitting == true) {
-            //  canDrag = false;
             if (isReady == true) {
                 System.out.println("Ready to order");
             }
@@ -129,10 +137,6 @@ public class SprGuest extends Sprite {
 
     //When guest is too impatient, they leave (IN PROGRESS)
     public void leave(float _fX, float _fY) {
-        fHy = _fY - 10;
-        fHx = _fX;
-        fX = _fX;
-        fY = _fY;
         if (isLeft == false) {
             fX -= fMove + 4;
             setX(fX);
@@ -143,7 +147,7 @@ public class SprGuest extends Sprite {
         if (isUp == false && isLeft == true) {
             fY += fMove + 4;
             setY(fY);
-            if (fY >= 330 && fHy >= 450) {
+            if (fY >= 330) {
                 isUp = true;
             }
         }

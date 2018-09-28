@@ -35,6 +35,7 @@ public class GamMenu extends Game {
         nScreen = _nScreen;
         switch (nScreen) {
             case 0:
+                scrGame.reset();
                 setScreen(scrGame);
                 break;
             case 1:

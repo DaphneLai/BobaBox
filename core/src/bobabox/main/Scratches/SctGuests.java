@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import javax.swing.ViewportLayout;
 
-import bobabox.main.Objects.ObjHearts;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprGuest;
 
@@ -24,9 +23,8 @@ public class SctGuests implements Screen {
     private SpriteBatch batch;
     private Texture txtBG;
     private SprGuest sprGuest;
-    private  boolean isSitting = false;
     private ObjTables objTable;
-    private ObjHearts objHearts;
+    boolean isSitting;
 
     public SctGuests(Game _gammenu) {
 
@@ -40,7 +38,6 @@ public class SctGuests implements Screen {
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         sprGuest = new SprGuest("Guest_spr.png", viewport);
         objTable = new ObjTables(200, 100, "Table3_obj.png");
-        objHearts = new ObjHearts();
     }
 
     @Override
@@ -62,6 +59,7 @@ public class SctGuests implements Screen {
 
         if (objTable.isOpen(sprGuest) == false) {
             System.out.println("HERE!");
+            isSitting = true;
         }
 
     }
