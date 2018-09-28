@@ -1,6 +1,5 @@
 package bobabox.main.Screens;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -17,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import bobabox.main.Objects.ObjButton;
 
 
-public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
+public class ScrMenu implements Screen, InputProcessor {
     GamMenu gamMenu;
 
     //Values
@@ -95,17 +94,6 @@ public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
 
     }
 
-
-    @Override
-    public void create() {
-
-    }
-
-    @Override
-    public void render() {
-
-    }
-
     @Override
     public void pause() {
         return;
@@ -131,15 +119,11 @@ public class ScrMenu implements Screen, InputProcessor, ApplicationListener {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         vTouch = new Vector3(screenX, screenY, 0);
         //Readjusts input coordinates (vTouch.x and vTouch.y are our new input coordinates)
+        //Gdx.input.getX/Y >> vTouch.x/y
         viewport.unproject(vTouch);
         System.out.println("vTouchX: " + vTouch.x);
         System.out.println("vTouchY: " + vTouch.y);
-//        System.out.println("Screenx: " + screenX);
-//        System.out.println("Screeny: " + screenY);
-//        System.out.println("InputX: " + Gdx.input.getX());
-//        System.out.println("InputY: " + Gdx.input.getY());
-//        System.out.println("ButtonX: " + btnStart.getX());
-//        System.out.println("ButtonY: " + btnStart.getX());
+
         return true;
     }
 

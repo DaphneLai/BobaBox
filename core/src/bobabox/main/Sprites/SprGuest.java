@@ -3,21 +3,26 @@ package bobabox.main.Sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class SprGuest extends Sprite {
 
-   private float fX, fY, fMove;
-   private boolean bCanDrag = false, isDown = false, isLeft = false, isUp = false, isSitting;
-   private int nTimer = 0;
-   private StretchViewport viewport;
-   private Vector3 vTouch;
+    private SpriteBatch batch;
+    private StretchViewport viewport;
+    private Vector3 vTouch;
+    private float fX, fY, fMove, fHx, fHy;
+    private boolean isDown = false, isLeft = false, isUp = false, isWait = false, bCanDrag = false, isReady = false, isSitting;
+    private int nTimer = 0;
+    private Texture txt3, txt2, txt1, txt0;
+
 
     public SprGuest(String sFile, StretchViewport _viewport) {
 
         super(new Texture(Gdx.files.internal(sFile)));
         viewport = _viewport;
+        //Guests
         fX = 10;
         fY = Gdx.graphics.getHeight() - 130;
         fMove = 1.0f;
@@ -25,43 +30,107 @@ public class SprGuest extends Sprite {
         setFlip(false, false);
         setSize(100, 120);
 
+        //Hearts
+        fHx = fX;
+        fHy = Gdx.graphics.getHeight() - 10;
+        txt3 = new Texture("Hearts-01.png");
+        txt2 = new Texture("Hearts-02.png");
+        txt1 = new Texture("Hearts-03.png");
+        txt0 = new Texture("Hearts-04.png");
+
     }
 
-    public void Drag(boolean _isSitting) {
-        isSitting = _isSitting;
+    //Beginning where the guest enters the store
+    public void walkDown() {
+        if (isDown == false) {
+            fY -= fMove + 5;
+            fHy = fY + 120;
+            setY(fY);
+            if (fY <= 10) {
+                isDown = true;
+            }
+            if (fHy <= 130) {
+                fMove = 0;
+                isWait = true;
+                bCanDrag = false;
+            }
+        }
+    }
 
+    //Active when the guest is dragged
+    public void drag() {
         if (isDown == true) {
             bCanDrag = true;
             nTimer++;
         }
-
         if (bCanDrag == true) {
             if (Gdx.input.isTouched()) {
                 vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                 viewport.unproject(vTouch);
-                setX(vTouch.x - 50);
-                setY(vTouch.y - 60);
+                fX = vTouch.x - 50;
+                fY = vTouch.y - 60;
+                setX(fX);
+                setY(fY);
                 nTimer = 0;
             }
         }
         if (nTimer > 900) {
             System.out.println("This is horrible service!");
             if (isSitting == true) {
-                Leave(getX(), getY());
+                leave(getX(), getY());
             }
         }
     }
-    public void walkDown() {
-        if (isDown == false) {
-            fY -= fMove + 5;
-            setY(fY);
-            if (fY <= 10) {
-                isDown = true;
+
+    //Takes into account all events that affects hearts
+    public void heartTracker(SpriteBatch _batch) {
+        batch = _batch;
+        fHx = fX;
+        fHy = fY + 120;
+        //Entered
+        if (isWait == true) {
+            bCanDrag = true;
+            nTimer++;
+        }
+        if (bCanDrag == true) {
+            if (Gdx.input.isTouched()) {
+                nTimer = 0;
             }
         }
 
+        //Ordering
+        if (isSitting == true) {
+            //  canDrag = false;
+            if (isReady == true) {
+                System.out.println("Ready to order");
+            }
+        }
+
+        //Level of patience
+        if (nTimer >= 0 && nTimer < 300) {
+            batch.draw(txt3, fHx, fHy, 100, 30);
+
+        } else if (nTimer > 300 && nTimer < 600) {
+            isReady = true;
+            batch.draw(txt2, fHx, fHy, 100, 30);
+
+        } else if (nTimer > 600 && nTimer < 900) {
+            bCanDrag = true;
+            batch.draw(txt1, fHx, fHy, 100, 30);
+
+        } else if (nTimer > 900) {
+            System.out.println("This is horrible service!");
+            batch.draw(txt0, fHx, fHy, 100, 30);
+            if (isSitting == true) {
+                leave(fHx, fHy);
+            }
+        }
     }
-    public void Leave(float _fX, float _fY) {
+
+    //When guest is too impatient, they leave (IN PROGRESS)
+    public void leave(float _fX, float _fY) {
+        fHy = _fY - 10;
+        fHx = _fX;
         fX = _fX;
         fY = _fY;
         if (isLeft == false) {
@@ -74,7 +143,7 @@ public class SprGuest extends Sprite {
         if (isUp == false && isLeft == true) {
             fY += fMove + 4;
             setY(fY);
-            if (fY >= 330) {
+            if (fY >= 330 && fHy >= 450) {
                 isUp = true;
             }
         }

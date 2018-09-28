@@ -52,11 +52,10 @@ public class SctGuests implements Screen {
         //Drawing
         batch.draw(txtBG, 0, 0);
         objTable.draw(batch);
-        sprGuest.Drag(isSitting);
-        sprGuest.walkDown();
         sprGuest.draw(batch);
-        objHearts.walkDown();
-        objHearts.Patience(batch, isSitting);
+        sprGuest.heartTracker(batch);
+        sprGuest.walkDown();
+        sprGuest.drag();
 
         batch.end();
 

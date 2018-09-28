@@ -67,7 +67,7 @@ public class ScrEnd implements Screen, InputProcessor {
         batch.end();
 
         //ObjButton
-        if (btnHome.isMousedOver() && Gdx.input.isTouched()) {
+        if (btnHome.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(2);
         }
     }
