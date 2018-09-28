@@ -13,9 +13,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
-import bobabox.main.Objects.ObjHearts;
 import bobabox.main.Sprites.SprGuest;
 import bobabox.main.Objects.ObjTables;
+import bobabox.main.Sprites.SprServer;
 
 
 public class ScrGame implements Screen, InputProcessor {
@@ -23,9 +23,8 @@ public class ScrGame implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW = 1000, nH = 500;
-    private float fWX, fWY, fDx = 0, fDy = 0, fTabX, fTabY, fWaitX, fWaitY;
-    private boolean isAtTable;
-    private int nDirectionCheck = 0; //0 = not moving 1 = moving left/right, 2 = moving up/down OF WAITER
+    private float fWX, fWY;
+    private boolean isTableClicked=false;
     public boolean isSitting = false;
     Vector3 vTouch;
     //Logic
@@ -33,9 +32,9 @@ public class ScrGame implements Screen, InputProcessor {
     private StretchViewport viewport;
     private SpriteBatch batch;
     //Assets
-    Texture txtBg, txWaiter;
+    Texture txtBg;
     private SprGuest sprGuest;
-    private Sprite sprWaiter;
+    private SprServer sprServer;
     private ObjTables objTable;
     private ObjButton btnPause;
 
@@ -53,16 +52,11 @@ public class ScrGame implements Screen, InputProcessor {
         batch = new SpriteBatch();
 
         txtBg = new Texture("GameBG_img.png");
-        txWaiter = new Texture("Waiter_spr.png");
-        sprWaiter = new Sprite(txWaiter);
-        sprWaiter.setSize(100, 120);
-        fWaitX = fWX / 2 + 850;
-        fWaitY = fWY / 2 + 175;
-        sprWaiter.setPosition(fWaitX, fWaitY);
         sprGuest = new SprGuest("Guest_spr.png", viewport);
+        sprServer = new SprServer("Waiter_spr.png",fWX/2+850, fWY/2+175); //850, 175
         objTable = new ObjTables(nW / 2 + 40, nH / 3, "Table1_obj.png");
         btnPause = new ObjButton(950, 40, 70, 70, "Pause_btn.png", viewport);
-       // objHearts = new ObjHearts();
+        // objHearts = new ObjHearts();
 
     }
 
@@ -81,7 +75,7 @@ public class ScrGame implements Screen, InputProcessor {
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        sprWaiter.draw(batch);
+        sprServer.draw(batch);
         objTable.draw(batch);
         sprGuest.walkDown();
         sprGuest.draw(batch);
@@ -97,7 +91,7 @@ public class ScrGame implements Screen, InputProcessor {
         }
         //Mouse is over table && Clicked
         if (objTable.isMouseOver() == true && Gdx.input.justTouched()) {
-            nDirectionCheck = 1;
+            isTableClicked=true;
         }
         //Table
         if (objTable.isOpen(sprGuest) == false) {
@@ -105,49 +99,11 @@ public class ScrGame implements Screen, InputProcessor {
             System.out.println("is sitting =" + isSitting);
         }
 
-        //Waiter constantly travels LEFT/RIGHT until aligned w/ table
-        if (nDirectionCheck == 1) {
-            isAtTable = CheckPosX(sprWaiter.getX(), objTable.getX());
-            fDx = 1; // speed of waiter
-            fTabX = objTable.getX();
-            fTabY = objTable.getY();
-
-            if (isAtTable == false) {
-                fTabX += 60;
-                if (fWaitX < fTabX) {
-                    fWaitX += fDx;
-                    sprWaiter.setX(fWaitX);
-                } else if (fWaitX > fTabX) {
-                    fWaitX -= fDx;
-                    sprWaiter.setX(fWaitX);
-                }
-            } else {
-                fDx = 0;
-                nDirectionCheck = 2;
-
-            }
+        //Make server go to table clicked
+        if(isTableClicked==true){
+            sprServer.walk(objTable);
         }
-        //Waiter constantly travels UP/DOWN until aligned w/ table
-        if (nDirectionCheck == 2) {
-            isAtTable = CheckPosY(sprWaiter.getY(), objTable.getY());
-            fDy = 1;
-            fTabX = objTable.getX();
-            fTabY = objTable.getY();
-            if (isAtTable == false) {
-                fTabY += 75;
-                if (fTabY < fWaitY) {
-                    fWaitY -= fDy;
-                    sprWaiter.setY(fWaitY);
-                } else {
-                    fWaitY += fDy;
-                    sprWaiter.setY(fWaitY);
-                }
-            } else {
-                fDy = 0;
-                nDirectionCheck = 0;
 
-            }
-        }
 
     }
 
@@ -156,26 +112,6 @@ public class ScrGame implements Screen, InputProcessor {
         viewport.update(width, height);
         camera.position.set(nW / 2, nH / 2, 0);
     }
-
-    //Checks if Waiter X and Table X is equal
-    public static boolean CheckPosX(float fXWait, float fXTab) {
-        if (Math.round(fXWait) != Math.round(fXTab) + 60) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    //Checks if Waiter Y and Table Y is equal
-    public static boolean CheckPosY(float fYWait, float fYTab) {
-        if (Math.round(fYWait) != Math.round(fYTab) + 75) {
-            return false;
-        } else {
-
-            return true;
-        }
-    }
-
 
     @Override
     public void pause() {
