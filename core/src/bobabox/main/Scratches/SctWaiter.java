@@ -44,9 +44,9 @@ public class SctWaiter implements Screen, InputProcessor {
 
         //sprites
         batch = new SpriteBatch();
-        sprServer = new SprServer("Waiter_spr.png", fWX / 2-200, fWY / 2 + 200); //850, 175
+        sprServer = new SprServer("SERVER1_spr.png", fWX / 2-200, fWY / 2 + 200); //850, 175
 
-        objTable = new ObjTables(fWX / 2 + 100, fWY / 2 - 100, "Table2_obj.png");
+        objTable = new ObjTables(fWX / 2 + 100, fWY / 2 - 100, "TABLE2_obj.png");
 
 
     }

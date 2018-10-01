@@ -38,6 +38,7 @@ public class ObjTables extends Sprite {
                     super.setBounds(fX - 10, fY - 10, fW + 20, fH + 20);
                     return true;
                 }
+                
                 return false;
             }
         }

@@ -45,9 +45,9 @@ public class ScrMenu implements Screen, InputProcessor {
         batch.setProjectionMatrix(camera.combined);
 
         txtBack = new Texture("Main_bg.png");
-        btnStart = new ObjButton(nW / 2, nH / 3 + 50, 260, 70, "Start_btn.png", viewport);
-        btnTut = new ObjButton(nW / 2, nH / 4 + 10, 260, 70, "Tutorial_btn.png", viewport);
-        btnScratch = new ObjButton(nW / 2, 50, 110, 70, "Scratch_btn.png", viewport);
+        btnStart = new ObjButton(nW / 2, nH / 3 + 50, 260, 70, "START1_btn.png", viewport);
+        btnTut = new ObjButton(nW / 2, nH / 4 + 10, 260, 70, "TUTORIAL1_btn.png", viewport);
+        btnScratch = new ObjButton(nW / 2, 50, 110, 70, "SCRATCH1_btn.png", viewport);
     }
 
     @Override

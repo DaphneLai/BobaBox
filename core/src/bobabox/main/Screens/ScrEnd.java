@@ -43,7 +43,7 @@ public class ScrEnd implements Screen, InputProcessor {
         batch = new SpriteBatch();
 
         txtBg = new Texture("EndBG_img.png");
-        btnHome = new ObjButton(nW / 2, nH/4, 260, 70,"Home_btn.png", viewport);
+        btnHome = new ObjButton(nW / 2, nH/4, 260, 70,"HOME1_btn.png", viewport);
 
     }
 
