@@ -38,16 +38,16 @@ public class ScrMenu implements Screen, InputProcessor {
         viewport = _viewport;
         viewport.setCamera(camera);
         viewport.apply();
-        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         resize(nW, nH);
         Gdx.input.setInputProcessor(this);
         batch = new SpriteBatch();
         batch.setProjectionMatrix(camera.combined);
 
         txtBack = new Texture("Main_bg.png");
-        btnStart = new ObjButton(nW / 2, nH / 3 + 50, 260, 70, "START1_btn.png", viewport);
-        btnTut = new ObjButton(nW / 2, nH / 4 + 10, 260, 70, "TUTORIAL1_btn.png", viewport);
-        btnScratch = new ObjButton(nW / 2, 50, 110, 70, "SCRATCH1_btn.png", viewport);
+        btnStart = new ObjButton(nW / 2, nH / 3 + 50, 260, 70, "START1_btn.png", "START2_btn.png", viewport);
+        btnTut = new ObjButton(nW / 2, nH / 4 + 10, 260, 70, "TUTORIAL1_btn.png", "TUTORIAL2_btn.png", viewport);
+        btnScratch = new ObjButton(nW / 2, 50, 110, 70, "SCRATCH1_btn.png", "SCRATCH2_btn.png", viewport);
     }
 
     @Override
@@ -81,17 +81,39 @@ public class ScrMenu implements Screen, InputProcessor {
 
         batch.end();
 
-        //ObjButton
-        if (btnStart.isMousedOver() && Gdx.input.justTouched()) {
+        //Buttons
+        checkButtons();
+    }
+
+    private void checkButtons(){ // Checks if Buttons are pressed
+        checkButtonTextures();
+        if (btnStart.bJustClicked()) {
             gamMenu.updateScreen(0);
         }
-        if (btnTut.isMousedOver() && Gdx.input.justTouched()) {
+        if (btnTut.bJustClicked()) {
             gamMenu.updateScreen(3);
         }
-        if (btnScratch.isMousedOver() && Gdx.input.justTouched()) {
+        if (btnScratch.bJustClicked()){
             gamMenu.updateScreen(20);
         }
+    }
 
+    private void checkButtonTextures(){
+        if(btnStart.isMousedOver()){
+            btnStart.changeTexture(1);
+        } else {
+            btnStart.changeTexture(0);
+        }
+        if(btnTut.isMousedOver()){
+            btnTut.changeTexture(1);
+        } else {
+            btnTut.changeTexture(0);
+        }
+        if(btnScratch.isMousedOver()){
+            btnScratch.changeTexture(1);
+        } else {
+            btnScratch.changeTexture(0);
+        }
     }
 
     @Override

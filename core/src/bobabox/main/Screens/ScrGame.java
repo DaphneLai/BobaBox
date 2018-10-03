@@ -53,8 +53,8 @@ public class ScrGame implements Screen, InputProcessor {
 
         txtBg = new Texture("GameBG_img.png");
         sprServer = new SprServer("SERVER1_spr.png",fWX/2+850, fWY/2+175); //850, 175
-        objTable = new ObjTables(nW / 2 + 40, nH / 3, "TABLE1_obj.png");
-        btnPause = new ObjButton(950, 40, 70, 70, "PAUSE1_btn.png", viewport);
+        objTable = new ObjTables(nW / 2 + 40, nH / 3, "TABLE2_obj.png");
+        btnPause = new ObjButton(950, 40, 110, 70, "PAUSE1_btn.png", "PAUSE2_btn.png", viewport);
 
     }
 
