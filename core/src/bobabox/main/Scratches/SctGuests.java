@@ -7,10 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
-import javax.swing.ViewportLayout;
 
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprGuest;
@@ -25,10 +23,12 @@ public class SctGuests implements Screen {
     private SprGuest sprGuest;
     private ObjTables objTable;
     boolean isSitting;
+    Vector3 vTouch;
 
     public SctGuests(Game _gammenu) {
 
         camera = new OrthographicCamera();
+        vTouch = new Vector3();
         viewport = new StretchViewport(1000, 500, camera);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport.apply();
@@ -37,22 +37,23 @@ public class SctGuests implements Screen {
         batch = new SpriteBatch();
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         sprGuest = new SprGuest("GUEST1_spr.png", viewport);
-        objTable = new ObjTables(200, 100, "TABLE3_obj.png");
+        objTable = new ObjTables(200, 100, "Table3_obj.png");
     }
 
     @Override
     public void render(float delta) {
         //Logic
         camera.update();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Drawing
         batch.draw(txtBG, 0, 0);
         objTable.draw(batch);
-        sprGuest.draw(batch);
-        sprGuest.heartTracker(batch);
         sprGuest.walkDown();
+        sprGuest.draw(batch);
         sprGuest.drag();
+        sprGuest.heartTracker(batch);
 
         batch.end();
 
@@ -60,7 +61,15 @@ public class SctGuests implements Screen {
         if (objTable.isOpen(sprGuest) == false) {
             System.out.println("HERE!");
             isSitting = true;
+            sprGuest.sittingdown(isSitting);
         }
+
+        if (Gdx.input.isTouched()) {
+            viewport.unproject(vTouch.set(Gdx.input.getX(), (Gdx.input.getY() * (-1) + 500), 0));
+            System.out.println("x: " + Gdx.input.getX());
+            System.out.println("y: " + (Gdx.input.getY() * -1 + 500));
+        }
+
 
     }
 
@@ -77,7 +86,8 @@ public class SctGuests implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
+        camera.position.set(1000 / 2, 500 / 2, 0);
     }
 
     @Override
