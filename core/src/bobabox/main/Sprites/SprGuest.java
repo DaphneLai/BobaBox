@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import bobabox.main.Screens.ScrGame;
+
 public class SprGuest extends Sprite {
 
     private SpriteBatch batch;
@@ -28,7 +30,7 @@ public class SprGuest extends Sprite {
         fMove = 1.0f;
         setPosition(fX, fY);
         setFlip(false, false);
-        setSize(100, 120);
+        setSize(80, 100);
 
         //Hearts
         fHx = fX;
@@ -39,6 +41,7 @@ public class SprGuest extends Sprite {
         txt0 = new Texture("Hearts-04.png");
 
     }
+
 
     //Beginning where the guest enters the store
     public void walkDown() {
@@ -83,10 +86,12 @@ public class SprGuest extends Sprite {
             }
         }
     }
+
     //Checks if guest is Sitting
-    public void sittingdown(boolean isSitting_) {
+    public void sittingDown(boolean isSitting_) {
         isSitting = isSitting_;
         if (isSitting == true) {
+            setSize(0, 0);
             System.out.println("is sitting =" + isSitting);
         }
     }
@@ -129,14 +134,14 @@ public class SprGuest extends Sprite {
         } else if (nTimer > 900) {
             System.out.println("This is horrible service!");
             batch.draw(txt0, fHx, fHy, 100, 30);
-            if (isSitting == true) {
-                leave(fHx, fHy);
-            }
+            leave(fHx, fHy);
         }
     }
 
-    //When guest is too impatient, they leave (IN PROGRESS)
-    public void leave(float _fX, float _fY) {
+
+    //When guest is too impatient, they leave
+    private void leave(float _fX, float _fY) {
+        setSize(100, 120);
         if (isLeft == false) {
             fX -= fMove + 4;
             setX(fX);

@@ -53,7 +53,7 @@ public class ScrGame implements Screen, InputProcessor {
 
         txtBg = new Texture("GameBG_img.png");
         sprServer = new SprServer("SERVER1_spr.png",fWX/2+850, fWY/2+175); //850, 175
-        objTable = new ObjTables(nW / 2 + 40, nH / 3, "TABLE2_obj.png");
+        objTable = new ObjTables(nW / 2 + 40, nH / 3, "TABLE2_obj.png","TABLE22_obj.png");
         btnPause = new ObjButton(950, 40, 110, 70, "PAUSE1_btn.png", "PAUSE2_btn.png", viewport);
 
     }
@@ -94,7 +94,12 @@ public class ScrGame implements Screen, InputProcessor {
         //Table
         if (objTable.isOpen(sprGuest) == false) {
             isSitting = true;
-            sprGuest.sittingdown(isSitting);
+            sprGuest.sittingDown(isSitting);
+            objTable.sittingDown(isSitting);
+        }else if (objTable.isOpen(sprGuest) == true){
+            isSitting = false;
+            sprGuest.sittingDown(isSitting);
+            objTable.sittingDown(isSitting);
         }
 
         //Make server go to table clicked

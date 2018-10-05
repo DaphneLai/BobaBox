@@ -37,7 +37,7 @@ public class SctGuests implements Screen {
         batch = new SpriteBatch();
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         sprGuest = new SprGuest("GUEST1_spr.png", viewport);
-        objTable = new ObjTables(200, 100, "Table3_obj.png");
+        objTable = new ObjTables(500, 250, "TABLE3_obj.png", "TABLE32_obj.png");
     }
 
     @Override
@@ -57,11 +57,16 @@ public class SctGuests implements Screen {
 
         batch.end();
 
-
         if (objTable.isOpen(sprGuest) == false) {
             System.out.println("HERE!");
             isSitting = true;
-            sprGuest.sittingdown(isSitting);
+            sprGuest.sittingDown(isSitting);
+            objTable.sittingDown(isSitting);
+        } else if (objTable.isOpen(sprGuest) == true){
+            System.out.println("LEAVING");
+            isSitting = false;
+            sprGuest.sittingDown(isSitting);
+            objTable.sittingDown(isSitting);
         }
 
         if (Gdx.input.isTouched()) {
@@ -69,7 +74,6 @@ public class SctGuests implements Screen {
             System.out.println("x: " + Gdx.input.getX());
             System.out.println("y: " + (Gdx.input.getY() * -1 + 500));
         }
-
 
     }
 
