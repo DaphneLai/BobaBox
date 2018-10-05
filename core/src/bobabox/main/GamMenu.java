@@ -11,6 +11,7 @@ import bobabox.main.Screens.ScrEnd;
 import bobabox.main.Screens.ScrMenu;
 import bobabox.main.Screens.ScrTut;
 import bobabox.main.Scratches.SctWaiter;
+import bobabox.main.Scratches.SctMultiGuests;
 
 
 public class GamMenu extends Game {
@@ -29,6 +30,7 @@ public class GamMenu extends Game {
     ScrTut scrTut;
     SctGuests sctGuests;
     SctWaiter sctWaiter;
+    SctMultiGuests sctMultiGuests;
 
     //Kieran's code (modified)
     public void updateScreen(int _nScreen) {
@@ -56,6 +58,9 @@ public class GamMenu extends Game {
             case 30:
                 setScreen(sctWaiter);
                 break;
+            case 40:
+                setScreen(sctMultiGuests);
+                break;
             default:
                 break;
         }
@@ -71,6 +76,7 @@ public class GamMenu extends Game {
         sctTap = new SctTap(this);
         sctGuests = new SctGuests(this);
         sctWaiter = new SctWaiter(this);
+        sctMultiGuests = new SctMultiGuests(this);
 
         updateScreen(2);
 
