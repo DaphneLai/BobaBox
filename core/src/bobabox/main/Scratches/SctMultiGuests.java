@@ -41,19 +41,19 @@ public class SctMultiGuests implements Screen {
         camera.setToOrtho(false);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         batch = new SpriteBatch();
-        objTable = new ObjTables(500, 250, "TABLE3_obj.png", "TABLE32_obj.png");
+
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
         sprGuest = new SprGuest("GUEST1_spr.png", viewport);
 
         //Setting up ArrayList
         arliGuests = new ArrayList<SprGuest>(10); //10 is the initial size
-        public void getArrayListSize() {
-            if (arliGuests.isEmpty()) {
-                // nothing
-            } else {
-                nArraySize = arliGuests.size();
-            }
-        }
+//        public void getArrayListSize() {
+//            if (arliGuests.isEmpty()) {
+//                // nothing
+//            } else {
+//                nArraySize = arliGuests.size();
+//            }
+//        }
 
     }
 
@@ -87,6 +87,7 @@ public class SctMultiGuests implements Screen {
             isSitting = false;
             arliGuests.get(1).sittingDown(isSitting);
             objTable.sittingDown(isSitting);
+
         }
 
         if (Gdx.input.isTouched()) {

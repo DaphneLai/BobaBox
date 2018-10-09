@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
@@ -83,12 +82,12 @@ public class ScrGame implements Screen, InputProcessor {
         batch.end();
 
         //ObjButton
-        if (btnPause.isMousedOver() && Gdx.input.justTouched()) {
+        if (btnPause.isMousedOver() && Gdx.input.isTouched()) {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
         //Mouse is over table && Clicked
-        if (objTable.isMouseOver() == true && Gdx.input.justTouched()) {
+        if (objTable.isMouseOver() == true && Gdx.input.isTouched()) {
             isTableClicked=true;
         }
         //Table
