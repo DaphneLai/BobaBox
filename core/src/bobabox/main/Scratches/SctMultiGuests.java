@@ -16,23 +16,23 @@ import java.util.List;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprGuest;
 
-
-
+//https://stackoverflow.com/questions/43150890/array-list-for-sprites-in-android-game-app
 public class SctMultiGuests implements Screen {
 
     private OrthographicCamera camera;
     private StretchViewport viewport;
     private SpriteBatch batch;
     private Texture txtBG;
+    Vector3 vTouch;
+
+
     private SprGuest sprGuest;
     private ObjTables objTable;
-    boolean isSitting, isOpen =true;
-    Vector3 vTouch;
-    private List<SprGuest> sprGuests;
-    private int nTimer = 0, nGst = 0, nSec = 300;
+    boolean isSitting, isOpen = true;
+    private ArrayList<SprGuest> arliGuests;
+    private int nTimer = 0, nGuest = 0, nSec = 300, nArraySize;
 
     public SctMultiGuests(Game _gammenu) {
-
         camera = new OrthographicCamera();
         vTouch = new Vector3();
         viewport = new StretchViewport(1000, 500, camera);
@@ -41,15 +41,20 @@ public class SctMultiGuests implements Screen {
         camera.setToOrtho(false);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         batch = new SpriteBatch();
-        objTable = new ObjTables(200, 100, "Table3_obj.png");
+        objTable = new ObjTables(500, 250, "TABLE3_obj.png", "TABLE32_obj.png");
         txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
-        sprGuests = new ArrayList<SprGuest>();
-        while (isOpen) {
-            sprGuests.add(new SprGuest("GUEST1_spr.png", viewport));
-            if (sprGuests.size() == 10) {
-                isOpen = false;
+        sprGuest = new SprGuest("GUEST1_spr.png", viewport);
+
+        //Setting up ArrayList
+        arliGuests = new ArrayList<SprGuest>(10); //10 is the initial size
+        public void getArrayListSize() {
+            if (arliGuests.isEmpty()) {
+                // nothing
+            } else {
+                nArraySize = arliGuests.size();
             }
         }
+
     }
 
     @Override
@@ -64,18 +69,26 @@ public class SctMultiGuests implements Screen {
         //Drawing
         batch.draw(txtBG, 0, 0);
         objTable.draw(batch);
-        addguest(0, batch);
+        addGuest(batch);
+
         if (nTimer >= nSec) {
-                nSec = nSec + 300;
-                nGst++;
-                addguest(nGst, batch);
+            System.out.println("nGuest = " + nGuest);
+            nGuest++;
+            addGuest(batch);
+            //nSec = nSec + 300;
         }
         batch.end();
 
-        if (objTable.isOpen(sprGuests.get(nGst)) == false) {
+        if (objTable.isOpen(arliGuests.get(1)) == false) {
             isSitting = true;
-            sprGuests.get(nGst).sittingdown(isSitting);
+            arliGuests.get(1).sittingDown(isSitting);
+            objTable.sittingDown(isSitting);
+        } else if (objTable.isOpen(arliGuests.get(1)) == true) {
+            isSitting = false;
+            arliGuests.get(1).sittingDown(isSitting);
+            objTable.sittingDown(isSitting);
         }
+
         if (Gdx.input.isTouched()) {
             viewport.unproject(vTouch.set(Gdx.input.getX(), (Gdx.input.getY() * (-1) + 500), 0));
         }
@@ -83,17 +96,20 @@ public class SctMultiGuests implements Screen {
 
     }
 
+
+    public void addGuest(SpriteBatch batch) {
+        sprGuest.walkDown();
+        sprGuest.draw(batch);
+        sprGuest.drag();
+        sprGuest.heartTracker(batch);
+    }
+
+
     @Override
     public void dispose() {
         txtBG.dispose();
         batch.dispose();
 
-    }
-    public void addguest(int nGst, SpriteBatch batch) {
-        sprGuests.get(nGst).walkDown();
-        sprGuests.get(nGst).draw(batch);
-        sprGuests.get(nGst).drag();
-        sprGuests.get(nGst).heartTracker(batch);
     }
 
     @Override
