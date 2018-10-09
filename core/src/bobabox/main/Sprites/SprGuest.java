@@ -35,10 +35,10 @@ public class SprGuest extends Sprite {
         //Hearts
         fHx = fX;
         fHy = Gdx.graphics.getHeight() - 10;
-        txt3 = new Texture("Hearts-01.png");
-        txt2 = new Texture("Hearts-02.png");
-        txt1 = new Texture("Hearts-03.png");
-        txt0 = new Texture("Hearts-04.png");
+        txt3 = new Texture("data/Hearts-01.png");
+        txt2 = new Texture("data/Hearts-02.png");
+        txt1 = new Texture("data/Hearts-03.png");
+        txt0 = new Texture("data/Hearts-04.png");
 
     }
 
@@ -54,8 +54,9 @@ public class SprGuest extends Sprite {
             }
             if (fHy <= 130) {
                 fMove = 0;
-                isWait = true;
-                bCanDrag = false;
+
+                isSitting = false;
+                bCanDrag = true;
             }
         }
     }
@@ -63,7 +64,6 @@ public class SprGuest extends Sprite {
     //Active when the guest is dragged
     public void drag() {
         if (isDown == true) {
-            bCanDrag = true;
             nTimer++;
         }
         if (isSitting == false) {
@@ -92,7 +92,8 @@ public class SprGuest extends Sprite {
         isSitting = isSitting_;
         if (isSitting == true) {
             setSize(0, 0);
-            System.out.println("is sitting =" + isSitting);
+
+          //  System.out.println("is sitting =" + isSitting);
         }
     }
 

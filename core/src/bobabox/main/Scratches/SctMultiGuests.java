@@ -41,11 +41,11 @@ public class SctMultiGuests implements Screen {
         camera.setToOrtho(false);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         batch = new SpriteBatch();
-        objTable = new ObjTables(200, 100, "TABLE3_obj.png", "TABLE32_obj.png");
-        txtBG = new Texture(Gdx.files.internal("Test_img.jpg"));
+        objTable = new ObjTables(200, 100, "data/TABLE3_obj.png", "data/TABLE32_obj.png");
+        txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         sprGuests = new ArrayList<SprGuest>();
         while (isOpen) {
-            sprGuests.add(new SprGuest("GUEST1_spr.png", viewport));
+            sprGuests.add(new SprGuest("data/GUEST1_spr.png", viewport));
             if (sprGuests.size() == 10) {
                 isOpen = false;
             }

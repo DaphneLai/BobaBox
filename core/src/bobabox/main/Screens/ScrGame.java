@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
 import bobabox.main.Sprites.SprGuest;
@@ -49,11 +48,10 @@ public class ScrGame implements Screen, InputProcessor {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         resize(nW, nH);
         batch = new SpriteBatch();
-
-        txtBg = new Texture("GameBG_img.png");
-        sprServer = new SprServer("SERVER1_spr.png",fWX/2+850, fWY/2+175); //850, 175
-        objTable = new ObjTables(nW / 2 + 40, nH / 3, "TABLE2_obj.png","TABLE22_obj.png");
-        btnPause = new ObjButton(950, 40, 110, 70, "PAUSE1_btn.png", "PAUSE2_btn.png", viewport);
+        txtBg = new Texture("data/GameBG_img.png");
+        sprServer = new SprServer("data/SERVER1_spr.png",fWX/2+850, fWY/2+175); //850, 175
+        objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png","data/TABLE22_obj.png");
+        btnPause = new ObjButton(950, 40, 110, 70, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
 
     }
 
@@ -109,7 +107,7 @@ public class ScrGame implements Screen, InputProcessor {
 
     }
     public void reset() {
-        sprGuest = new SprGuest("GUEST1_spr.png", viewport);
+        sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
     }
 
     @Override

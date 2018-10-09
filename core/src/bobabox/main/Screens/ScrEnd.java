@@ -42,8 +42,8 @@ public class ScrEnd implements Screen, InputProcessor {
         resize(nW, nH);
         batch = new SpriteBatch();
 
-        txtBg = new Texture("EndBG_img.png");
-        btnHome = new ObjButton(nW / 2, nH/4, 260, 70,"HOME1_btn.png","HOME2_btn.png", viewport);
+        txtBg = new Texture("data/EndBG_img.png");
+        btnHome = new ObjButton(nW / 2, nH/4, 260, 70,"data/HOME1_btn.png","data/HOME2_btn.png", viewport);
 
     }
 

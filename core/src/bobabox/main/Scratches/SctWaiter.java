@@ -39,14 +39,14 @@ public class SctWaiter implements Screen, InputProcessor {
         oc.update();
 
         //textures
-        txBG = new Texture("Test_img.jpg");
+        txBG = new Texture("data/Test_img.jpg");
 
         //sprites
         batch = new SpriteBatch();
 
        // sprServer = new SprServer("SERVER1_spr.png", fWX / 2-200, fWY / 2 + 200); //850, 175
-        objTable = new ObjTables(fWX / 2 , fWY / 2 , "TABLE2_obj.png","TABLE22_obj.png");
-        sprServer = new SprServer("SERVER1_spr.png", fWX / 2*0, fWY / 2 *0); //850, 175
+        objTable = new ObjTables(fWX / 2 , fWY / 2 , "data/TABLE2_obj.png","data/TABLE22_obj.png");
+        sprServer = new SprServer("data/SERVER1_spr.png", fWX / 2*0, fWY / 2 *0); //850, 175
     }
 
 
