@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
@@ -44,9 +43,10 @@ public class SctWaiter implements Screen, InputProcessor {
 
         //sprites
         batch = new SpriteBatch();
-        sprServer = new SprServer("SERVER1_spr.png", fWX / 2-200, fWY / 2 + 200); //850, 175
-        objTable = new ObjTables(fWX / 2 + 100, fWY / 2 - 100, "TABLE2_obj.png","TABLE22_obj.png");
 
+       // sprServer = new SprServer("SERVER1_spr.png", fWX / 2-200, fWY / 2 + 200); //850, 175
+        objTable = new ObjTables(fWX / 2 , fWY / 2 , "TABLE2_obj.png","TABLE22_obj.png");
+        sprServer = new SprServer("SERVER1_spr.png", fWX / 2*0, fWY / 2 *0); //850, 175
     }
 
 
