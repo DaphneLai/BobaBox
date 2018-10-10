@@ -48,7 +48,7 @@ public class ObjTables extends Sprite {
         if (fGX > fX && fGX < fX + fW) {
             if (fGY > fY && fGY < fY + fH) {
                 super.setBounds(fX, fY, fW, fH);
-                if (Gdx.input.isTouched()) {
+                if (Gdx.input.isTouched() && isSitting == false) {
                     super.setBounds(fX - 10, fY - 10, fW + 20, fH + 20);
                     return true;
 

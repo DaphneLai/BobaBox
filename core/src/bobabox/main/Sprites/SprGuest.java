@@ -15,7 +15,7 @@ public class SprGuest extends Sprite {
     private StretchViewport viewport;
     private Vector3 vTouch;
     private float fX, fY, fMove, fHx, fHy;
-    private boolean isDown = false, isLeft = false, isUp = false, isWait = false, bCanDrag = false, isReady = false, isSitting;
+    private boolean isDown = false, isLeft = false, isUp = false, bCanDrag = false, isReady = false, isSitting;
     private int nTimer = 0;
     private Texture txt3, txt2, txt1, txt0;
 
@@ -25,16 +25,16 @@ public class SprGuest extends Sprite {
         super(new Texture(Gdx.files.internal(sFile)));
         viewport = _viewport;
         //Guests
-        fX = 10;
-        fY = Gdx.graphics.getHeight() - 130;
+        fX = 80;
+        fY = 330;
         fMove = 1.0f;
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(80, 100);
 
         //Hearts
-        fHx = fX;
-        fHy = Gdx.graphics.getHeight() - 10;
+        fHx = fX - 20;
+        fHy = fY - 10;
         txt3 = new Texture("data/Hearts-01.png");
         txt2 = new Texture("data/Hearts-02.png");
         txt1 = new Texture("data/Hearts-03.png");
@@ -60,6 +60,15 @@ public class SprGuest extends Sprite {
             }
         }
     }
+    //Checks if guest is Sitting
+    public void sittingDown(boolean isSitting_) {
+        isSitting = isSitting_;
+        if (isSitting == true) {
+            setSize(0, 0);
+
+            //  System.out.println("is sitting =" + isSitting);
+        }
+    }
 
     //Active when the guest is dragged
     public void drag() {
@@ -79,6 +88,7 @@ public class SprGuest extends Sprite {
                 }
             }
         }
+
         if (nTimer > 900) {
             System.out.println("This is horrible service!");
             if (isSitting == true) {
@@ -87,26 +97,12 @@ public class SprGuest extends Sprite {
         }
     }
 
-    //Checks if guest is Sitting
-    public void sittingDown(boolean isSitting_) {
-        isSitting = isSitting_;
-        if (isSitting == true) {
-            setSize(0, 0);
-
-          //  System.out.println("is sitting =" + isSitting);
-        }
-    }
 
     //Takes into account all events that affects hearts
     public void heartTracker(SpriteBatch _batch) {
         batch = _batch;
         fHx = fX;
         fHy = fY + 120;
-        //Entered
-        if (isWait == true) {
-            bCanDrag = true;
-            nTimer++;
-        }
         if (bCanDrag == true) {
             if (Gdx.input.isTouched()) {
                 nTimer = 0;
@@ -129,7 +125,6 @@ public class SprGuest extends Sprite {
             batch.draw(txt2, fHx, fHy, 100, 30);
 
         } else if (nTimer > 600 && nTimer < 900) {
-            bCanDrag = true;
             batch.draw(txt1, fHx, fHy, 100, 30);
 
         } else if (nTimer > 900) {

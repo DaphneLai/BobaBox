@@ -22,7 +22,7 @@ public class ScrGame implements Screen, InputProcessor {
     //Values
     int nW = 1000, nH = 500;
     private float fWX, fWY;
-    private boolean isTableClicked=false;
+    private boolean isTableClicked;
     public boolean isSitting = false;
     Vector3 vTouch;
     //Logic
@@ -49,7 +49,6 @@ public class ScrGame implements Screen, InputProcessor {
         resize(nW, nH);
         batch = new SpriteBatch();
         txtBg = new Texture("data/GameBG_img.png");
-        sprServer = new SprServer("data/SERVER1_spr.png",fWX/2+850, fWY/2+175); //850, 175
         objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png","data/TABLE22_obj.png");
         btnPause = new ObjButton(950, 40, 110, 70, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
 
@@ -73,8 +72,8 @@ public class ScrGame implements Screen, InputProcessor {
         btnPause.draw(batch);
         sprServer.draw(batch);
         objTable.draw(batch);
-        sprGuest.draw(batch);
         sprGuest.walkDown();
+        sprGuest.draw(batch);
         sprGuest.drag();
         sprGuest.heartTracker(batch);
         batch.end();
@@ -88,6 +87,10 @@ public class ScrGame implements Screen, InputProcessor {
         if (objTable.isMouseOver() == true && Gdx.input.isTouched()) {
             isTableClicked=true;
         }
+        //Make server go to table clicked
+        if(isTableClicked==true){
+            sprServer.walk(objTable);
+        }
         //Table
         if (objTable.isOpen(sprGuest) == false) {
             isSitting = true;
@@ -95,19 +98,16 @@ public class ScrGame implements Screen, InputProcessor {
             objTable.sittingDown(isSitting);
         }else if (objTable.isOpen(sprGuest) == true){
             isSitting = false;
-            sprGuest.sittingDown(isSitting);
             objTable.sittingDown(isSitting);
         }
 
-        //Make server go to table clicked
-        if(isTableClicked==true){
-            sprServer.walk(objTable);
-        }
 
 
     }
     public void reset() {
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
+        sprServer = new SprServer("data/SERVER1_spr.png",fWX/2+850, fWY/2+175); //850, 175
+        isTableClicked=false;
     }
 
     @Override
