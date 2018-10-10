@@ -49,7 +49,7 @@ public class ScrGame implements Screen, InputProcessor {
         resize(nW, nH);
         batch = new SpriteBatch();
         txtBg = new Texture("data/GameBG_img.png");
-        objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png","data/TABLE22_obj.png");
+        objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png","data/TABLE22_obj.png",viewport);
         btnPause = new ObjButton(950, 40, 110, 70, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
 
     }
@@ -84,7 +84,7 @@ public class ScrGame implements Screen, InputProcessor {
             gamMenu.updateScreen(1);
         }
         //Mouse is over table && Clicked
-        if (objTable.isMouseOver() == true && Gdx.input.isTouched()) {
+        if (objTable.isMousedOver() == true && Gdx.input.justTouched()) {
             isTableClicked=true;
         }
         //Make server go to table clicked
@@ -106,7 +106,7 @@ public class ScrGame implements Screen, InputProcessor {
     }
     public void reset() {
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
-        sprServer = new SprServer("data/SERVER1_spr.png",fWX/2+850, fWY/2+175); //850, 175
+        sprServer = new SprServer("data/SERVER1_spr.png",fWX/2+850, fWY/2+175, viewport); //850, 175
         isTableClicked=false;
     }
 

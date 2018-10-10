@@ -3,6 +3,8 @@ package bobabox.main.Objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import bobabox.main.Sprites.SprGuest;
 
@@ -11,15 +13,17 @@ public class ObjTables extends Sprite {
 
     private float fX, fY, fW, fH; //table
     private float fGY, fGX; //guest
+    private Vector3 vTouch;
+    private StretchViewport viewport;
     private Texture nTxt1, nTxt2;
     private boolean isSitting = false;
 
-    public ObjTables(float _nX, float _nY, String _sOpenT, String _sSittingT) {
+    public ObjTables(float _nX, float _nY, String _sOpenT, String _sSittingT, StretchViewport _viewport) {
         super(new Texture(Gdx.files.internal(_sOpenT)));
 
         nTxt1 = new Texture(_sOpenT);
         nTxt2 = new Texture(_sSittingT);
-
+        viewport = _viewport;
         fW = 187;
         fH = 110;
         fX = _nX - fW / 2;
@@ -60,18 +64,16 @@ public class ObjTables extends Sprite {
         return true;
     }
 
-    public boolean isMouseOver() {
-        if (Gdx.input.getX() > fX && Gdx.input.getX() < fX + fW) {
-            if (Gdx.input.getY() * (-1) + Gdx.graphics.getHeight() > fY && Gdx.input.getY() * (-1) + Gdx.graphics.getHeight() < fY + fH) {
+    public boolean isMousedOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
+        vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        viewport.unproject(vTouch);
+        if (vTouch.x > fX && vTouch.x < fX + fW) {
+            if (vTouch.y > fY && vTouch.y < fY + fH) {
                 return true;
             }
-
         }
-
         return false;
-
     }
-
 }
 
 

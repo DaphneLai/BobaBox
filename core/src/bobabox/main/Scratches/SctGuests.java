@@ -37,7 +37,7 @@ public class SctGuests implements Screen {
         batch = new SpriteBatch();
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
-        objTable = new ObjTables(500, 250, "data/TABLE3_obj.png", "data/TABLE32_obj.png");
+        objTable = new ObjTables(500, 250, "data/TABLE3_obj.png", "data/TABLE32_obj.png",viewport);
     }
 
     @Override

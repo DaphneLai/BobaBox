@@ -6,11 +6,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprServer;
+
 
 //Sarah
 //Help from Grondin & Daph
@@ -19,8 +20,10 @@ import bobabox.main.Sprites.SprServer;
 public class SctWaiter implements Screen, InputProcessor {
 
 
-    private OrthographicCamera oc;
+    private OrthographicCamera camera;
     private SpriteBatch batch;
+    private StretchViewport viewport;
+    Vector3 vTouch;
     private Texture txBG;
     private SprServer sprServer;
     private ObjTables objTable;
@@ -34,9 +37,13 @@ public class SctWaiter implements Screen, InputProcessor {
         fWY = 500;
 
         //camera
-        oc = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        oc.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        oc.update();
+        camera = new OrthographicCamera();
+        vTouch = new Vector3();
+        viewport = new StretchViewport(1000, 500, camera);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport.apply();
+        camera.setToOrtho(false);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
 
         //textures
         txBG = new Texture("data/Test_img.jpg");
@@ -44,9 +51,11 @@ public class SctWaiter implements Screen, InputProcessor {
         //sprites
         batch = new SpriteBatch();
 
-       // sprServer = new SprServer("SERVER1_spr.png", fWX / 2-200, fWY / 2 + 200); //850, 175
-        objTable = new ObjTables(fWX / 2 , fWY / 2 , "data/TABLE2_obj.png","data/TABLE22_obj.png");
-        sprServer = new SprServer("data/SERVER1_spr.png", fWX / 2*0, fWY / 2 *0); //850, 175
+        //table
+        objTable = new ObjTables(fWX / 2 , fWY / 2 , "data/TABLE2_obj.png","data/TABLE22_obj.png",viewport);
+
+        //server
+        sprServer = new SprServer("data/SERVER1_spr.png", fWX / 2*0, fWY / 2 *0, viewport); //850, 175
     }
 
 
@@ -57,18 +66,27 @@ public class SctWaiter implements Screen, InputProcessor {
 
     public void render(float delta) {
         //drawing
-        batch.setProjectionMatrix(oc.combined);
+        camera.update();
         batch.begin();
+        batch.setProjectionMatrix(camera.combined);
         batch.draw(txBG, 0, 0);
         sprServer.draw(batch);
         objTable.draw(batch);
         batch.end();
-        if (objTable.isMouseOver() == true && Gdx.input.justTouched()) {
+        if (objTable.isMousedOver() == true && Gdx.input.justTouched()) {
             isTableClicked = true;
         }
         //Make server go to table clicked
         if (isTableClicked == true) {
             sprServer.walk(objTable);
+        }
+        if (Gdx.input.isTouched()) {
+            vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            //Readjusts input coordinates (vTouch.x and vTouch.y are our new input coordinates)
+            //Gdx.input.getX/Y >> vTouch.x/y
+            viewport.unproject(vTouch);
+            System.out.println("vTouchX: " + vTouch.x);
+            System.out.println("vTouchY: " + vTouch.y);
         }
 
 
@@ -76,7 +94,8 @@ public class SctWaiter implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
+        camera.position.set(1000 / 2, 500 / 2, 0);
     }
 
     @Override
