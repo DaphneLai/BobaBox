@@ -22,7 +22,7 @@ public class ScrGame implements Screen, InputProcessor {
     //Values
     int nW = 1000, nH = 500;
     private float fWX, fWY;
-    private boolean isTableClicked;
+    private boolean isTableClicked = false;
     public boolean isSitting = false;
     Vector3 vTouch;
     //Logic
@@ -52,6 +52,7 @@ public class ScrGame implements Screen, InputProcessor {
         objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png","data/TABLE22_obj.png",viewport);
         btnPause = new ObjButton(950, 40, 110, 70, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
 
+     //   sprServer = new SprServer("data/SERVER1_spr.png",850, 175, viewport);
     }
 
 
@@ -106,7 +107,7 @@ public class ScrGame implements Screen, InputProcessor {
     }
     public void reset() {
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
-        sprServer = new SprServer("data/SERVER1_spr.png",fWX/2+850, fWY/2+175, viewport); //850, 175
+        sprServer = new SprServer("data/SERVER1_spr.png",850, 175, viewport);
         isTableClicked=false;
     }
 

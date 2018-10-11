@@ -30,10 +30,6 @@ public class SprServer extends Sprite {
         if (Gdx.input.isTouched()) {
             vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             viewport.unproject(vTouch);
-            fX = vTouch.x - 50;
-            fY = vTouch.y - 60;
-            setX(fX);
-            setY(fY);
         }
 
     }
@@ -67,7 +63,7 @@ public class SprServer extends Sprite {
             fTY = objTables.getY();
             isAtTable = CheckPosY(fY, fTY);
             fDy = 1;
-            fTY += 30;
+            fTY += 80;
             isAtPointYBelow = bBelowTable(fY, fTY);
             if (isAtPointYBelow == false) {
                 if (isAtTable == false) {
