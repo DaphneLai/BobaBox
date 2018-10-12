@@ -94,7 +94,6 @@ public class SprGuest extends Sprite {
         }
 
         if (nTimer > 900) {
-            System.out.println("This is horrible service!");
             if (isSitting == true) {
                 leave(getX(), getY());
             }
@@ -116,7 +115,7 @@ public class SprGuest extends Sprite {
         //Ordering
         if (isSitting == true) {
             if (isReady == true) {
-                System.out.println("Ready to order");
+               // System.out.println("Ready to order");
             }
         }
 
@@ -132,7 +131,7 @@ public class SprGuest extends Sprite {
             batch.draw(txt1, fHx, fHy, fHw, fHh);
 
         } else if (nTimer > 900) {
-            System.out.println("This is horrible service!");
+            //System.out.println("This is horrible service!");
             batch.draw(txt0, fHx, fHy, fHw, fHh);
             leave(fHx, fHy);
             if (isGone == true) {

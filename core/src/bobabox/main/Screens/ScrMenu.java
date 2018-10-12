@@ -94,7 +94,7 @@ public class ScrMenu implements Screen, InputProcessor {
             gamMenu.updateScreen(3);
         }
         if (btnScratch.bJustClicked()){
-            gamMenu.updateScreen(20);
+            gamMenu.updateScreen(30);
         }
     }
 

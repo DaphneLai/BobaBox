@@ -43,7 +43,6 @@ public class ObjButton extends Sprite {
         nTxt = 0;
     }
 
-
     public boolean isMousedOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
