@@ -84,10 +84,11 @@ public class SprServer extends Sprite {
     }
 
     public void collide(float fX, float fY, float fTX, float fTY) {
-        if (isAtPointYBelow = true) {
+        if (isAtPointYBelow = true) { //checks if the server is at table y-coordinate subtract 150
             isRight = true;
         }
-        isAtPointXRight = bRightTable(getX(), fTX);
+        System.out.println("UP 1 " + isUp);
+        isAtPointXRight = bRightTable(getX(), fTX); // if it's go to the right until table x-coordinate + 30
          System.out.println("AT  RIGHT " + isAtPointXRight);
         if (isRight = true && isAtPointXRight == false) {
             fDx = 1;
@@ -99,15 +100,15 @@ public class SprServer extends Sprite {
                 setX(fX);
             }
         }
-        if (isAtPointXRight == true) {
+        if (isAtPointXRight == true) { // if at point right go up
             fDx=0;
            // isUp = true;
             isRight = false;
         }
 
-        isAtPointYAbove = bAboveTable(getY(), fTY);
+        isAtPointYAbove = bAboveTable(getY(), fTY); // if at y-coordinate of table + 30
        System.out.println("AT  ABOVE " + isAtPointYAbove);
-        System.out.println("UP" + isUp);
+        System.out.println("UP 2 " + isUp);
         if (isUp = true && isAtPointYAbove==false) {
            fDy = 1;
             System.out.println("TABLE " + fTY);
@@ -120,10 +121,10 @@ public class SprServer extends Sprite {
                setY(fY);
             }
         }
-//        if(isAtPointYAbove==true){
+//        if(isAtPointYAbove==true){ //if at y-point then go to the left
 //            fDy=0;
 //            isUp=false;
-//            isRight=true;
+//            isLeft=true;
 //            System.out.println("LEFT HERE");
 //
 //        }
@@ -148,6 +149,7 @@ public class SprServer extends Sprite {
         }
     }
 
+    //Checks if Waiter is at Y-coordinate -150 below the table. This is a hit detection boolean
     public static boolean bBelowTable(float fYWait, float fYTab) {
         if (Math.round(fYWait) == Math.round(fYTab) - 150) {
             return true;
@@ -156,6 +158,7 @@ public class SprServer extends Sprite {
         }
     }
 
+    //If the Waiter is at X-coordinate + 200 to the right of the table. This is a hit detection boolean
     public static boolean bRightTable(float fXWait, float fXTab) {
         if (Math.round(fXWait) == Math.round(fXTab) + 200) {
             return true;
@@ -164,6 +167,7 @@ public class SprServer extends Sprite {
         }
     }
 
+    //if Waiter is at y-coordinate + 30 above table . This is a hit detection boolean
     public static boolean bAboveTable(float fYWait, float fYTab) {
         if (Math.round(fYWait) != Math.round(fYTab) + 30) {
             return false;

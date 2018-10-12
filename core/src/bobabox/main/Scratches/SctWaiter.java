@@ -73,6 +73,8 @@ public class SctWaiter implements Screen, InputProcessor {
         sprServer.draw(batch);
         objTable.draw(batch);
         batch.end();
+
+        //Checks if mouse is over table and clicked
         if (objTable.isMousedOver() == true && Gdx.input.justTouched()) {
             isTableClicked = true;
         }
