@@ -10,23 +10,22 @@ import org.omg.CORBA.VersionSpecHelper;
 
 import bobabox.main.GamMenu;
 
-//Brain's (Joel and Alex) code (modified)
+//Thanks Joel https://github.com/brauj1894/Yoilith/blob/master/core/src/com/icsgame/objects/Button.java
 
 public class ObjButton extends Sprite {
 
     private float fX, fY, fW, fH;
     private Vector3 vTouch;
     private StretchViewport viewport;
-    private boolean bJustClicked;
-    private Texture txtButton, txtButtonHover;
+    private Texture txtButton, txtClicked;
     private int nTxt;
 
-    public ObjButton(float _fX, float _fY, float _fW, float _fH, String _sButton, String _sButtonHover, StretchViewport _viewport) {
+    public ObjButton(float _fX, float _fY, float _fW, float _fH, String _sButton, String _sClicked, StretchViewport _viewport) {
         super(new Texture(Gdx.files.internal(_sButton)));
 
-        //Importing Info (Thanks Joel https://github.com/brauj1894/Yoilith/blob/master/core/src/com/icsgame/objects/Button.java)
+        //Importing Info
         txtButton = new Texture(_sButton);
-        txtButtonHover = new Texture(_sButtonHover);
+        txtClicked = new Texture(_sClicked);
         viewport = _viewport;
         fW = _fW;
         fH = _fH;
@@ -43,7 +42,7 @@ public class ObjButton extends Sprite {
         nTxt = 0;
     }
 
-    public boolean isMousedOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
+    public boolean isMousedOver() { // Checks if the mouse is over the button, NOT whether the mouse was clicked
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
         if (vTouch.x > fX && vTouch.x < fX + fW) {
@@ -55,11 +54,9 @@ public class ObjButton extends Sprite {
     }
 
     public boolean bJustClicked() { // Checks if the button was just clicked
-        if (Gdx.input.justTouched()) {
-            if (isMousedOver()) {
+        if (isMousedOver() && Gdx.input.justTouched()) {
                 return true;
             }
-        }
         return false;
     }
 
@@ -73,7 +70,7 @@ public class ObjButton extends Sprite {
                     break;
                 case 1:
                     // Pressed Button
-                    setTexture(txtButtonHover);
+                    setTexture(txtClicked);
                     nTxt = 1;
                     break;
                 default:

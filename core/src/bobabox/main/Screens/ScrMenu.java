@@ -20,8 +20,8 @@ public class ScrMenu implements Screen, InputProcessor {
     GamMenu gamMenu;
 
     //Values
-    int nW = 1000, nH = 500;
-    Vector3 vTouch;
+    int nW, nH;
+    private Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
@@ -33,6 +33,8 @@ public class ScrMenu implements Screen, InputProcessor {
     public ScrMenu(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
+        nW = gamMenu.WORLD_WIDTH;
+        nH = gamMenu.WORLD_HEIGHT;
         camera = _camera;
         camera.setToOrtho(false);
         viewport = _viewport;
@@ -71,8 +73,6 @@ public class ScrMenu implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.begin();
-
-
         //Drawing
         batch.draw(txtBack, 0, 0, nW, nH);
         btnStart.draw(batch);
@@ -80,7 +80,6 @@ public class ScrMenu implements Screen, InputProcessor {
         btnScratch.draw(batch);
 
         batch.end();
-
         //Buttons
         checkButtons();
     }

@@ -22,8 +22,8 @@ public class SctGuests implements Screen {
     private Texture txtBG;
     private SprGuest sprGuest;
     private ObjTables objTable;
-    boolean isSitting;
-    Vector3 vTouch;
+    private boolean isSitting;
+    private Vector3 vTouch;
 
     public SctGuests(Game _gammenu) {
 

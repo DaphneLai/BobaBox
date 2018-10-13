@@ -19,8 +19,8 @@ public class ScrEnd implements Screen, InputProcessor {
 
     GamMenu gamMenu;
     //Values
-    int nW = 1000, nH = 500;
-    Vector3 vTouch;
+    int nW, nH;
+    private Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
@@ -32,6 +32,8 @@ public class ScrEnd implements Screen, InputProcessor {
     public ScrEnd(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
+        nW = gamMenu.WORLD_WIDTH;
+        nH = gamMenu.WORLD_HEIGHT;
         Gdx.input.setInputProcessor(this);
         vTouch = new Vector3();
         viewport = _viewport;
@@ -55,6 +57,7 @@ public class ScrEnd implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
 
+        //Logic
         camera.update();
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
@@ -67,8 +70,24 @@ public class ScrEnd implements Screen, InputProcessor {
         batch.end();
 
         //ObjButton
+        checkButtons();
         if (btnHome.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(2);
+        }
+    }
+
+    private void checkButtons(){ // Checks if Buttons are pressed
+        checkButtonTextures();
+        if (btnHome.bJustClicked()) {
+            gamMenu.updateScreen(2);
+        }
+    }
+
+    private void checkButtonTextures(){
+        if(btnHome.isMousedOver()){
+            btnHome.changeTexture(1);
+        } else {
+            btnHome.changeTexture(0);
         }
     }
 

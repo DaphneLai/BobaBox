@@ -23,7 +23,7 @@ public class SctMultiGuests implements Screen {
     private StretchViewport viewport;
     private SpriteBatch batch;
     private Texture txtBG;
-    private ObjTables objTable;
+    private ObjTables objTable, objTable2;
     private boolean isSitting, isOpen = true;
     Vector3 vTouch;
     private int nTimer = 0, nGst = 0;
@@ -43,6 +43,7 @@ public class SctMultiGuests implements Screen {
 
         //Assets
         objTable = new ObjTables(500, 250, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
+        // objTable2 = new ObjTables(800, 150, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         arliGuests = new ArrayList<SprGuest>();
 
@@ -73,14 +74,17 @@ public class SctMultiGuests implements Screen {
         //Drawing
         batch.draw(txtBG, 0, 0);
         objTable.draw(batch);
+        // objTable2.draw(batch);
         updateGuest(nGst, batch);
-        if (nTimer % 300 == 0) {
-            if (nGst < 9) {
-                nGst++;
-            } else {
-                nGst = 0;
+        if (isOpen) {
+            if (nTimer % 300 == 0) {
+                if (nGst < 9) {
+                    nGst++;
+                } else {
+                    nGst = 0;
+                }
+                nTimer = 0;
             }
-            nTimer = 0;
         }
         System.out.println("nGST:" + nGst);
         batch.end();
@@ -92,19 +96,24 @@ public class SctMultiGuests implements Screen {
     }
 
     //Runs all of the SprGuests' functions
-    public void updateGuest(int nGst, SpriteBatch batch) {
-        if (isOpen) {
-            for (int n = 0; n < nGst; n++) {
-                arliGuests.get(n).draw(batch);
-                arliGuests.get(n).heartTracker(batch);
-                arliGuests.get(n).walkDown();
-                arliGuests.get(n).drag();
+    private void updateGuest(int nGst, SpriteBatch batch) {
+        for (int n = 0; n < nGst; n++) {
+            arliGuests.get(n).draw(batch);
+            arliGuests.get(n).walkDown();
+            arliGuests.get(n).drag();
+            arliGuests.get(n).heartTracker(batch);
+            if (isOpen) {
+                if (!objTable.isOpen(arliGuests.get(n))) {
+                    isSitting = true;
+                    isOpen = false;
+//                    arliGuests.get(n).sittingDown(isSitting);
+//                    objTable.sittingDown(isSitting)
+                } else {
+                    isSitting = false;
+                }
+                arliGuests.get(n).sittingDown(isSitting);
+               objTable.sittingDown(isSitting);
             }
-            if (!isOpen) {
-                isSitting = true;
-                arliGuests.get(nGst).sittingDown(isSitting);
-            }
-
         }
     }
 

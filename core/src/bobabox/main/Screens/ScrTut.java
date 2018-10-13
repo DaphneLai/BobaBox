@@ -20,15 +20,15 @@ public class ScrTut implements Screen , InputProcessor{
 
     GamMenu gamMenu;
     //Values
-    int nW = 1000, nH = 500;
-    Vector3 vTouch;
+    int nW, nH;
+    private Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport; //how it's seen
     private SpriteBatch batch;
     //Assets
-    Texture txtBg;
-    ObjButton btnStart, btnHome;
+    private Texture txtBg;
+    private ObjButton btnStart, btnHome;
 
     public ScrTut(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -69,6 +69,7 @@ public class ScrTut implements Screen , InputProcessor{
         batch.end();
 
         //ObjButton
+        checkButtons();
         if (btnStart.isMousedOver() && Gdx.input.justTouched()) {
             gamMenu.updateScreen(0);
         }
@@ -77,6 +78,28 @@ public class ScrTut implements Screen , InputProcessor{
         }
     }
 
+    private void checkButtons(){ // Checks if Buttons are pressed
+        checkButtonTextures();
+        if (btnStart.bJustClicked()) {
+            gamMenu.updateScreen(0);
+        }
+        if (btnHome.bJustClicked()) {
+            gamMenu.updateScreen(3);
+        }
+    }
+
+    private void checkButtonTextures(){
+        if(btnStart.isMousedOver()){
+            btnStart.changeTexture(1);
+        } else {
+            btnStart.changeTexture(0);
+        }
+        if(btnHome.isMousedOver()){
+            btnHome.changeTexture(1);
+        } else {
+            btnHome.changeTexture(0);
+        }
+    }
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);

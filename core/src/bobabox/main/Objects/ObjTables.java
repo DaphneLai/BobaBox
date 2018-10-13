@@ -18,16 +18,17 @@ public class ObjTables extends Sprite {
     private Texture nTxt1, nTxt2;
     private boolean isSitting = false;
 
-    public ObjTables(float _nX, float _nY, String _sOpenT, String _sSittingT, StretchViewport _viewport) {
+    public ObjTables(float _fX, float _fY, String _sOpenT, String _sSittingT, StretchViewport _viewport) {
         super(new Texture(Gdx.files.internal(_sOpenT)));
 
+        //Importing Info
         nTxt1 = new Texture(_sOpenT);
         nTxt2 = new Texture(_sSittingT);
         viewport = _viewport;
         fW = 187;
         fH = 110;
-        fX = _nX - fW / 2;
-        fY = _nY - fH / 2;
+        fX = _fX - fW / 2;
+        fY = _fY - fH / 2;
         setPosition(fX, fY);
         setSize(fW, fH);
         setFlip(false, false);
@@ -64,7 +65,7 @@ public class ObjTables extends Sprite {
         return true;
     }
 
-    public boolean isMousedOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
+    public boolean isMousedOver() {
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
         if (vTouch.x > fX && vTouch.x < fX + fW) {

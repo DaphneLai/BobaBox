@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
 import bobabox.main.Sprites.SprGuest;
@@ -20,11 +21,10 @@ public class ScrGame implements Screen, InputProcessor {
 
     GamMenu gamMenu;
     //Values
-    int nW = 1000, nH = 500;
-    private float fWX, fWY;
+    int nW, nH;
     private boolean isTableClicked = false;
     public boolean isSitting = false;
-    Vector3 vTouch;
+    private Vector3 vTouch;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
@@ -39,6 +39,8 @@ public class ScrGame implements Screen, InputProcessor {
     public ScrGame(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
+        nW = gamMenu.WORLD_WIDTH;
+        nH = gamMenu.WORLD_HEIGHT;
         Gdx.input.setInputProcessor(this);
         vTouch = new Vector3();
         viewport = _viewport;
@@ -49,10 +51,10 @@ public class ScrGame implements Screen, InputProcessor {
         resize(nW, nH);
         batch = new SpriteBatch();
         txtBg = new Texture("data/GameBG_img.png");
-        objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png","data/TABLE22_obj.png",viewport);
-        btnPause = new ObjButton(950, 40, 110, 70, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
+        objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
+        btnPause = new ObjButton(940, 40, 90, 55, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
 
-     //   sprServer = new SprServer("data/SERVER1_spr.png",850, 175, viewport);
+        //   sprServer = new SprServer("data/SERVER1_spr.png",850, 175, viewport);
     }
 
 
@@ -63,6 +65,8 @@ public class ScrGame implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+
+        //Logic
         camera.update();
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
@@ -80,16 +84,17 @@ public class ScrGame implements Screen, InputProcessor {
         batch.end();
 
         //ObjButton
+        checkButtons();
         if (btnPause.isMousedOver() && Gdx.input.isTouched()) {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
         //Mouse is over table && Clicked
         if (objTable.isMousedOver() == true && Gdx.input.justTouched()) {
-            isTableClicked=true;
+            isTableClicked = true;
         }
         //Make server go to table clicked
-        if(isTableClicked==true){
+        if (isTableClicked == true) {
             sprServer.walk(objTable);
         }
         //Table
@@ -97,18 +102,33 @@ public class ScrGame implements Screen, InputProcessor {
             isSitting = true;
             sprGuest.sittingDown(isSitting);
             objTable.sittingDown(isSitting);
-        }else if (objTable.isOpen(sprGuest) == true){
+        } else if (objTable.isOpen(sprGuest) == true) {
             isSitting = false;
             objTable.sittingDown(isSitting);
         }
 
 
-
     }
+
     public void reset() {
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
-        sprServer = new SprServer("data/SERVER1_spr.png",850, 175, viewport);
-        isTableClicked=false;
+        sprServer = new SprServer("data/SERVER1_spr.png", 850, 175, viewport);
+        isTableClicked = false;
+    }
+
+    private void checkButtons() { // Checks if Buttons are pressed
+        checkButtonTextures();
+        if (btnPause.bJustClicked()) {
+            gamMenu.updateScreen(2);
+        }
+    }
+
+    private void checkButtonTextures() {
+        if (btnPause.isMousedOver()) {
+            btnPause.changeTexture(1);
+        } else {
+            btnPause.changeTexture(0);
+        }
     }
 
     @Override
