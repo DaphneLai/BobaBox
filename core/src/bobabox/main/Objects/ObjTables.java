@@ -36,16 +36,17 @@ public class ObjTables extends Sprite {
         setTexture(nTxt1);
     }
 
-    public void sittingDown(boolean isSitting_) {
-        isSitting = isSitting_;
-        if (isSitting == true) {
+    public void sittingDown(boolean _isSitting) {
+        isSitting = _isSitting;
+        System.out.println("isSitting:" + isSitting);
+        if (isSitting) {
             setTexture(nTxt2);
-        } else if (isSitting == false){
+        } else if (!isSitting){
             setTexture(nTxt1);
         }
     }
 
-    public boolean isOpen(SprGuest sprGuest) { // Checks if the spr is over the table
+    public boolean isAvb(SprGuest sprGuest) { // Checks if the spr is over the table
 
         fGY = sprGuest.getY();
         fGX = sprGuest.getX();
@@ -53,7 +54,7 @@ public class ObjTables extends Sprite {
         if (fGX > fX && fGX < fX + fW) {
             if (fGY > fY && fGY < fY + fH) {
                 super.setBounds(fX, fY, fW, fH);
-                if (Gdx.input.isTouched() && isSitting == false) {
+                if (Gdx.input.isTouched() && !isSitting) {
                     super.setBounds(fX - 10, fY - 10, fW + 20, fH + 20);
                     return true;
 

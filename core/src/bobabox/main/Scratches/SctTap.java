@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 //https://www.youtube.com/watch?v=qlJUrcpQXo8
+//DOESN'T HAVE A BACK BUTTON
 
 public class SctTap implements Screen {
 

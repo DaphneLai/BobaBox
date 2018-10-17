@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import bobabox.main.Objects.ObjTables;
 import bobabox.main.Screens.ScrGame;
 
 public class SprGuest extends Sprite {
@@ -14,29 +15,33 @@ public class SprGuest extends Sprite {
     private SpriteBatch batch;
     private StretchViewport viewport;
     private Vector3 vTouch;
-    private float fX, fY, fMove, fHx, fHy, fH, fW, fHw, fHh;
-    private boolean isDown = false, isLeft = false, isUp = false, bCanDrag = false, isReady = false, isSitting, isGone = false;
+    private float fX, fY, fH, fW, fMove; //Guest
+    private float fHx, fHy, fHw, fHh; //Hearts
+    private boolean isDown = false, isLeft = false, isUp = false, bCanDrag = false, isReady = false, bSitting = false, isGone = false;
     private int nTimer = 0;
+    private ObjTables objTable;
     private Texture txt3, txt2, txt1, txt0;
 
 
-    public SprGuest(String sFile, StretchViewport _viewport) {
 
+    public SprGuest(String sFile, StretchViewport _viewport) {
         super(new Texture(Gdx.files.internal(sFile)));
+
+        //Importing
         viewport = _viewport;
         //Guests
         fX = 80;
         fY = 330;
         fW = 80;
         fH = 100;
-        fMove = 1.0f;
+        fMove = 6.0f;
         setPosition(fX, fY);
-        setFlip(false, false);
         setSize(fW, fH);
-
+        setFlip(false, false);
         //Hearts
         fHw = 100;
         fHh = 30;
+
         txt3 = new Texture("data/Hearts-01.png");
         txt2 = new Texture("data/Hearts-02.png");
         txt1 = new Texture("data/Hearts-03.png");
@@ -44,42 +49,53 @@ public class SprGuest extends Sprite {
 
     }
 
-
     //Beginning where the guest enters the store
     public void walkDown() {
-        if (isDown == false) {
-            fY -= fMove + 5;
-            fHy = fY + 120;
+        if (!isDown) {
+            fY -= fMove;
+            // fHy = fY + 120;
             setY(fY);
-            if (fY <= 10) {
+            if (fY <= 30 && fHy <= 150) {
                 isDown = true;
-            }
-            if (fHy <= 130) {
                 fMove = 0;
-
-                isSitting = false;
+                bSitting = false;
                 bCanDrag = true;
             }
+//            if (fHy <= 130) {
+//                fMove = 0;
+//
+//                bSitting = false;
+//                bCanDrag = true;
+//            }
+        } else if (isDown) {
+            nTimer++;
         }
     }
-    //Checks if guest is Sitting
-    public void sittingDown(boolean isSitting_) {
-        isSitting = isSitting_;
-        if (isSitting == true) {
-            setSize(0, 0);
 
-            //  System.out.println("is sitting =" + isSitting);
+    //Checks if guest is Sitting (I switched to bSitting to associate it to the guest)
+    public void sittingDown(boolean _isSitting) {
+        bSitting = _isSitting;
+        if (bSitting) {
+            setSize(0, 0);
+            bCanDrag = false;
+            System.out.println("bSitting:" + bSitting);
+            if (nTimer % 900 == 0) {
+                leave();
+            }
         }
+//        if (nTimer%900 == 0) {
+//            if (bSitting == true) {
+//                leave();
+//            }
+//        }
     }
 
     //Active when the guest is dragged
     public void drag() {
-        if (isDown == true) {
-            nTimer++;
-        }
+        walkDown();
         if (isMousedOver()) {
-            if (isSitting == false) {
-                if (bCanDrag == true) {
+            if (!bSitting) {
+                if (bCanDrag) {
                     if (Gdx.input.isTouched()) {
                         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
                         viewport.unproject(vTouch);
@@ -92,34 +108,34 @@ public class SprGuest extends Sprite {
                 }
             }
         }
-
-        if (nTimer > 900) {
-            if (isSitting == true) {
-                leave(getX(), getY());
-            }
-        }
     }
 
-
     //Takes into account all events that affects hearts
-    public void heartTracker(SpriteBatch _batch) {
+    public void hearts(SpriteBatch _batch, ObjTables _objTable) {
+        //Importing
+        objTable = _objTable;
         batch = _batch;
+        objTable.sittingDown(bSitting);
         fHx = fX - 10;
         fHy = fY + 120;
-        if (bCanDrag == true) {
-            if (Gdx.input.isTouched()) {
-                nTimer = 0;
+        if (bCanDrag) {
+            if (Gdx.input.isTouched() && isMousedOver()) {
+                if (!isGone) {
+                    nTimer = 0;
+                }
             }
         }
 
         //Ordering
-        if (isSitting == true) {
-            if (isReady == true) {
-               // System.out.println("Ready to order");
+        if (bSitting) {
+            fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
+            fHy = objTable.getY() + objTable.getHeight();
+            if (isReady) {
+                // System.out.println("Ready to order");
             }
         }
 
-        //Level of patience
+        //Level of hearts
         if (nTimer >= 0 && nTimer < 300) {
             batch.draw(txt3, fHx, fHy, fHw, fHh);
 
@@ -133,26 +149,28 @@ public class SprGuest extends Sprite {
         } else if (nTimer > 900) {
             //System.out.println("This is horrible service!");
             batch.draw(txt0, fHx, fHy, fHw, fHh);
-            leave(fHx, fHy);
-            if (isGone == true) {
+            leave();
+            if (isGone) {
                 setSize(0, 0);
             }
         }
     }
 
-
     //When guest is too impatient, they leave
-    private void leave(float _fX, float _fY) {
+    private void leave() {
         setSize(fW, fH);
-        if (isLeft == false) {
-            fX -= fMove + 4;
+        bCanDrag = false;
+        bSitting = false;
+        if (!isLeft) {
+            fMove = 8;
+            fX -= fMove;
             setX(fX);
             if (fX <= 70) {
                 isLeft = true;
             }
         }
-        if (isUp == false && isLeft == true) {
-            fY += fMove + 4;
+        if (!isUp && isLeft) {
+            fY += fMove;
             setY(fY);
             if (fY >= 330) {
                 isUp = true;
@@ -166,8 +184,8 @@ public class SprGuest extends Sprite {
     public boolean isMousedOver() {
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
-        if (vTouch.x > (fX-100) && vTouch.x < fX + (fW+100)) {
-            if (vTouch.y > (fY - 50) && vTouch.y < fY + (fH + 50) ) {
+        if (vTouch.x > (fX - 20) && vTouch.x < fX + (fW + 20)) {
+            if (vTouch.y > (fY - 20) && vTouch.y < fY + (fH + 20)) {
                 return true;
             }
         }

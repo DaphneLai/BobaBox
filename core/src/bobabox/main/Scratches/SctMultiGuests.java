@@ -13,23 +13,29 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import java.util.ArrayList;
 import java.util.List;
 
+import bobabox.main.GamMenu;
+import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprGuest;
 
-
+//NOT IN USE
 public class SctMultiGuests implements Screen {
+    GamMenu gamMenu;
 
     private OrthographicCamera camera;
     private StretchViewport viewport;
     private SpriteBatch batch;
     private Texture txtBG;
     private ObjTables objTable, objTable2;
-    private boolean isSitting, isOpen = true;
+    private boolean isSitting, isTFree = true;
     Vector3 vTouch;
+    private SprGuest sprGst;
     private int nTimer = 0, nGst = 0;
     private List<SprGuest> arliGuests;
+    private ObjButton btnHome;
 
-    public SctMultiGuests(Game _gammenu) {
+    public SctMultiGuests(GamMenu _gammenu) {
+        gamMenu = _gammenu;
 
         //Logic
         camera = new OrthographicCamera();
@@ -46,6 +52,7 @@ public class SctMultiGuests implements Screen {
         // objTable2 = new ObjTables(800, 150, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         arliGuests = new ArrayList<SprGuest>();
+        btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
 
         for (int i = 1; i <= 10; i++) {
             arliGuests.add(new SprGuest("data/GUEST1_spr.png", viewport));
@@ -74,10 +81,11 @@ public class SctMultiGuests implements Screen {
         //Drawing
         batch.draw(txtBG, 0, 0);
         objTable.draw(batch);
+        btnHome.draw(batch);
         // objTable2.draw(batch);
         updateGuest(nGst, batch);
-        if (isOpen) {
-            if (nTimer % 300 == 0) {
+        if (isTFree) {
+            if (nTimer%300 == 0) {
                 if (nGst < 9) {
                     nGst++;
                 } else {
@@ -89,6 +97,11 @@ public class SctMultiGuests implements Screen {
         System.out.println("nGST:" + nGst);
         batch.end();
 
+        //Buttons
+        if(btnHome.bJustClicked()){
+            gamMenu.updateScreen(2);
+        }
+
 //        if (objTable.isOpen(arliGuests.get(nGst)) == false) {
 //            isSitting = true;
 //            arliGuests.get(nGst).sittingDown(isSitting);
@@ -98,21 +111,18 @@ public class SctMultiGuests implements Screen {
     //Runs all of the SprGuests' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            arliGuests.get(n).draw(batch);
-            arliGuests.get(n).walkDown();
-            arliGuests.get(n).drag();
-            arliGuests.get(n).heartTracker(batch);
-            if (isOpen) {
-                if (!objTable.isOpen(arliGuests.get(n))) {
-                    isSitting = true;
-                    isOpen = false;
-//                    arliGuests.get(n).sittingDown(isSitting);
-//                    objTable.sittingDown(isSitting)
-                } else {
-                    isSitting = false;
-                }
-                arliGuests.get(n).sittingDown(isSitting);
-               objTable.sittingDown(isSitting);
+            sprGst = arliGuests.get(n); //temporary Guest
+            sprGst.draw(batch);
+            sprGst.drag();
+            sprGst.sittingDown(isSitting);
+            sprGst.hearts(batch, objTable);
+            if (objTable.isAvb(sprGst)) {
+                isSitting = false;
+                isTFree = true;
+            } else if (!objTable.isAvb(sprGst)) {
+                isSitting = true;
+                isTFree = false;
+                sprGst.sittingDown(isSitting);
             }
         }
     }

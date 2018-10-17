@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import bobabox.main.GamMenu;
+import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprGuest;
 
 
 public class SctGuests implements Screen {
-
+    GamMenu gamMenu;
     private OrthographicCamera camera;
     private StretchViewport viewport;
     private SpriteBatch batch;
@@ -24,8 +26,10 @@ public class SctGuests implements Screen {
     private ObjTables objTable;
     private boolean isSitting;
     private Vector3 vTouch;
+    private ObjButton btnHome;
 
-    public SctGuests(Game _gammenu) {
+    public SctGuests(GamMenu _gammenu) {
+        gamMenu = _gammenu;
 
         camera = new OrthographicCamera();
         vTouch = new Vector3();
@@ -38,6 +42,7 @@ public class SctGuests implements Screen {
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
         objTable = new ObjTables(500, 250, "data/TABLE3_obj.png", "data/TABLE32_obj.png",viewport);
+        btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
     }
 
     @Override
@@ -49,30 +54,35 @@ public class SctGuests implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Drawing
         batch.draw(txtBG, 0, 0);
+        btnHome.draw(batch);
         objTable.draw(batch);
         sprGuest.walkDown();
         sprGuest.draw(batch);
         sprGuest.drag();
-        sprGuest.heartTracker(batch);
+        sprGuest.hearts(batch, objTable);
+        sprGuest.sittingDown(isSitting);
 
         batch.end();
 
-        if (objTable.isOpen(sprGuest) == false) {
-            System.out.println("HERE!");
+        if (!objTable.isAvb(sprGuest)) {
+           // System.out.println("HERE!");
             isSitting = true;
-            sprGuest.sittingDown(isSitting);
-            objTable.sittingDown(isSitting);
-        } else if (objTable.isOpen(sprGuest) == true){
-            System.out.println("LEAVING");
+           // sprGuest.sittingDown(isSitting);
+        } else if (objTable.isAvb(sprGuest)){
+           // System.out.println("LEAVING");
             isSitting = false;
-            sprGuest.sittingDown(isSitting);
-            objTable.sittingDown(isSitting);
+           // sprGuest.sittingDown(isSitting);
         }
 
         if (Gdx.input.isTouched()) {
             viewport.unproject(vTouch.set(Gdx.input.getX(), (Gdx.input.getY() * (-1) + 500), 0));
-            System.out.println("x: " + Gdx.input.getX());
-            System.out.println("y: " + (Gdx.input.getY() * -1 + 500));
+//            System.out.println("x: " + Gdx.input.getX());
+//            System.out.println("y: " + (Gdx.input.getY() * -1 + 500));
+        }
+
+        //Buttons
+        if(btnHome.bJustClicked()){
+            gamMenu.updateScreen(2);
         }
 
     }

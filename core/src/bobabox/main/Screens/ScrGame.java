@@ -80,7 +80,7 @@ public class ScrGame implements Screen, InputProcessor {
         sprGuest.walkDown();
         sprGuest.draw(batch);
         sprGuest.drag();
-        sprGuest.heartTracker(batch);
+        sprGuest.hearts(batch, objTable);
         batch.end();
 
         //ObjButton
@@ -98,11 +98,11 @@ public class ScrGame implements Screen, InputProcessor {
             sprServer.walk(objTable);
         }
         //Table
-        if (objTable.isOpen(sprGuest) == false) {
+        if (objTable.isAvb(sprGuest) == false) {
             isSitting = true;
             sprGuest.sittingDown(isSitting);
             objTable.sittingDown(isSitting);
-        } else if (objTable.isOpen(sprGuest) == true) {
+        } else if (objTable.isAvb(sprGuest) == true) {
             isSitting = false;
             objTable.sittingDown(isSitting);
         }

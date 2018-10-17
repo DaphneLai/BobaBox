@@ -9,6 +9,7 @@ import bobabox.main.Scratches.SctTap;
 import bobabox.main.Screens.ScrGame;
 import bobabox.main.Screens.ScrEnd;
 import bobabox.main.Screens.ScrMenu;
+import bobabox.main.Screens.ScrScratch;
 import bobabox.main.Screens.ScrTut;
 import bobabox.main.Scratches.SctWaiter;
 import bobabox.main.Scratches.SctMultiGuests;
@@ -28,6 +29,7 @@ public class GamMenu extends Game {
     ScrMenu scrMenu;
     SctTap sctTap;
     ScrTut scrTut;
+    ScrScratch scrScratch;
     SctGuests sctGuests;
     SctWaiter sctWaiter;
     SctMultiGuests sctMultiGuests;
@@ -48,6 +50,9 @@ public class GamMenu extends Game {
                 break;
             case 3:
                 setScreen(scrTut);
+                break;
+            case 4:
+                setScreen(scrScratch);
                 break;
             case 10:
                 setScreen(sctTap);
@@ -73,12 +78,13 @@ public class GamMenu extends Game {
         scrEnd = new ScrEnd(this, viewport, camera);
         scrMenu = new ScrMenu(this, viewport, camera);
         scrTut = new ScrTut(this, viewport, camera);
+        scrScratch = new ScrScratch(this, viewport, camera);
         sctTap = new SctTap(this);
         sctGuests = new SctGuests(this);
         sctWaiter = new SctWaiter(this);
         sctMultiGuests = new SctMultiGuests(this);
 
-        updateScreen(40);
+        updateScreen(2);
 
     }
 

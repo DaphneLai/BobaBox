@@ -33,6 +33,8 @@ public class ScrTut implements Screen , InputProcessor{
     public ScrTut(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
 
+        nW = gamMenu.WORLD_WIDTH;
+        nH = gamMenu.WORLD_HEIGHT;
         Gdx.input.setInputProcessor(this);
         vTouch = new Vector3();
         viewport = _viewport;
@@ -70,12 +72,6 @@ public class ScrTut implements Screen , InputProcessor{
 
         //ObjButton
         checkButtons();
-        if (btnStart.isMousedOver() && Gdx.input.justTouched()) {
-            gamMenu.updateScreen(0);
-        }
-        if (btnHome.isMousedOver() && Gdx.input.justTouched()) {
-            gamMenu.updateScreen(2);
-        }
     }
 
     private void checkButtons(){ // Checks if Buttons are pressed
@@ -84,7 +80,7 @@ public class ScrTut implements Screen , InputProcessor{
             gamMenu.updateScreen(0);
         }
         if (btnHome.bJustClicked()) {
-            gamMenu.updateScreen(3);
+            gamMenu.updateScreen(2);
         }
     }
 

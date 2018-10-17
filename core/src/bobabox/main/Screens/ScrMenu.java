@@ -54,8 +54,8 @@ public class ScrMenu implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        System.out.println(width);
-        System.out.println(height);
+//        System.out.println(width);
+//        System.out.println(height);
         viewport.update(width, height);
         camera.update();
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
@@ -93,7 +93,7 @@ public class ScrMenu implements Screen, InputProcessor {
             gamMenu.updateScreen(3);
         }
         if (btnScratch.bJustClicked()){
-            gamMenu.updateScreen(30);
+            gamMenu.updateScreen(4);
         }
     }
 
