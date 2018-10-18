@@ -3,11 +3,14 @@ package bobabox.main.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import bobabox.main.Objects.ObjButton;
@@ -23,8 +26,9 @@ public class ScrGame implements Screen, InputProcessor {
     //Values
     int nW, nH;
     private boolean isTableClicked = false;
-    public boolean isSitting = false;
+    private boolean isSitting = false;
     private Vector3 vTouch;
+    private int nGameTimer = 60, nFPS;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
@@ -35,6 +39,7 @@ public class ScrGame implements Screen, InputProcessor {
     private SprServer sprServer;
     private ObjTables objTable;
     private ObjButton btnPause;
+    private BitmapFont bfFont;
 
     public ScrGame(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -53,8 +58,9 @@ public class ScrGame implements Screen, InputProcessor {
         txtBg = new Texture("data/GameBG_img.png");
         objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
         btnPause = new ObjButton(940, 40, 90, 55, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
-
-        //   sprServer = new SprServer("data/SERVER1_spr.png",850, 175, viewport);
+        bfFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
+        bfFont.setColor(Color.DARK_GRAY);
+        bfFont.getData().setScale(1f, 1f);
     }
 
 
@@ -65,12 +71,19 @@ public class ScrGame implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-
-        //Logic
+        //SetUp
         camera.update();
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        nFPS++;
+        if(nFPS%60 == 0) {
+            nGameTimer--;
+        }
+        if(nGameTimer == 0){
+            gamMenu.updateScreen(1);
+        }
+        System.out.println("TIMER: " + nGameTimer);
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
@@ -81,6 +94,7 @@ public class ScrGame implements Screen, InputProcessor {
         sprGuest.draw(batch);
         sprGuest.drag();
         sprGuest.hearts(batch, objTable);
+        bfFont.draw(batch, Integer.toString(nGameTimer), nW -100, nH-138);
         batch.end();
 
         //ObjButton
@@ -107,13 +121,14 @@ public class ScrGame implements Screen, InputProcessor {
             objTable.sittingDown(isSitting);
         }
 
-
     }
 
     public void reset() {
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
         sprServer = new SprServer("data/SERVER1_spr.png", 850, 175, viewport);
         isTableClicked = false;
+        nFPS = 0;
+        nGameTimer = 60;
     }
 
     private void checkButtons() { // Checks if Buttons are pressed
