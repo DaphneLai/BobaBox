@@ -38,7 +38,7 @@ public class ObjTables extends Sprite {
 
     public void sittingDown(boolean _isSitting) {
         isSitting = _isSitting;
-        System.out.println("isSitting:" + isSitting);
+     //   System.out.println("isSitting:" + isSitting);
         if (isSitting) {
             setTexture(nTxt2);
         } else if (!isSitting){
