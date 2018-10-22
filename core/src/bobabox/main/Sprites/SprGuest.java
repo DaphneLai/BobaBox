@@ -115,12 +115,15 @@ public class SprGuest extends Sprite {
         }
 
         //Level of hearts
-        batch.draw(arHearts[nHearts], fHx, fHy, fHw, fHh);
+        if (!isGone) {
+            batch.draw(arHearts[nHearts], fHx, fHy, fHw, fHh);
+        }
             if ((nTimer % 300 == 0) && isDown) {
-                nHearts++;
-                System.out.println(nHearts);
+                if (nHearts < arHearts.length) {
+                    nHearts++;
+                }
             }
-            if (nTimer > 900) {
+            if (nHearts == 3) {
                 leave();
                 if (isGone) {
                     setSize(0, 0);
