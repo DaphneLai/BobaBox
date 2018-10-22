@@ -8,7 +8,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.Shape;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import bobabox.main.GamMenu;
+import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprServer;
 
@@ -29,8 +40,11 @@ public class SctWaiter implements Screen, InputProcessor {
     private ObjTables objTable;
     private float fWX, fWY;
     private boolean isTableClicked = false;
+    private ObjButton btnHome;
+    private GamMenu gamMenu;
 
     public SctWaiter(GamMenu _gammenu) {
+        gamMenu = _gammenu;
 
         //game height and width
         fWX = 1000;
@@ -52,10 +66,14 @@ public class SctWaiter implements Screen, InputProcessor {
         batch = new SpriteBatch();
 
         //table
-        objTable = new ObjTables(fWX / 2 , fWY / 2 , "data/TABLE2_obj.png","data/TABLE22_obj.png",viewport);
+        objTable = new ObjTables(fWX / 2, fWY / 2, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
 
         //server
-        sprServer = new SprServer("data/SERVER1_spr.png", fWX / 2*0, fWY / 2 *0, viewport); //850, 175
+        sprServer = new SprServer("data/SERVER1_spr.png", fWX / 2 * 0, fWY / 2 * 0, viewport); //850, 175
+
+        //Buttons
+        btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
+
     }
 
 
@@ -63,6 +81,7 @@ public class SctWaiter implements Screen, InputProcessor {
     public void show() {
 
     }
+
 
     public void render(float delta) {
         //drawing
@@ -72,8 +91,13 @@ public class SctWaiter implements Screen, InputProcessor {
         batch.draw(txBG, 0, 0);
         sprServer.draw(batch);
         objTable.draw(batch);
+        btnHome.draw(batch);
         batch.end();
 
+        //Button
+        if(btnHome.bJustClicked()){
+            gamMenu.updateScreen(2);
+        }
         //Checks if mouse is over table and clicked
         if (objTable.isMousedOver() == true && Gdx.input.justTouched()) {
             isTableClicked = true;

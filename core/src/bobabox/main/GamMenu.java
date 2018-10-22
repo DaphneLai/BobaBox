@@ -84,7 +84,9 @@ public class GamMenu extends Game {
         sctWaiter = new SctWaiter(this);
         sctMultiGuests = new SctMultiGuests(this);
 
+
         updateScreen(2);
+
 
     }
 

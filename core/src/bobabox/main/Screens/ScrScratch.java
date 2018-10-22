@@ -84,7 +84,6 @@ public class ScrScratch implements Screen {
         bfFont.draw(batch, "Guest", 310, 205);
         btnWaiter.draw(batch)  ;
         bfFont.draw(batch, "Server", 425, 205);
-        bfFont.draw(batch, "No btnHome", 415, 220);
         btnMultiGuests.draw(batch);
         bfFont.draw(batch, "MultiGuests", 535, 205);
         batch.end();
