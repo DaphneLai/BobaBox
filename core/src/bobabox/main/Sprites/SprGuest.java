@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import bobabox.main.Objects.ObjTables;
-import bobabox.main.Screens.ScrGame;
 
 public class SprGuest extends Sprite {
 
@@ -18,9 +16,10 @@ public class SprGuest extends Sprite {
     private float fX, fY, fH, fW, fMove; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
     private boolean isDown = false, isLeft = false, isUp = false, bCanDrag = false, isReady = false, bSitting = false, isGone = false;
-    private int nTimer = 0;
+    private int nTimer = 0, nHearts;
     private ObjTables objTable;
-    private Texture txt3, txt2, txt1, txt0;
+    private Texture arHearts[] = new Texture[4];
+
 
 
 
@@ -38,14 +37,15 @@ public class SprGuest extends Sprite {
         setPosition(fX, fY);
         setSize(fW, fH);
         setFlip(false, false);
+
         //Hearts
         fHw = 100;
         fHh = 30;
-
-        txt3 = new Texture("data/Hearts-01.png");
-        txt2 = new Texture("data/Hearts-02.png");
-        txt1 = new Texture("data/Hearts-03.png");
-        txt0 = new Texture("data/Hearts-04.png");
+        nHearts = 0;
+        arHearts[0] = new Texture("data/Hearts-01.png");
+        arHearts[1] = new Texture("data/Hearts-02.png");
+        arHearts[2] = new Texture("data/Hearts-03.png");
+        arHearts[3] = new Texture("data/Hearts-04.png");
 
     }
 
@@ -61,14 +61,6 @@ public class SprGuest extends Sprite {
                 bSitting = false;
                 bCanDrag = true;
             }
-//            if (fHy <= 130) {
-//                fMove = 0;
-//
-//                bSitting = false;
-//                bCanDrag = true;
-//            }
-        } else if (isDown) {
-            nTimer++;
         }
     }
 
@@ -78,16 +70,8 @@ public class SprGuest extends Sprite {
         if (bSitting) {
             setSize(0, 0);
             bCanDrag = false;
-            System.out.println("bSitting:" + bSitting);
-            if (nTimer % 900 == 0) {
-                leave();
-            }
+          //  System.out.println("bSitting:" + bSitting);
         }
-//        if (nTimer%900 == 0) {
-//            if (bSitting == true) {
-//                leave();
-//            }
-//        }
     }
 
     //Active when the guest is dragged
@@ -103,7 +87,7 @@ public class SprGuest extends Sprite {
                         fY = vTouch.y - 60;
                         setX(fX);
                         setY(fY);
-                        nTimer = 0;
+                        nHearts = 0;
                     }
                 }
             }
@@ -118,14 +102,9 @@ public class SprGuest extends Sprite {
         objTable.sittingDown(bSitting);
         fHx = fX - 10;
         fHy = fY + 120;
-        if (bCanDrag) {
-            if (Gdx.input.isTouched() && isMousedOver()) {
-                if (!isGone) {
-                    nTimer = 0;
-                }
-            }
+        if (isDown) {
+            nTimer++;
         }
-
         //Ordering
         if (bSitting) {
             fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
@@ -136,24 +115,17 @@ public class SprGuest extends Sprite {
         }
 
         //Level of hearts
-        if (nTimer >= 0 && nTimer < 300) {
-            batch.draw(txt3, fHx, fHy, fHw, fHh);
-
-        } else if (nTimer > 300 && nTimer < 600) {
-            isReady = true;
-            batch.draw(txt2, fHx, fHy, fHw, fHh);
-
-        } else if (nTimer > 600 && nTimer < 900) {
-            batch.draw(txt1, fHx, fHy, fHw, fHh);
-
-        } else if (nTimer > 900) {
-            //System.out.println("This is horrible service!");
-            batch.draw(txt0, fHx, fHy, fHw, fHh);
-            leave();
-            if (isGone) {
-                setSize(0, 0);
+        batch.draw(arHearts[nHearts], fHx, fHy, fHw, fHh);
+            if ((nTimer % 300 == 0) && isDown) {
+                nHearts++;
+                System.out.println(nHearts);
             }
-        }
+            if (nTimer > 900) {
+                leave();
+                if (isGone) {
+                    setSize(0, 0);
+                }
+            }
     }
 
     //When guest is too impatient, they leave
