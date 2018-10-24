@@ -8,15 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.Shape;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
@@ -26,7 +17,7 @@ import bobabox.main.Sprites.SprServer;
 //Sarah
 //Help from Grondin & Daph
 //Screen is not used in game currently
-//Release 2.5 and 2.6 scratch
+//Release 2.5 and 2.6 scratch //SHAPE RENDER?
 public class SctWaiter implements Screen, InputProcessor {
 
 
@@ -92,6 +83,7 @@ public class SctWaiter implements Screen, InputProcessor {
         objTable.draw(batch);
         btnHome.draw(batch);
         batch.end();
+
 
         //Button
         if(btnHome.bJustClicked()){
