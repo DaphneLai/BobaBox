@@ -59,6 +59,8 @@ public class ScrMenu implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
+//        System.out.println(width);
+//        System.out.println(height);
         viewport.update(width, height);
         camera.update();
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
@@ -76,15 +78,15 @@ public class ScrMenu implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.begin();
-        if (!isMute) {
+        if(!isMute) {
             music.play();
         }
         //Drawing
         batch.draw(txtBack, 0, 0, nW, nH);
-        btnStart.update(batch);
-        btnTut.update(batch);
-        btnScratch.update(batch);
-        btnMusic.update(batch);
+        btnStart.draw(batch);
+        btnTut.draw(batch);
+        btnScratch.draw(batch);
+        btnMusic.draw(batch);
 
         batch.end();
         //Buttons
@@ -92,24 +94,48 @@ public class ScrMenu implements Screen, InputProcessor {
     }
 
     private void checkButtons() { // Checks if Buttons are pressed
-        if (btnStart.justClicked()) {
+        checkButtonTextures();
+        if (btnStart.bJustClicked()) {
             gamMenu.updateScreen(0);
         }
-        if (btnTut.justClicked()) {
+        if (btnTut.bJustClicked()) {
             gamMenu.updateScreen(3);
         }
-        if (btnScratch.justClicked()) {
+        if (btnScratch.bJustClicked()) {
             gamMenu.updateScreen(4);
         }
-        if (btnMusic.justClicked()) {
-            if (isMute) {
+        if (btnMusic.bJustClicked()) {
+            if(isMute){
                 music.play();
                 isMute = false;
-            } else if (!isMute) {
+            }else if(!isMute) {
                 //System.out.println("MUTE");
                 music.pause();
                 isMute = true;
             }
+        }
+    }
+
+    private void checkButtonTextures() {
+        if (btnStart.isMousedOver()) {
+            btnStart.changeTexture(1);
+        } else {
+            btnStart.changeTexture(0);
+        }
+        if (btnTut.isMousedOver()) {
+            btnTut.changeTexture(1);
+        } else {
+            btnTut.changeTexture(0);
+        }
+        if (btnScratch.isMousedOver()) {
+            btnScratch.changeTexture(1);
+        } else {
+            btnScratch.changeTexture(0);
+        }
+        if (btnMusic.isMousedOver()) {
+            btnMusic.changeTexture(1);
+        } else {
+            btnMusic.changeTexture(0);
         }
     }
 

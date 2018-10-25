@@ -65,17 +65,29 @@ public class ScrEnd implements Screen, InputProcessor {
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        btnHome.update(batch);
+        btnHome.draw(batch);
 
         batch.end();
 
         //ObjButton
         checkButtons();
+        if (btnHome.isMousedOver() && Gdx.input.justTouched()) {
+            gamMenu.updateScreen(2);
+        }
     }
 
     private void checkButtons(){ // Checks if Buttons are pressed
-        if (btnHome.justClicked()) {
+        checkButtonTextures();
+        if (btnHome.bJustClicked()) {
             gamMenu.updateScreen(2);
+        }
+    }
+
+    private void checkButtonTextures(){
+        if(btnHome.isMousedOver()){
+            btnHome.changeTexture(1);
+        } else {
+            btnHome.changeTexture(0);
         }
     }
 

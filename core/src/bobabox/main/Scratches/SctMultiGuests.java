@@ -81,7 +81,7 @@ public class SctMultiGuests implements Screen {
         //Drawing
         batch.draw(txtBG, 0, 0);
         objTable.draw(batch);
-        btnHome.update(batch);
+        btnHome.draw(batch);
         // objTable2.draw(batch);
         updateGuest(nGst, batch);
         if (isTFree) {
@@ -98,7 +98,7 @@ public class SctMultiGuests implements Screen {
         batch.end();
 
         //Buttons
-        if(btnHome.justClicked()){
+        if(btnHome.bJustClicked()){
             gamMenu.updateScreen(2);
         }
 

@@ -65,8 +65,8 @@ public class ScrTut implements Screen , InputProcessor{
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        btnHome.update(batch);
-        btnStart.update(batch);
+        btnHome.draw(batch);
+        btnStart.draw(batch);
 
         batch.end();
 
@@ -75,14 +75,27 @@ public class ScrTut implements Screen , InputProcessor{
     }
 
     private void checkButtons(){ // Checks if Buttons are pressed
-        if (btnStart.justClicked()) {
+        checkButtonTextures();
+        if (btnStart.bJustClicked()) {
             gamMenu.updateScreen(0);
         }
-        if (btnHome.justClicked()) {
+        if (btnHome.bJustClicked()) {
             gamMenu.updateScreen(2);
         }
     }
 
+    private void checkButtonTextures(){
+        if(btnStart.isMousedOver()){
+            btnStart.changeTexture(1);
+        } else {
+            btnStart.changeTexture(0);
+        }
+        if(btnHome.isMousedOver()){
+            btnHome.changeTexture(1);
+        } else {
+            btnHome.changeTexture(0);
+        }
+    }
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);

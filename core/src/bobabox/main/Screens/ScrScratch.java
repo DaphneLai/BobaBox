@@ -76,15 +76,15 @@ public class ScrScratch implements Screen {
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        btnHome.update(batch);
-        btnTap.update(batch);
+        btnHome.draw(batch);
+        btnTap.draw(batch);
         bfFont.draw(batch, "Input Test", 155, 205);
         bfFont.draw(batch, "No btnHome", 155, 220);
-        btnGuests.update(batch);
+        btnGuests.draw(batch);
         bfFont.draw(batch, "Guest", 310, 205);
-        btnWaiter.update(batch);
+        btnWaiter.draw(batch)  ;
         bfFont.draw(batch, "Server", 425, 205);
-        btnMultiGuests.update(batch);
+        btnMultiGuests.draw(batch);
         bfFont.draw(batch, "MultiGuests", 535, 205);
         batch.end();
 
@@ -93,20 +93,30 @@ public class ScrScratch implements Screen {
     }
 
     private void checkButtons() { // Checks if Buttons are pressed
-        if (btnHome.justClicked()) {
+        checkButtonTextures();
+        if (btnHome.bJustClicked()) {
             gamMenu.updateScreen(2);
         }
-        if (btnTap.justClicked()) {
+        if (btnTap.bJustClicked()) {
             gamMenu.updateScreen(10);
         }
-        if (btnGuests.justClicked()) {
+        if (btnGuests.bJustClicked()) {
             gamMenu.updateScreen(20);
         }
-        if (btnWaiter.justClicked()) {
+        if (btnWaiter.bJustClicked()) {
             gamMenu.updateScreen(30);
         }
-        if (btnMultiGuests.justClicked()) {
+        if (btnMultiGuests.bJustClicked()) {
             gamMenu.updateScreen(40);
+        }
+    }
+
+    //only need to change btnHome's txt
+    private void checkButtonTextures() {
+        if (btnHome.isMousedOver()) {
+            btnHome.changeTexture(1);
+        } else {
+            btnHome.changeTexture(0);
         }
     }
 

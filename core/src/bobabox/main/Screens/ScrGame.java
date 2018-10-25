@@ -87,7 +87,7 @@ public class ScrGame implements Screen, InputProcessor {
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
-        btnPause.update(batch);
+        btnPause.draw(batch);
         sprServer.draw(batch);
         objTable.draw(batch);
         sprGuest.walkDown();
@@ -132,8 +132,17 @@ public class ScrGame implements Screen, InputProcessor {
     }
 
     private void checkButtons() { // Checks if Buttons are pressed
-        if (btnPause.justClicked()) {
+        checkButtonTextures();
+        if (btnPause.bJustClicked()) {
             gamMenu.updateScreen(2);
+        }
+    }
+
+    private void checkButtonTextures() {
+        if (btnPause.isMousedOver()) {
+            btnPause.changeTexture(1);
+        } else {
+            btnPause.changeTexture(0);
         }
     }
 

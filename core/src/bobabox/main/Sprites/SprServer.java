@@ -18,8 +18,8 @@ public class SprServer extends Sprite {
     private Vector3 vTouch;
     private int nYCheck = 0;
     private boolean bBeyondBounds = false;
-    private int arnDx[] = {0, 10, 0, -10, 0};
-    private int arnDy[] = {0, 0, -10, 0, 10};
+    private int arnDx[] = {0, 2, 0, -2, 0};
+    private int arnDy[] = {0, 0, -2, 0, 2};
 
 
     public SprServer(String sFile, float _fX, float _fY, StretchViewport _viewport) {
@@ -42,13 +42,14 @@ public class SprServer extends Sprite {
     public void walk(ObjTables objTables) { // Makes server move to table coordinates
         fTX = objTables.getX()+1;
         fTY = objTables.getY()+1;
-
         //TEMPORARY CONTROL
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             fX += arnDx[1];
             fY += arnDy[1];
             setX(fX);
             setY(fY);
 
+        }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
             fX += arnDx[4];
             fY += arnDy[4];
