@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
@@ -86,17 +87,18 @@ public class SctWaiter implements Screen, InputProcessor {
 
 
         //Button
-        if(btnHome.bJustClicked()){
+        if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
         }
         //Checks if mouse is over table and clicked
-        if (objTable.isMousedOver() == true && Gdx.input.justTouched()) {
-            isTableClicked = true;
-        }
-        //Make server go to table clicked
-        if (isTableClicked == true) {
+        if (objTable.isMousedOver() && Gdx.input.justTouched()) {
             sprServer.walk(objTable);
         }
+
+        //Make server go to table clicked
+//        if (isTableClicked == true) {
+//            sprServer.walk(objTable);
+//        }
         if (Gdx.input.isTouched()) {
             vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             //Readjusts input coordinates (vTouch.x and vTouch.y are our new input coordinates)

@@ -54,7 +54,7 @@ public class SctGuests implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Drawing
         batch.draw(txtBG, 0, 0);
-        btnHome.draw(batch);
+        btnHome.update(batch);
         objTable.draw(batch);
         sprGuest.walkDown();
         sprGuest.draw(batch);
@@ -76,15 +76,12 @@ public class SctGuests implements Screen {
 
         if (Gdx.input.isTouched()) {
             viewport.unproject(vTouch.set(Gdx.input.getX(), (Gdx.input.getY() * (-1) + 500), 0));
-//            System.out.println("x: " + Gdx.input.getX());
-//            System.out.println("y: " + (Gdx.input.getY() * -1 + 500));
         }
 
         //Buttons
-        if(btnHome.bJustClicked()){
+        if(btnHome.justClicked()){
             gamMenu.updateScreen(2);
         }
-
     }
 
     @Override
