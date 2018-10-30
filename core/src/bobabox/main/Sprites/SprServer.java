@@ -1,7 +1,6 @@
 package bobabox.main.Sprites;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
@@ -18,8 +17,9 @@ public class SprServer extends Sprite {
     private Vector3 vTouch;
     private int nYCheck = 0;
     private boolean bBeyondBounds = false;
-    private int arnDx[] = {0, 10, 0, -10, 0};
-    private int arnDy[] = {0, 0, -10, 0, 10};
+    private int arnDx[] = {0, 2, 0, -2, 0};
+    private int arnDy[] = {0, 0, -2, 0, 2};
+
 
 
     public SprServer(String sFile, float _fX, float _fY, StretchViewport _viewport) {
@@ -37,70 +37,72 @@ public class SprServer extends Sprite {
         }
         fWX = 1000;
         fWY = 500;
+
+
+
     }
 
     public void walk(ObjTables objTables) { // Makes server move to table coordinates
-        fTX = objTables.getX()+1;
-        fTY = objTables.getY()+1;
+        fTX = Math.round(objTables.getX())+1;
+        fTY = Math.round(objTables.getY())+1;
 
-        //TEMPORARY CONTROL
+        if (getBoundingRectangle().overlaps(objTables.getBoundingRectangle())) {
+            System.out.println("SERVER HIT TABLE");
+            fX += arnDx[0];
+            fY += arnDy[0];
+            setX(fX);
+            setY(fY);
+        }
+
+        if (fX + getWidth() != fTX && fX < fTX+94) {
+            System.out.println("RIGHT 1");
             fX += arnDx[1];
             fY += arnDy[1];
             setX(fX);
             setY(fY);
+        }
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+        if (fX + getWidth() == fTX && fY + getHeight() != fTY) {
+            System.out.println("UP 2");
             fX += arnDx[4];
             fY += arnDy[4];
             setX(fX);
             setY(fY);
+        }
 
-        }
-        //SET BOUNDARIES
-        System.out.println(fY+100 + " WAITER ");
-        System.out.println(fTY + " TABLE ");
-        if (fX+80 >= fTX) {
-            fX += arnDx[0];
-            fY += arnDy[0];
-            setX(fX);
-            setY(fY);
-        }
-        if(fX+80 <= getWidth()-fTX){
-            fX += arnDx[0];
-            fY += arnDy[0];
+        if (fX + 80 >= fTX && fY + 100 == fTY) {
+            System.out.println("RIGHT 3");
+            fX += arnDx[1];
+            fY += arnDy[1];
             setX(fX);
             setY(fY);
         }
 
-        if(fY+100 >= fTY){
-            System.out.println(" HIT BOTTOM ");
-            fX += arnDx[0];
-            fY += arnDy[0];
+        if (fX > fTX + 187 && fY < fTY + 110) {
+            System.out.println("UP 4");
+            fX += arnDx[4];
+            fY += arnDy[4];
             setX(fX);
             setY(fY);
         }
 
-        if(fY+100 <= getHeight()-fTY){
-            System.out.println(" HIT TOP");
-            fX += arnDx[0];
-            fY += arnDy[0];
+        if (fY >= fTY + 110 && fX > (fTX + 94) - 40) {
+            System.out.println("LEFT 5");
+            fX += arnDx[3];
+            fY += arnDy[3];
             setX(fX);
             setY(fY);
+        }
 
+        if (fX < (fTX + 94) && fY >= fTY + 110) {
+            System.out.println("RIGHT 6");
+            fX += arnDx[1];
+            fY += arnDy[1];
+            setX(fX);
+            setY(fY);
         }
     }
-
 }
-
-//    public boolean isInTable(float fTX, float fTY) {
-//        if (fX > fTX && fX < getWidth() - fTX) {
-//            if (fY > fTY && fY < getHeight() - fTY) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//}
 
 
 

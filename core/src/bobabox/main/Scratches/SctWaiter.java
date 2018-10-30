@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -33,6 +34,7 @@ public class SctWaiter implements Screen, InputProcessor {
     private boolean isTableClicked = false;
     private ObjButton btnHome;
     private GamMenu gamMenu;
+    private ShapeRenderer sh;
 
     public SctWaiter(GamMenu _gammenu) {
         gamMenu = _gammenu;
@@ -65,6 +67,7 @@ public class SctWaiter implements Screen, InputProcessor {
         //Buttons
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
 
+        sh = new ShapeRenderer();
     }
 
 
@@ -85,6 +88,12 @@ public class SctWaiter implements Screen, InputProcessor {
         btnHome.draw(batch);
         batch.end();
 
+        sh.begin(ShapeRenderer.ShapeType.Line);
+        sh.setColor(0, 0, 0, 1);
+        // sh.line(sprServer.getX(),sprServer.getY(),sprServer.getX()+sprServer.getWidth(),sprServer.getY()+sprServer.getHeight());
+        sh.rect(sprServer.getX(), sprServer.getY(), sprServer.getWidth(), sprServer.getHeight());
+        sh.rect(objTable.getX(), objTable.getY(), objTable.getWidth(), objTable.getHeight());
+        sh.end();
 
         //Button
         if (btnHome.justClicked()) {
@@ -92,13 +101,13 @@ public class SctWaiter implements Screen, InputProcessor {
         }
         //Checks if mouse is over table and clicked
         if (objTable.isMousedOver() && Gdx.input.justTouched()) {
-            sprServer.walk(objTable);
+            isTableClicked=true;
         }
 
         //Make server go to table clicked
-//        if (isTableClicked == true) {
-//            sprServer.walk(objTable);
-//        }
+        if (isTableClicked == true) {
+            sprServer.walk(objTable);
+        }
         if (Gdx.input.isTouched()) {
             vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             //Readjusts input coordinates (vTouch.x and vTouch.y are our new input coordinates)
