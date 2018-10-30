@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 import bobabox.main.Objects.ObjTables;
 
 public class SprGuest extends Sprite {
@@ -19,15 +20,21 @@ public class SprGuest extends Sprite {
     private int nTimer = 0, nHearts;
     private ObjTables objTable;
     private Texture arHearts[] = new Texture[4];
-
-
-
+    private double rand = Math.random() * 301;
+    private int nStatus;
+    /* nStatus is an integer to update the guest's current activity
+    0 - is ready to order
+    1 - has ordered, waiting for drink
+    2 - received drink, is now drinking it
+    3 - is done consuming beverage, waits for bill
+    4 - paid and has left */
 
     public SprGuest(String sFile, StretchViewport _viewport) {
         super(new Texture(Gdx.files.internal(sFile)));
 
         //Importing
         viewport = _viewport;
+
         //Guests
         fX = 80;
         fY = 330;
@@ -68,9 +75,10 @@ public class SprGuest extends Sprite {
     public void sittingDown(boolean _isSitting) {
         bSitting = _isSitting;
         if (bSitting) {
+            System.out.println(nTimer);
             setSize(0, 0);
             bCanDrag = false;
-          //  System.out.println("bSitting:" + bSitting);
+            //  System.out.println("bSitting:" + bSitting);
         }
     }
 
@@ -105,30 +113,54 @@ public class SprGuest extends Sprite {
         if (isDown) {
             nTimer++;
         }
-        //Ordering
+        //Sitting
         if (bSitting) {
             fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
             fHy = objTable.getY() + objTable.getHeight();
-            if (isReady) {
-                // System.out.println("Ready to order");
-            }
         }
+
+        //Ordering (isn't in use cause we're waiting for server code)
+        /*
+        if (nTimer == ??){
+            nStatus = 0;
+            nTimer = 0;
+            System.out.println("Ready to Order");
+        }
+        if (nStatus == 0 && sprServer is at Table){
+            nStatus = 1;
+            nTimer = 0;
+            System.out.println("Waiting for drinks");
+        }
+        if (nStatus == 1 && sprServer gives drinks){
+            nStatus = 2;
+            nTimer = 0;
+            System.out.println("drinkinggggg"):
+        } if (nStatus == 2 && nTimer == 300) {
+            nStatus = 3;
+            nTimer = 0;
+            System.out.println("DONE");
+        }
+        if (nStatus == 3 && sprServer is at table){
+            nStatus == 4;
+            leave();
+        }
+        */
 
         //Level of hearts
         if (!isGone) {
             batch.draw(arHearts[nHearts], fHx, fHy, fHw, fHh);
         }
-            if ((nTimer % 300 == 0) && isDown) {
-                if (nHearts < arHearts.length) {
-                    nHearts++;
-                }
+        if ((nTimer % 300 == 0) && isDown) {
+            if (nHearts < arHearts.length) {
+                nHearts++;
             }
-            if (nHearts == 3) {
-                leave();
-                if (isGone) {
-                    setSize(0, 0);
-                }
+        }
+        if (nHearts == 3) {
+            leave();
+            if (isGone) {
+                setSize(0, 0);
             }
+        }
     }
 
     //When guest is too impatient, they leave
@@ -156,7 +188,7 @@ public class SprGuest extends Sprite {
         }
     }
 
-    public boolean isMousedOver() {
+    private boolean isMousedOver() {
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
         if (vTouch.x > (fX - 20) && vTouch.x < fX + (fW + 20)) {

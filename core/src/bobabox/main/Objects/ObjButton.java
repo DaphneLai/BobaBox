@@ -66,7 +66,8 @@ public class ObjButton extends Sprite implements InputProcessor {
         this.draw(batch);
     }
 
-    public boolean isMousedOver() { // Checks if the mouse is over the button, not whether the mouse was clicked
+    // Checks if the mouse is over the button, not whether the mouse was clicked
+    public boolean isMousedOver() {
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
         if (rect.contains(vTouch.x, vTouch.y)) {

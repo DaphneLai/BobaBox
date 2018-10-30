@@ -83,7 +83,6 @@ public class ScrGame implements Screen, InputProcessor {
         if(nGameTimer == 0){
             gamMenu.updateScreen(1);
         }
-        System.out.println("TIMER: " + nGameTimer);
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
