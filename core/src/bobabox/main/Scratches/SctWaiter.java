@@ -18,23 +18,25 @@ import bobabox.main.Sprites.SprServer;
 
 //Sarah
 //Help from Grondin & Daph
-//Screen is not used in game currently
-//Release 2.5 and 2.6 scratch //SHAPE RENDER?
+//Release 2.9 Scratch
 public class SctWaiter implements Screen, InputProcessor {
 
-
+    //Logic
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private StretchViewport viewport;
     Vector3 vTouch;
+    //Assets
     private Texture txBG;
     private SprServer sprServer;
     private ObjTables objTable;
-    private float fWX, fWY;
-    private boolean isTableClicked = false;
     private ObjButton btnHome;
     private GamMenu gamMenu;
     private ShapeRenderer sh;
+    //Values
+    private ObjTables arTables[] = new ObjTables[4];
+    private float fWX, fWY;
+    private boolean isTableClicked = false;
 
     public SctWaiter(GamMenu _gammenu) {
         gamMenu = _gammenu;
@@ -59,7 +61,7 @@ public class SctWaiter implements Screen, InputProcessor {
         batch = new SpriteBatch();
 
         //table
-        objTable = new ObjTables(fWX / 2, fWY / 2, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
+        objTable = new ObjTables(fWX / 2+100, fWY / 2, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
 
         //server
         sprServer = new SprServer("data/SERVER1_spr.png", fWX / 2 * 0, fWY / 2 * 0, viewport); //850, 175
@@ -67,6 +69,8 @@ public class SctWaiter implements Screen, InputProcessor {
         //Buttons
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
 
+        //Shape Renderer
+        //https://libgdx.badlogicgames.com/ci/nightlies/docs/api/com/badlogic/gdx/graphics/glutils/ShapeRenderer.html
         sh = new ShapeRenderer();
     }
 
@@ -78,6 +82,7 @@ public class SctWaiter implements Screen, InputProcessor {
 
 
     public void render(float delta) {
+
         //drawing
         camera.update();
         batch.begin();
@@ -88,17 +93,22 @@ public class SctWaiter implements Screen, InputProcessor {
         btnHome.draw(batch);
         batch.end();
 
+        //Draws Rectangle
         sh.begin(ShapeRenderer.ShapeType.Line);
         sh.setColor(0, 0, 0, 1);
-        // sh.line(sprServer.getX(),sprServer.getY(),sprServer.getX()+sprServer.getWidth(),sprServer.getY()+sprServer.getHeight());
+
+        //Rectangle for Server
         sh.rect(sprServer.getX(), sprServer.getY(), sprServer.getWidth(), sprServer.getHeight());
+
+        //Rectangle for Table
         sh.rect(objTable.getX(), objTable.getY(), objTable.getWidth(), objTable.getHeight());
         sh.end();
 
-        //Button
+        //if home button clicked. Goes back to home screen
         if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
         }
+
         //Checks if mouse is over table and clicked
         if (objTable.isMousedOver() && Gdx.input.justTouched()) {
             isTableClicked=true;
@@ -108,6 +118,8 @@ public class SctWaiter implements Screen, InputProcessor {
         if (isTableClicked == true) {
             sprServer.walk(objTable);
         }
+
+        //Matches touched coordinates and screen coordinates
         if (Gdx.input.isTouched()) {
             vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             //Readjusts input coordinates (vTouch.x and vTouch.y are our new input coordinates)
@@ -188,4 +200,3 @@ public class SctWaiter implements Screen, InputProcessor {
     }
 }
 
-//405.5, 195.0
