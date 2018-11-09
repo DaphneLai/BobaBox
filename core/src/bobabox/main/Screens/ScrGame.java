@@ -9,16 +9,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import bobabox.main.Objects.ObjBar;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
 import bobabox.main.Sprites.SprGuest;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprServer;
-
 
 public class ScrGame implements Screen, InputProcessor {
 
@@ -29,6 +31,7 @@ public class ScrGame implements Screen, InputProcessor {
     private boolean isSitting = false;
     private Vector3 vTouch;
     private int nGameTimer = 60, nFPS;
+    private float fXG, fYG;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
@@ -37,9 +40,10 @@ public class ScrGame implements Screen, InputProcessor {
     Texture txtBg;
     private SprGuest sprGuest;
     private SprServer sprServer;
-    private ObjTables objTable;
+    private ObjTables arTables[] = new ObjTables[3];
     private ObjButton btnPause;
     private BitmapFont bfFont;
+    private ObjBar objBar;
 
     public ScrGame(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -55,12 +59,16 @@ public class ScrGame implements Screen, InputProcessor {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         resize(nW, nH);
         batch = new SpriteBatch();
+        objBar = new ObjBar(viewport, new Rectangle(300, 300, 450, 80));
         txtBg = new Texture("data/GameBG_img.png");
-        objTable = new ObjTables(nW / 2 + 40, nH / 3, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
         btnPause = new ObjButton(940, 40, 90, 55, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
         bfFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         bfFont.setColor(Color.DARK_GRAY);
         bfFont.getData().setScale(1f, 1f);
+        //table
+        arTables[0] = new ObjTables(280, 80, "data/TABLE1_obj.png", "data/TABLE12_obj.png", viewport);
+        arTables[1] = new ObjTables(nW / 2, 50, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
+        arTables[2] = new ObjTables(nW - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
     }
 
 
@@ -77,10 +85,10 @@ public class ScrGame implements Screen, InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         nFPS++;
-        if(nFPS%60 == 0) {
+        if (nFPS % 60 == 0) {
             nGameTimer--;
         }
-        if(nGameTimer == 0){
+        if (nGameTimer == 0) {
             gamMenu.updateScreen(1);
         }
 
@@ -88,38 +96,72 @@ public class ScrGame implements Screen, InputProcessor {
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
         sprServer.draw(batch);
-        objTable.draw(batch);
+        updateTable();
         sprGuest.walkDown();
         sprGuest.draw(batch);
         sprGuest.drag();
-        sprGuest.hearts(batch, objTable);
-        bfFont.draw(batch, Integer.toString(nGameTimer), nW -100, nH-138);
+        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
         batch.end();
 
+        if (objBar.isTapped()) {
+            System.out.println("Bar is touched");
+            //sprServer.up](objTable);
+        }
         //ObjButton
         checkButtons();
         if (btnPause.isMousedOver() && Gdx.input.isTouched()) {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
-        //Mouse is over table && Clicked
-        if (objTable.isMousedOver() == true && Gdx.input.justTouched()) {
-            isTableClicked = true;
-        }
-        //Make server go to table clicked
-        if (isTableClicked == true) {
-            sprServer.walk(objTable);
-        }
-        //Table
-        if (objTable.isAvb(sprGuest) == false) {
-            isSitting = true;
-            sprGuest.sittingDown(isSitting);
-            objTable.sittingDown(isSitting);
-        } else if (objTable.isAvb(sprGuest) == true) {
-            isSitting = false;
-            objTable.sittingDown(isSitting);
+        //Checks if bar is clicked
+        if (objBar.isTapped()) {
+            System.out.println("Bar is touched");
+            fXG = objBar.rBar().x;
+            fYG = objBar.rBar().y;
+            sprServer.update(fXG,fYG);
         }
 
+    }
+
+    //Method runs through the array of tables
+    private void updateTable() {
+        for (int i = 0; i < 3; i++) {
+            arTables[i].draw(batch);
+            sprGuest.hearts(batch, arTables[i]);
+
+            // Checks if mouse is over table and clicked
+            if (arTables[i].isTableClicked()) {
+                fXG = arTables[i].getX() + (arTables[i].getWidth() / 2 - 40);
+                fYG = arTables[i].getY() + arTables[i].getHeight();
+                isTableClicked = true;
+            }
+
+            if (isTableClicked) {
+                sprServer.update(fXG, fYG);
+            }
+
+
+            //Debugging stuff
+            if (arTables[0].isTableClicked()) {
+                System.out.println("TABLE 11111111 WAS CLICKEDD");
+            }
+            if (arTables[1].isTableClicked()) {
+                System.out.println("TABLE 22222222 WAS CLICKEDD");
+            }
+            if (arTables[2].isTableClicked()) {
+                System.out.println("TABLE 33333333 WAS CLICKEDD");
+            }
+
+            //Table and guest interaction
+            if (arTables[i].isAvb(sprGuest) == false) {
+                isSitting = true;
+                sprGuest.sittingDown(isSitting);
+                arTables[i].sittingDown(isSitting);
+            } else if (arTables[i].isAvb(sprGuest) == true) {
+                isSitting = false;
+                arTables[i].sittingDown(isSitting);
+            }
+        }
     }
 
     public void reset() {

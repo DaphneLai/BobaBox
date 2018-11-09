@@ -3,38 +3,34 @@ package bobabox.main.Objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-public class ObjBar extends Sprite {
-    private float fX, fY, fW, fH; //bar
-    private float fSY, fSX; //server
+public class ObjBar {
+    private Rectangle rect;
     private Vector3 vTouch;
     private StretchViewport viewport;
 
-    public ObjBar(float _fX, float _fY, String _sImg, StretchViewport _viewport) {
-        super(new Texture(Gdx.files.internal(_sImg)));
-
+    public ObjBar(StretchViewport _viewport, Rectangle rect) {
         //Importing Info
         viewport = _viewport;
-        fW = 187;
-        fH = 110;
-        fX = _fX - fW / 2;
-        fY = _fY - fH / 2;
-        setPosition(fX, fY);
-        setSize(fW, fH);
-        setFlip(false, false);
+        this.rect = rect;
+
     }
 
-    public boolean isMousedOver() {
+    public boolean isTapped() {
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
-        if (vTouch.x > fX && vTouch.x < fX + fW) {
-            if (vTouch.y > fY && vTouch.y < fY + fH) {
-                return true;
-            }
+        if (rect.contains(vTouch.x, vTouch.y) && Gdx.input.justTouched()) {
+            return true;
         }
         return false;
+    }
+
+    public Rectangle rBar() {
+        return rect;
     }
 }
 

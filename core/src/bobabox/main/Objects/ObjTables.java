@@ -27,8 +27,8 @@ public class ObjTables extends Sprite {
         viewport = _viewport;
         fW = 187;
         fH = 110;
-        fX = _fX - fW / 2;
-        fY = _fY - fH / 2;
+        fX = _fX ;
+        fY = _fY ;
         setPosition(fX, fY);
         setSize(fW, fH);
         setFlip(false, false);
@@ -66,12 +66,14 @@ public class ObjTables extends Sprite {
         return true;
     }
 
-    public boolean isMousedOver() {
+    public boolean isTableClicked() {
         vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         viewport.unproject(vTouch);
         if (vTouch.x > fX && vTouch.x < fX + fW) {
             if (vTouch.y > fY && vTouch.y < fY + fH) {
-                return true;
+                if (Gdx.input.isTouched()) {
+                    return true;
+                }
             }
         }
         return false;
