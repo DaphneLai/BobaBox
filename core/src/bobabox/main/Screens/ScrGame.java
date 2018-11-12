@@ -99,7 +99,7 @@ public class ScrGame implements Screen, InputProcessor {
         updateTable();
         sprGuest.walkDown();
         sprGuest.draw(batch);
-        sprGuest.drag();
+//        sprGuest.drag();
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
         batch.end();
 
@@ -117,7 +117,7 @@ public class ScrGame implements Screen, InputProcessor {
         if (objBar.isTapped()) {
             System.out.println("Bar is touched");
             fXG = objBar.rBar().x;
-            fYG = objBar.rBar().y;
+            fYG = objBar.rBar().y - 20;
             sprServer.update(fXG,fYG);
         }
 
@@ -166,7 +166,7 @@ public class ScrGame implements Screen, InputProcessor {
 
     public void reset() {
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
-        sprServer = new SprServer("data/SERVER1_spr.png", 850, 175, viewport);
+        sprServer = new SprServer("data/SERVER1_spr.png", 850, 175);
         isTableClicked = false;
         nFPS = 0;
         nGameTimer = 60;

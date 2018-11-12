@@ -69,7 +69,7 @@ public class SctWaiter implements Screen {
         arTables[2] = new ObjTables(fWORLD_WIDTH - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
 
         //server
-        sprServer = new SprServer("data/SERVER1_spr.png", fWORLD_WIDTH / 2, fWORLD_HEIGHT / 2, viewport); //850, 175
+        sprServer = new SprServer("data/SERVER1_spr.png", fWORLD_WIDTH / 2, fWORLD_HEIGHT / 2); //850, 175
 
         //Buttons
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
