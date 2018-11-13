@@ -2,29 +2,56 @@ package bobabox.main.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import bobabox.main.Objects.ObjBar;
-import bobabox.main.Objects.ObjTables;
+import java.util.List;
 
 public class SprServer extends Sprite {
 
     private float fX, fY;//Server X, Y, W, H
-    private int nDir;
+    private int nDir, nPos, nFrame;
+    private float fW, fH, fSx, fSy;
+    private SpriteBatch batch;
+    private Sprite sprServer;
+    private Texture txServ;
+
     // nDir: 0 = North, 1 = East, 2 = South, 3 = West, 4 = stop
 
     public SprServer(String sFile, float _fX, float _fY) {
         super(new Texture(Gdx.files.internal(sFile)));
+        txServ = new Texture(sFile);
         fX = _fX;
         fY = _fY;
         setPosition(fX, fY);
         setFlip(false, false);
         setSize(80, 100);
+        fW = getWidth() / 5;
+        fH = getHeight() / 4;
+        nFrame = 0;
+        nPos = 0;
+        batch = new SpriteBatch();
+        for (int i = 0; i < 8; i++) {
+            Sprite[] arSprServ = new Sprite[5];
+            for (int j = 0; j < 8; j++) {
+                fSx = j * fW;
+                fSy = i * fH;
+                sprServer = new Sprite(txServ);
+                sprServer.setBounds(fSx, fSy, fW, fX);
+         //       arSprServ[j] = new Sprite(sprServer);
+            }
+           // araniVlad[i] = new Animation(5.2f, arSprVlad);
+        }
     }
 
+
+
     private void directions() {
+        batch.draw(sprServer, 100,100);
         if (nDir == 0) {
             System.out.println("NORTH");
             fY += 1.5f;
