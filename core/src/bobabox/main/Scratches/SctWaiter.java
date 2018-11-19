@@ -68,7 +68,7 @@ public class SctWaiter implements Screen {
         arTables[2] = new ObjTables(fWORLD_WIDTH - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
 
         //server
-        sprServer = new SprServer("data/SERVER1_sprsheet.png", fWORLD_WIDTH / 2, fWORLD_HEIGHT / 2); //850, 175
+        sprServer = new SprServer(fWORLD_WIDTH / 2, fWORLD_HEIGHT / 2); //850, 175
 
         //Buttons
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
@@ -101,7 +101,6 @@ public class SctWaiter implements Screen {
         //drawing
         updateTable();
         btnHome.draw(batch);
-        sprServer.draw(batch);
         batch.end();
         //Rectangle for Server
         sh.rect(sprServer.getX(), sprServer.getY(), sprServer.getWidth(), sprServer.getHeight());
@@ -117,7 +116,7 @@ public class SctWaiter implements Screen {
             System.out.println("Bar is touched");
             fXG = objBar.rBar().x;
             fYG = objBar.rBar().y;
-            sprServer.update(fXG,fYG);
+            sprServer.update(fXG,fYG, batch);
         }
     }
 
@@ -135,7 +134,7 @@ public class SctWaiter implements Screen {
             }
 
             if (isTableClicked) {
-                sprServer.update(fXG, fYG);
+                sprServer.update(fXG, fYG, batch);
             }
 
 
