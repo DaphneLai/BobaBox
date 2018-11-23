@@ -41,39 +41,37 @@ public class SprServer extends Sprite {
     }
 
 
-
     private void directions(SpriteBatch batch) {
         if (nDir == 0) {
             System.out.println("NORTH");
-            fY += 1.5f;
+            fY += 0.5f;
             setY(fY);
-            batch.draw((TextureRegion) AnmCreateAnimation[0].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH+50); //normal
+            batch.draw((TextureRegion) AnmCreateAnimation[0].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH + 50);
 
         } else if (nDir == 1) {
             System.out.println("EAST");
             fX += 1.5f;
             setX(fX);
-            batch.draw((TextureRegion) AnmCreateAnimation[1].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH+50); //normal
+            batch.draw((TextureRegion) AnmCreateAnimation[1].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH + 50);
 
         } else if (nDir == 2) {
             System.out.println("SOUTH");
-            fY -= 1.5f;
+            fY -= 0.5f;
             setY(fY);
-            batch.draw((TextureRegion) AnmCreateAnimation[2].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH+50); //normal
+            batch.draw((TextureRegion) AnmCreateAnimation[2].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH + 50);
 
         } else if (nDir == 3) {
             System.out.println("WEST");
             fX -= 1.5f;
             setX(fX);
-            batch.draw((TextureRegion) AnmCreateAnimation[3].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH+50); //normal
+            batch.draw((TextureRegion) AnmCreateAnimation[3].getKeyFrame(ElapsedTime, true), fX, fY, fW, fH + 50);
 
         } else if (nDir == 4) {
             System.out.println("STOP");
+            batch.draw(txtServer, fX, fY, fW, fH); //normal
             setX(fX);
             setY(fY);
-            batch.draw(txtServer, fX, fY, fW, fH); //normal
         }
-
     }
 
     private void PrepareAnimations(int rows, int columns) {
@@ -116,10 +114,10 @@ public class SprServer extends Sprite {
 
         AnmCreateAnimation = new Animation[4];
 
-        AnmCreateAnimation[0] = new Animation<TextureRegion>(0.2f, txtNorth); // north
-        AnmCreateAnimation[1] = new Animation<TextureRegion>(0.2f, txtEast); // east
-        AnmCreateAnimation[2] = new Animation<TextureRegion>(0.2f, txtSouth); // south
-        AnmCreateAnimation[3] = new Animation<TextureRegion>(0.2f, txtWest); // west
+        AnmCreateAnimation[0] = new Animation<TextureRegion>(0.5f, txtNorth); // north
+        AnmCreateAnimation[1] = new Animation<TextureRegion>(0.5f, txtEast); // east
+        AnmCreateAnimation[2] = new Animation<TextureRegion>(0.5f, txtSouth); // south
+        AnmCreateAnimation[3] = new Animation<TextureRegion>(0.5f, txtWest); // west
 
     }
 

@@ -27,7 +27,7 @@ public class ScrGame implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW, nH;
-    private boolean isTableClicked = false, isDown=false;
+    private boolean isTableClicked = false, isDown = false;
     private boolean isSitting = false;
     private Vector3 vTouch;
     private int nGameTimer = 60, nFPS;
@@ -69,6 +69,8 @@ public class ScrGame implements Screen, InputProcessor {
         arTables[0] = new ObjTables(280, 80, "data/TABLE1_obj.png", "data/TABLE12_obj.png", viewport);
         arTables[1] = new ObjTables(nW / 2, 50, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
         arTables[2] = new ObjTables(nW - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
+        fXG = 850;
+        fYG = 175;
     }
 
 
@@ -95,12 +97,19 @@ public class ScrGame implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
-        sprServer.draw(batch);
+        sprServer.update(fXG, fYG, batch);
         updateTable();
         //sprGuest.walkDown(isDown);
         sprGuest.draw(batch);
 //        sprGuest.drag();
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
+        //Checks if bar is clicked
+        if (objBar.isTapped()) {
+            System.out.println("Bar is touched");
+            fXG = objBar.rBar().x;
+            fYG = objBar.rBar().y - 50;
+            sprServer.update(fXG, fYG, batch);
+        }
         batch.end();
 
         if (objBar.isTapped()) {
@@ -112,13 +121,6 @@ public class ScrGame implements Screen, InputProcessor {
         if (btnPause.isMousedOver() && Gdx.input.isTouched()) {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
-        }
-        //Checks if bar is clicked
-        if (objBar.isTapped()) {
-            System.out.println("Bar is touched");
-            fXG = objBar.rBar().x;
-            fYG = objBar.rBar().y - 20;
-            sprServer.update(fXG,fYG,batch);
         }
 
     }
@@ -166,7 +168,7 @@ public class ScrGame implements Screen, InputProcessor {
 
     public void reset() {
         sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
-        sprServer = new SprServer( 850, 175);
+        sprServer = new SprServer(850, 175);
         isTableClicked = false;
         nFPS = 0;
         nGameTimer = 60;
