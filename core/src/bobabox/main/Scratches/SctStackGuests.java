@@ -127,10 +127,10 @@ public class SctStackGuests implements Screen {
             sprGst.sittingDown(isSitting);
             sprGst.hearts(batch, objTable);
 
-            if (objTable.isAvb(sprGst)) {
+            if (objTable.isAvb2(sprGst)) {
                 isSitting = false;
                 isTFree = true;
-            } else if (!objTable.isAvb(sprGst)) {
+            } else if (!objTable.isAvb2(sprGst)) {
                 isSitting = true;
                 isTFree = false;
                 sprGst.sittingDown(isSitting);
