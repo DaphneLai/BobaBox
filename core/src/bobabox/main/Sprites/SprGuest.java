@@ -38,8 +38,8 @@ public class SprGuest extends Sprite {
         //Guests
         fX = 80;
         fY = 330;
-        fW = 80;
-        fH = 100;
+        fW = 80; //80
+        fH = 100; //100
         fMove = 6.0f;
         setPosition(fX, fY);
         setSize(fW, fH);
@@ -57,19 +57,31 @@ public class SprGuest extends Sprite {
     }
 
     //Beginning where the guest enters the store
-    public void walkDown() {
-        if (!isDown) {
+    public void walkDown(float fGoalY) {
+        System.out.println(fGoalY+ " fGoal");
+        //If guest is greater than the goal and isDown is false then the server will keep moving
+        if (fY > fGoalY && !isDown) {
             fY -= fMove;
-            // fHy = fY + 120;
             setY(fY);
-            if (fY <= 30 && fHy <= 150) {
-                isDown = true;
-                fMove = 0;
-                bSitting = false;
-                bCanDrag = true;
-            }
         }
+
+        //if server is less than the goal then the server will stop moving
+        if (fY <= fGoalY) {
+            isDown = true;
+            bSitting=false;
+            bCanDrag=true;
+        }
+
+
+//        if (fY <= 30 && fHy <= 150) {
+//            isDown = true;
+//            fMove = 0;
+//            bSitting = false;
+//            bCanDrag = true;
+//        }
+
     }
+
 
     //Checks if guest is Sitting (I switched to bSitting to associate it to the guest)
     public void sittingDown(boolean _isSitting) {
@@ -84,7 +96,7 @@ public class SprGuest extends Sprite {
 
     //Active when the guest is dragged
     public void drag() {
-        walkDown();
+        // walkDown();
         if (isMousedOver()) {
             if (!bSitting) {
                 if (bCanDrag) {
@@ -109,10 +121,11 @@ public class SprGuest extends Sprite {
         batch = _batch;
         objTable.sittingDown(bSitting);
         fHx = fX - 10;
-        fHy = fY + 120;
+        fHy = fY + 120; //+120
         if (isDown) {
             nTimer++;
         }
+
         //Sitting
         if (bSitting) {
             fHx = objTable.getX() + objTable.getWidth() / 2 - 60;

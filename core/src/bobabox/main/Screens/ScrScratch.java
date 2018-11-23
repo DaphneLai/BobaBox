@@ -29,7 +29,7 @@ public class ScrScratch implements Screen {
     private BitmapFont bfFont;
     //Assets
     private Texture txtBg;
-    private ObjButton btnHome, btnGuests, btnMultiGuests, btnTap, btnWaiter;
+    private ObjButton btnHome, btnGuests, btnMultiGuests, btnTap, btnWaiter, btnStackGuests;
 
     public ScrScratch(GamMenu _gamMenu, StretchViewport _viewport, OrthographicCamera _camera) {
         gamMenu = _gamMenu;
@@ -55,6 +55,8 @@ public class ScrScratch implements Screen {
         btnGuests = new ObjButton(330, 200, 120, 120, "data/Scratch_btn.png", "data/Scratch_btn.png", viewport);
         btnWaiter = new ObjButton(460, 200, 120, 120, "data/Scratch_btn.png", "data/Scratch_btn.png", viewport);
         btnMultiGuests = new ObjButton(590, 200, 120, 120, "data/Scratch_btn.png", "data/Scratch_btn.png", viewport);
+        btnStackGuests = new ObjButton(730, 200, 120, 120, "data/Scratch_btn.png", "data/Scratch_btn.png", viewport);
+
     }
 
     @Override
@@ -86,6 +88,8 @@ public class ScrScratch implements Screen {
         bfFont.draw(batch, "Server", 425, 205);
         btnMultiGuests.update(batch);
         bfFont.draw(batch, "MultiGuests", 535, 205);
+        btnStackGuests.update(batch);
+        bfFont.draw(batch, "StackGuests", 680, 205);
         batch.end();
 
         //ObjButton
@@ -107,6 +111,9 @@ public class ScrScratch implements Screen {
         }
         if (btnMultiGuests.justClicked()) {
             gamMenu.updateScreen(40);
+        }
+        if (btnStackGuests.justClicked()) {
+            gamMenu.updateScreen(50);
         }
     }
 

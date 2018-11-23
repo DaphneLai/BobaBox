@@ -27,6 +27,7 @@ public class SctGuests implements Screen {
     private boolean isSitting;
     private Vector3 vTouch;
     private ObjButton btnHome;
+    private boolean isDown=false;
 
     public SctGuests(GamMenu _gammenu) {
         gamMenu = _gammenu;
@@ -56,7 +57,7 @@ public class SctGuests implements Screen {
         batch.draw(txtBG, 0, 0);
         btnHome.update(batch);
         objTable.draw(batch);
-        sprGuest.walkDown();
+        //sprGuest.walkDown(isDown);
         sprGuest.draw(batch);
         sprGuest.drag();
         sprGuest.hearts(batch, objTable);

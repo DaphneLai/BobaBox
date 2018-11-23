@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import bobabox.main.Scratches.SctGuests;
+import bobabox.main.Scratches.SctStackGuests;
 import bobabox.main.Scratches.SctTap;
 import bobabox.main.Screens.ScrGame;
 import bobabox.main.Screens.ScrEnd;
@@ -33,6 +34,7 @@ public class GamMenu extends Game {
     SctGuests sctGuests;
     SctWaiter sctWaiter;
     SctMultiGuests sctMultiGuests;
+    SctStackGuests sctStackGuests;
 
     //Kieran's code (modified)
     public void updateScreen(int _nScreen) {
@@ -66,6 +68,9 @@ public class GamMenu extends Game {
             case 40:
                 setScreen(sctMultiGuests);
                 break;
+            case 50:
+                setScreen(sctStackGuests);
+                break;
             default:
                 break;
         }
@@ -83,7 +88,7 @@ public class GamMenu extends Game {
         sctGuests = new SctGuests(this);
         sctWaiter = new SctWaiter(this);
         sctMultiGuests = new SctMultiGuests(this);
-
+        sctStackGuests = new SctStackGuests(this);
 
         updateScreen(2);
 
