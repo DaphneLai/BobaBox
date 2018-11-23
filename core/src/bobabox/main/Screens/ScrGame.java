@@ -155,11 +155,11 @@ public class ScrGame implements Screen, InputProcessor {
             }
 
             //Table and guest interaction
-            if (arTables[i].isAvb(sprGuest) == false) {
+            if (arTables[i].isAvb2(sprGuest) == false) {
                 isSitting = true;
                 sprGuest.sittingDown(isSitting);
                 arTables[i].sittingDown(isSitting);
-            } else if (arTables[i].isAvb(sprGuest) == true) {
+            } else if (arTables[i].isAvb2(sprGuest) == true) {
                 isSitting = false;
                 arTables[i].sittingDown(isSitting);
             }

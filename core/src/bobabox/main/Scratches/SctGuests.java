@@ -65,11 +65,11 @@ public class SctGuests implements Screen {
 
         batch.end();
 
-        if (!objTable.isAvb(sprGuest)) {
+        if (!objTable.isAvb2(sprGuest)) {
            // System.out.println("HERE!");
             isSitting = true;
            // sprGuest.sittingDown(isSitting);
-        } else if (objTable.isAvb(sprGuest)){
+        } else if (objTable.isAvb2(sprGuest)){
            // System.out.println("LEAVING");
             isSitting = false;
            // sprGuest.sittingDown(isSitting);
