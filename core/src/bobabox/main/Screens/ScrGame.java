@@ -97,8 +97,8 @@ public class ScrGame implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
-        sprServer.update(fXG, fYG, batch);
         updateTable();
+        sprServer.update(fXG, fYG, batch);
         //sprGuest.walkDown(isDown);
         sprGuest.draw(batch);
 //        sprGuest.drag();
@@ -143,16 +143,16 @@ public class ScrGame implements Screen, InputProcessor {
             }
 
 
-            //Debugging stuff
-            if (arTables[0].isTableClicked()) {
-                System.out.println("TABLE 11111111 WAS CLICKEDD");
-            }
-            if (arTables[1].isTableClicked()) {
-                System.out.println("TABLE 22222222 WAS CLICKEDD");
-            }
-            if (arTables[2].isTableClicked()) {
-                System.out.println("TABLE 33333333 WAS CLICKEDD");
-            }
+//            //Debugging stuff
+//            if (arTables[0].isTableClicked()) {
+//                System.out.println("TABLE 11111111 WAS CLICKEDD");
+//            }
+//            if (arTables[1].isTableClicked()) {
+//                System.out.println("TABLE 22222222 WAS CLICKEDD");
+//            }
+//            if (arTables[2].isTableClicked()) {
+//                System.out.println("TABLE 33333333 WAS CLICKEDD");
+//            }
 
             //Table and guest interaction
             if (arTables[i].isAvb2(sprGuest) == false) {
