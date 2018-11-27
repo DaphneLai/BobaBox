@@ -14,7 +14,7 @@ public class SprGuest extends Sprite {
     private SpriteBatch batch;
     private StretchViewport viewport;
     private Vector3 vTouch;
-    private float fX, fY, fH, fW, fMove; //Guest
+    private float fX, fY, fH, fW, fMove, fGoal=30; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
     private boolean isDown = false, isLeft = false, isUp = false, bCanDrag = false, isReady = false, bSitting = false, isGone = false;
     private int nTimer = 0, nHearts;
@@ -37,7 +37,7 @@ public class SprGuest extends Sprite {
 
         //Guests
         fX = 80;
-        fY = 330;
+        fY = 500;
         fW = 80; //80
         fH = 100; //100
         fMove = 6.0f;
@@ -57,28 +57,22 @@ public class SprGuest extends Sprite {
     }
 
     //Beginning where the guest enters the store
-    public void walkDown(float fGoalY) {
-        System.out.println(fGoalY+ " fGoal");
+    public void walkDown(int nGst) {
         //If guest is greater than the goal and isDown is false then the server will keep moving
-        if (fY > fGoalY && !isDown) {
+        if (fY > fGoal) {
             fY -= fMove;
             setY(fY);
         }
 
         //if server is less than the goal then the server will stop moving
-        if (fY <= fGoalY) {
-            isDown = true;
+        if (fY <= fGoal) {
             bSitting=false;
             bCanDrag=true;
         }
 
-
-//        if (fY <= 30 && fHy <= 150) {
-//            isDown = true;
-//            fMove = 0;
-//            bSitting = false;
-//            bCanDrag = true;
-//        }
+        if(nGst>1){
+            fGoal = 30 + ((fH+fHh+5) * (nGst - 1));
+        }
 
     }
 
@@ -121,7 +115,7 @@ public class SprGuest extends Sprite {
         batch = _batch;
         objTable.sittingDown(bSitting);
         fHx = fX - 10;
-        fHy = fY + 120; //+120
+        fHy = fY + 105; //+120
         if (isDown) {
             nTimer++;
         }

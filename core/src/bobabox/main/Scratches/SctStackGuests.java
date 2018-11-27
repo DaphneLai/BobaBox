@@ -78,6 +78,10 @@ public class SctStackGuests implements Screen {
         batch.begin();
         sh.begin(ShapeRenderer.ShapeType.Line);
         sh.setColor(0, 0, 0, 1);
+        sh.line(0,30,200,30);
+        sh.line(0,165,200,165);
+        sh.line(0,295,200,295);
+        sh.line(0,425,200,425);
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         nTimer++;
@@ -95,7 +99,7 @@ public class SctStackGuests implements Screen {
         updateGuest(nGst, batch);
         if (isTFree) {
             if (nTimer % 300 == 0) {
-                if (nGst < 9) {
+                if (nGst < 5) {
                     nGst++;
                 } else {
                     nGst = 0;
@@ -122,7 +126,7 @@ public class SctStackGuests implements Screen {
             // System.out.println(n + " N");
             sprGst = arliGuests.get(n); //temporary Guest
             sprGst.draw(batch);
-            sprGst.walkDown(fGoalY);
+            sprGst.walkDown(nGst);
             sprGst.drag();
             sprGst.sittingDown(isSitting);
             sprGst.hearts(batch, objTable);
@@ -135,14 +139,6 @@ public class SctStackGuests implements Screen {
                 isTFree = false;
                 sprGst.sittingDown(isSitting);
             }
-
-            //Goal is restarted and updated to multiply by the guest height.
-            //30 is added since the very first guest is less than or equal to the coordinate 30
-            if (n > 0) {
-                fGoalY=0;
-                fGoalY = 30+ (100 * nGst);
-            }
-
         }
     }
 
