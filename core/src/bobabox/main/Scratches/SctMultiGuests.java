@@ -34,8 +34,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private ObjTables arTables[] = new ObjTables[3], objTable;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
-    private boolean isSitting, isOpen = true;
-    private int nTimer = 0, nGst = 0, nAdd;
+    private boolean isSitting, isOpen = true, isReleased;
+    private int nTimer = 0, nGst = 0, nAdd, nTarget;
     private List<SprCustomer> arliGuests;
     private SprCustomer sprCst;
 
@@ -71,8 +71,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
             arliGuests.add(new SprCustomer("data/GUEST1_spr.png"));
         }
 
-    //    System.out.println("LIST:" + arliGuests);
-      //  System.out.println("SIZE:" + arliGuests.size());
+        //    System.out.println("LIST:" + arliGuests);
+        //  System.out.println("SIZE:" + arliGuests.size());
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBG, 0, 0);
         btnHome.update(batch);
-        updateTable(nGst);
+        updateTable();
         updateGuest(nGst, batch);
         batch.end();
 
@@ -98,7 +98,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
         if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
         }
-        if (isOpen) {
             if (nTimer % 300 == 0) {
                 if (nGst < 4) {
                     nGst++;
@@ -107,22 +106,22 @@ public class SctMultiGuests implements Screen, InputProcessor {
                 }
                 nTimer = 0;
             }
+
+        if (!objTable.isAvb(arliGuests.get(nTarget))) {
+            isSitting = true;
+            arliGuests.get(nTarget).sittingDown(isSitting);
+        } else if (objTable.isAvb((arliGuests.get(nTarget)))) {
+            isSitting = false;
+            arliGuests.get(nTarget).sittingDown(isSitting);
         }
+        objTable.sittingDown(isSitting);
     }
 
     //Method runs through the array of tables
-    private void updateTable(int nGst) {
+    private void updateTable() {
         for (int i = 0; i < 1; i++) {
             objTable = arTables[i];
             arTables[i].draw(batch);
-          /*  if (!objTable.isAvb(arliGuests.get(nGst))) {
-               // System.out.println("HERE!");
-                isOpen = false;
-                isSitting = true;
-            } else if (objTable.isAvb(arliGuests.get(nGst))) {
-              //  System.out.println("LEAVING");
-                isSitting = false;
-            }*/
         }
     }
 
@@ -132,15 +131,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
             arliGuests.get(n).draw(batch);
             arliGuests.get(n).updateStatus();
             arliGuests.get(n).hearts(batch, objTable);
-            if (isOpen) {
-                if (!objTable.isAvb(arliGuests.get(n))) {
-                    isSitting = true;
-                    isOpen = false;
-                } else {
-                    isSitting = false;
-                }
-                objTable.sittingDown(isSitting);
-            }
+
         }
     }
 
@@ -203,16 +194,18 @@ public class SctMultiGuests implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-    //    System.out.println("TOUCHED DOWN");
-//      int nTarget = -1;
-//        for (int n = 0; n < 1; n++) {
-//            sprCst = arliGuests.get(n); //temporary Guest
-//            if (sprCst.getBoundingRectangle().contains(vTouch)) {
-//                nTarget = n;
-//            }
-//        }
-        return true;
+            for (int n = 0; n < 5; n++) {
+                sprCst = arliGuests.get(n); //temporary Guest
+                if (sprCst.getBoundingRectangle().contains(vTouch)) {
+                    nTarget = n;
+                }
+            }
+
+            return true;
+
     }
+
+
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -221,10 +214,9 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-                for (int n = 0; n < nGst; n++) {
-                    if (arliGuests.get(n).getBoundingRectangle().contains(vTouch)) {
-                    arliGuests.get(n).drag(vTouch, viewport);
-            }
+                    if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch)) {
+                    arliGuests.get(nTarget).drag(vTouch, viewport);
+
         }
 
         return true;

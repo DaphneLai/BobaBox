@@ -15,11 +15,22 @@ import bobabox.main.Objects.ObjTables;
 
 //MADE BY DAPHNE
 //NOT IN USE
+/* EXPLANATION OF nSTATUS:
+        0 = Is entering the restaurant
+        1 = Is waiting for a table
+        2 = is at a table, deciding what to order
+        3 = is ready to order
+        4 = order is taken, is waiting for their beverage
+        5 = gets their order, is eating
+        6 = done eating, wants to pay
+        7 = pays and leaves
+        8 = leaves due to lack of service
+         */
 public class SprCustomer extends Sprite {
     private SpriteBatch batch;
     private float fX, fY, fH, fW, fMove; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
-    private boolean bCanDrag = false, bSitting = false, isGone = false, isEntering;
+    private boolean bCanDrag = false, bSitting = false, isGone = false;
     private StretchViewport viewport;
     private Texture arHearts[] = new Texture[4];
     private ObjTables objTable;
@@ -52,19 +63,13 @@ public class SprCustomer extends Sprite {
 //        for (int n = 0; n < 8; n++) {
 //            nStatus[n] = n;
 //        }
-
-        /* EXPLANATION OF nSTATUS:
-        0 = Is entering the restaurant
-        1 = Is waiting for a table
-        2 = is at a table, deciding what to order
-        3 = is ready to order
-        4 = order is taken, is waiting for their beverage
-        5 = gets their order, is eating
-        6 = done eating, wants to pay
-        7 = pays and leaves
-        8 = leaves due to lack of service
-         */
-
+    }
+    public void sittingDown(boolean _isSitting) {
+        bSitting = _isSitting;
+        if (bSitting) {
+            setSize(0, 0);
+            nStatus = 2;
+        }
     }
 
     public void updateStatus() {
@@ -84,7 +89,6 @@ public class SprCustomer extends Sprite {
 
         } else if (nStatus == 2) {
          //   System.out.println("STATUS: Deciding order");
-            bSitting = true;
             if (nTimer == 240) {
                 nStatus = 3;
             }
@@ -117,7 +121,6 @@ public class SprCustomer extends Sprite {
         nHearts = 0;
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
      if (nStatus == 1) {
-     //   if (bCanDrag) {
             fX = vTouch.x - 50;
             fY = vTouch.y - 60;
             setX(fX);
@@ -129,10 +132,8 @@ public class SprCustomer extends Sprite {
         //Importing
         objTable = _objTable;
         batch = _batch;
-        //Sitting
-        objTable.sittingDown(bSitting);
 
-        if (bSitting) {
+        if (nStatus == 2) {
             fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
             fHy = objTable.getY() + objTable.getHeight();
         }
@@ -175,11 +176,17 @@ public class SprCustomer extends Sprite {
     }
 
     private void leave() {
+        setSize(80, 100);
         directions();
         bSitting = false;
         nDir = 3;
-        if (nDir == 3 && getX() == 80) {
-            System.out.println("Stop");
+        if (nDir == 3 && getX() > 75 && getX() < 85) {
+            nDir = 0;
+            if (getY() < 335 && getY() > 325) {
+                nDir = 4;
+                setSize(0,0);
+                isGone = true;
+            }
         }
     }
 
