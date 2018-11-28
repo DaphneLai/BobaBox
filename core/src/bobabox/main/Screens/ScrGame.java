@@ -97,25 +97,24 @@ public class ScrGame implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
-        updateTable();
         sprServer.update(fXG, fYG, batch);
-        //sprGuest.walkDown(isDown);
         sprGuest.draw(batch);
-//        sprGuest.drag();
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
+
         //Checks if bar is clicked
         if (objBar.isTapped()) {
             System.out.println("Bar is touched");
             fXG = objBar.rBar().x;
-            fYG = objBar.rBar().y - 50;
+            fYG = objBar.rBar().y - 20;
             sprServer.update(fXG, fYG, batch);
         }
+        if (isTableClicked) {
+            sprServer.update(fXG, fYG, batch);
+        }
+
+        updateTable();
         batch.end();
 
-        if (objBar.isTapped()) {
-            System.out.println("Bar is touched");
-            //sprServer.up](objTable);
-        }
         //ObjButton
         checkButtons();
         if (btnPause.isMousedOver() && Gdx.input.isTouched()) {
@@ -137,12 +136,6 @@ public class ScrGame implements Screen, InputProcessor {
                 fYG = arTables[i].getY() + arTables[i].getHeight();
                 isTableClicked = true;
             }
-
-            if (isTableClicked) {
-                sprServer.update(fXG, fYG, batch);
-            }
-
-
 //            //Debugging stuff
 //            if (arTables[0].isTableClicked()) {
 //                System.out.println("TABLE 11111111 WAS CLICKEDD");

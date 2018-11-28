@@ -18,12 +18,11 @@ public class SprServer extends Sprite {
 
     private float fX, fY, fW, fH;//Server X, Y, W, H
     private int nDir = 4;
-
     private Texture txtSheet, txtServer;
     private TextureRegion[] traniFrames;
     private TextureRegion trTemp;
     private Animation[] araniServer;
-    private float fElapsedTime;
+    private float fElapsedTime, fMove = 1.5f;
 
     // nDir: 0 = North, 1 = East, 2 = South, 3 = West, 4 = stop
 
@@ -45,7 +44,7 @@ public class SprServer extends Sprite {
             for(int j =0; j < 5; j++){
                 traniFrames[j] = trTmpFrames[i][j];
             }
-            araniServer[i] = new Animation(0.5f, traniFrames);
+            araniServer[i] = new Animation(1f/6f, traniFrames);
         }
         System.out.println("nDir = " + nDir);
     }
@@ -54,31 +53,31 @@ public class SprServer extends Sprite {
     private void directions(SpriteBatch batch) {
         if(nDir < 4){
             batch.draw(
-                    (TextureRegion)araniServer[nDir].getKeyFrame(fElapsedTime,true), fX, fY, fW, fH);
+                    (TextureRegion)araniServer[nDir].getKeyFrame(fElapsedTime,true), fX, fY, fW-10, fH);
         }
         if (nDir == 0) {
 //            System.out.println("NORTH");
-            fY += 0.5f;
+            fY += fMove;
             setY(fY);
 
         } else if (nDir == 1) {
 //            System.out.println("EAST");
-            fX += 1.5f;
+            fX += fMove;
             setX(fX);
 
         } else if (nDir == 2) {
 //            System.out.println("SOUTH");
-            fY -= 0.5f;
+            fY -= fMove;
             setY(fY);
 
         } else if (nDir == 3) {
 //            System.out.println("WEST");
-            fX -= 1.5f;
+            fX -= fMove;
             setX(fX);
 
         } else if (nDir == 4) {
 //            System.out.println("STOP");
-            batch.draw(txtServer, fX, fY, fW+20, fH);
+            batch.draw(txtServer, fX, fY, fW, fH);
             setX(fX);
             setY(fY);
         }
