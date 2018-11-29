@@ -13,7 +13,6 @@ import java.sql.SQLOutput;
 
 import bobabox.main.Objects.ObjTables;
 
-//MADE BY DAPHNE
 //NOT IN USE
 /* EXPLANATION OF nSTATUS:
         0 = Is entering the restaurant
@@ -61,9 +60,6 @@ public class SprCustomer extends Sprite {
 
         //nStatus
         nStatus = 0;
-//        for (int n = 0; n < 8; n++) {
-//            nStatus[n] = n;
-//        }
     }
 
     public void sittingDown(boolean _isSitting) {
@@ -85,14 +81,12 @@ public class SprCustomer extends Sprite {
                 fGoal = 30 + ((fH + fHh) * (nGst - 1));
             }
             //Customer move down
-            if (fY < fGoal) {
+            if (fY <= fGoal) {
                 nDir = 2;
                 nStatus = 1;
-            }
-            // Makes Drag and Sitting possible
-            if(fY > fGoal){
-                bSitting=false;
-                bCanDrag=true;
+                if (nStatus ==1) {
+                    nDir = 4;
+                }
             }
 
         } else if (nStatus >= 1) {
@@ -147,11 +141,13 @@ public class SprCustomer extends Sprite {
         //Importing
         objTable = _objTable;
         batch = _batch;
+        fHx = fX - 10;
+        fHy = fY + 110;
 
 
         //Level of hearts
         if (!isGone) {
-            batch.draw(arHearts[nHearts], fX - 10, fY + 110, fHw, fHh);
+            batch.draw(arHearts[nHearts], fHx, fHy, fHw, fHh);
             if (nStatus >= 2 && nStatus <= 7) {
                 fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
                 fHy = objTable.getY() + objTable.getHeight();
@@ -164,10 +160,7 @@ public class SprCustomer extends Sprite {
         }
 
         if (nHearts == 3) {
-            nStatus = 9;
-            if (isGone) {
-                setSize(0, 0);
-            }
+            leave();
         }
     }
 

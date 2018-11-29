@@ -109,14 +109,14 @@ public class SctMultiGuests implements Screen, InputProcessor {
             nTimer = 0;
         }
 
-        if (!objTable.isAvb(arliGuests.get(nTarget))) {
+      /*  if (!objTable.isAvb(arliGuests.get(nTarget))) {
             isSitting = true;
             arliGuests.get(nTarget).sittingDown(isSitting);
         } else if (objTable.isAvb((arliGuests.get(nTarget)))) {
             isSitting = false;
             arliGuests.get(nTarget).sittingDown(isSitting);
         }
-        objTable.sittingDown(isSitting);
+        objTable.sittingDown(isSitting);*/
     }
 
     //Method runs through the array of tables
@@ -130,25 +130,15 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-
             sprCustomer = arliGuests.get(n); //temporary Guest
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
-            sprCustomer.sittingDown(isSitting);
             sprCustomer.hearts(batch, objTable);
 
 
         }
     }
 
-//    private void dragGuest(SprCustomer sprCst) {
-//        if (!isSitting) {
-//            if (Gdx.input.isTouched()) {
-//                sprCst.setX(vTouch.x);
-//                sprCst.setY(vTouch.y);
-//            }
-//        }
-//    }
 
     @Override
     public void dispose() {
