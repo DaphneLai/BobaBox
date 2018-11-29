@@ -23,12 +23,13 @@ import bobabox.main.Objects.ObjTables;
         4 = order is taken, is waiting for their beverage
         5 = gets their order, is eating
         6 = done eating, wants to pay
-        7 = pays and leaves
-        8 = leaves due to lack of service
+        7 = pays
+        8 = leaves happy
+        9 = leaves due to lack of service
          */
 public class SprCustomer extends Sprite {
     private SpriteBatch batch;
-    private float fX, fY, fH, fW, fMove; //Guest
+    private float fX, fY, fH, fW, fMove, fGoal = 30; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
     private boolean bCanDrag = false, bSitting = false, isGone = false;
     private StretchViewport viewport;
@@ -64,6 +65,7 @@ public class SprCustomer extends Sprite {
 //            nStatus[n] = n;
 //        }
     }
+
     public void sittingDown(boolean _isSitting) {
         bSitting = _isSitting;
         if (bSitting) {
@@ -72,32 +74,42 @@ public class SprCustomer extends Sprite {
         }
     }
 
-    public void updateStatus() {
+    public void updateStatus(int nGst) {
         directions();
         if (nStatus == 0) {
             nDir = 2;
             setY(fY);
-            if (nDir == 2 && fY <= 20) { //Walking down
-                nDir = 4;
-                setY(fY);
+
+            //Update Goal
+            if (nGst > 1) {
+                fGoal = 30 + ((fH + fHh) * (nGst - 1));
+            }
+            //Customer move down
+            if (fY < fGoal) {
+                nDir = 2;
                 nStatus = 1;
             }
+            // Makes Drag and Sitting possible
+            if(fY > fGoal){
+                bSitting=false;
+                bCanDrag=true;
+            }
 
-        } else if (nStatus == 1) {
-          //  System.out.println("STATUS: Waiting for a table");
+        } else if (nStatus >= 1) {
+            //  System.out.println("STATUS: Waiting for a table");
             nTimer++;
 
         } else if (nStatus == 2) {
-         //   System.out.println("STATUS: Deciding order");
+            //   System.out.println("STATUS: Deciding order");
             if (nTimer == 240) {
                 nStatus = 3;
             }
 
         } else if (nStatus == 3) {
-          //  System.out.println("STATUS: Ready to order");
+            //  System.out.println("STATUS: Ready to order");
 
         } else if (nStatus == 4) {
-           // System.out.println("STATUS: Waiting for food");
+            // System.out.println("STATUS: Waiting for food");
 
         } else if (nStatus == 5) {
             //System.out.println("STATUS: Eating, nom nom nom");
@@ -106,10 +118,13 @@ public class SprCustomer extends Sprite {
             //System.out.println("STATUS: Wants to pay");
 
         } else if (nStatus == 7) {
-            //System.out.println("STATUS: Paid, and leaving");
-            leave();
+          //  System.out.println("paying");
 
         } else if (nStatus == 8) {
+            //System.out.println("STATUS:leaving");
+            leave();
+
+        } else if (nStatus == 9) {
             //System.out.println("STATUS: This is horrible service!");
             leave();
         }
@@ -120,7 +135,7 @@ public class SprCustomer extends Sprite {
     public void drag(Vector2 vTouch, StretchViewport viewport) {
         nHearts = 0;
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-     if (nStatus == 1) {
+        if (nStatus == 1) {
             fX = vTouch.x - 50;
             fY = vTouch.y - 60;
             setX(fX);
@@ -133,13 +148,14 @@ public class SprCustomer extends Sprite {
         objTable = _objTable;
         batch = _batch;
 
-        if (nStatus == 2) {
-            fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
-            fHy = objTable.getY() + objTable.getHeight();
-        }
+
         //Level of hearts
         if (!isGone) {
-            batch.draw(arHearts[nHearts], fX - 10 , fY + 110 , fHw, fHh);
+            batch.draw(arHearts[nHearts], fX - 10, fY + 110, fHw, fHh);
+            if (nStatus >= 2 && nStatus <= 7) {
+                fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
+                fHy = objTable.getY() + objTable.getHeight();
+            }
         }
         if ((nTimer % 300 == 0) && nStatus >= 1) {
             if (nHearts < 3) {
@@ -148,7 +164,7 @@ public class SprCustomer extends Sprite {
         }
 
         if (nHearts == 3) {
-            leave();
+            nStatus = 9;
             if (isGone) {
                 setSize(0, 0);
             }
@@ -160,7 +176,7 @@ public class SprCustomer extends Sprite {
             fY += fMove;
             setY(fY);
         }
-        if (nDir == 1){ //East
+        if (nDir == 1) { //East
             fX += fMove;
             setX(fX);
         }
@@ -184,7 +200,7 @@ public class SprCustomer extends Sprite {
             nDir = 0;
             if (getY() < 335 && getY() > 325) {
                 nDir = 4;
-                setSize(0,0);
+                setSize(0, 0);
                 isGone = true;
             }
         }

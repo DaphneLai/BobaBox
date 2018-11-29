@@ -7,8 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjButton;
@@ -22,12 +26,13 @@ public class SctGuests implements Screen {
     private StretchViewport viewport;
     private SpriteBatch batch;
     private Texture txtBG;
-    private SprGuest sprGuest;
+    private SprGuest sprGst;
     private ObjTables objTable;
-    private boolean isSitting;
+    private boolean isSitting, isTFree=true;
     private Vector3 vTouch;
     private ObjButton btnHome;
-    private boolean isDown=false;
+    private int nGst=0, nTimer=0;
+    private List<SprGuest> arliGuests;
 
     public SctGuests(GamMenu _gammenu) {
         gamMenu = _gammenu;
@@ -41,10 +46,14 @@ public class SctGuests implements Screen {
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         batch = new SpriteBatch();
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
-        sprGuest = new SprGuest("data/GUEST1_spr.png", viewport);
         objTable = new ObjTables(500, 250, "data/TABLE3_obj.png", "data/TABLE32_obj.png",viewport);
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
+        arliGuests = new ArrayList<SprGuest>();
+        for (int i = 1; i <= 10; i++) {
+            arliGuests.add(new SprGuest("data/GUEST1_spr.png", viewport));
+        }
     }
+
 
     @Override
     public void render(float delta) {
@@ -53,35 +62,57 @@ public class SctGuests implements Screen {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //Drawing
-        batch.draw(txtBG, 0, 0);
-        btnHome.update(batch);
-        objTable.draw(batch);
-        //sprGuest.walkDown(isDown);
-        sprGuest.draw(batch);
-        sprGuest.drag();
-        sprGuest.hearts(batch, objTable);
-        sprGuest.sittingDown(isSitting);
+        nTimer++;
+        //System.out.println("TIME:" + nTimer);
 
-        batch.end();
-
-        if (!objTable.isAvb2(sprGuest)) {
-           // System.out.println("HERE!");
-            isSitting = true;
-           // sprGuest.sittingDown(isSitting);
-        } else if (objTable.isAvb2(sprGuest)){
-           // System.out.println("LEAVING");
-            isSitting = false;
-           // sprGuest.sittingDown(isSitting);
-        }
-
+        //Setting input
         if (Gdx.input.isTouched()) {
             viewport.unproject(vTouch.set(Gdx.input.getX(), (Gdx.input.getY() * (-1) + 500), 0));
         }
 
+        //Drawing
+        batch.draw(txtBG, 0, 0);
+        objTable.draw(batch);
+        btnHome.update(batch);
+        updateGuest(nGst, batch);
+        if (isTFree) {
+            if (nTimer % 300 == 0) {
+                if (nGst < 5) {
+                    nGst++;
+                } else {
+                    nGst = 0;
+                }
+                nTimer = 0;
+            }
+        }
+        // System.out.println("nGST:" + nGst);
+        batch.end();
+
+
+
         //Buttons
-        if(btnHome.justClicked()){
+        if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
+        }
+    }
+    private void updateGuest(int nGst, SpriteBatch batch) {
+        for (int n = 0; n < nGst; n++) {
+            // System.out.println(n + " N");
+            sprGst = arliGuests.get(n); //temporary Guest
+            sprGst.draw(batch);
+            sprGst.walkDown(nGst);
+            sprGst.drag();
+            sprGst.sittingDown(isSitting);
+            sprGst.hearts(batch, objTable);
+
+            if (objTable.isAvb2(sprGst)) {
+                isSitting = false;
+                isTFree = true;
+            } else if (!objTable.isAvb2(sprGst)) {
+                isSitting = true;
+                isTFree = false;
+                sprGst.sittingDown(isSitting);
+            }
         }
     }
 

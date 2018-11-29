@@ -1,4 +1,5 @@
 package bobabox.main.Scratches;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -32,6 +33,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private Texture txtBG;
     private ObjButton btnHome;
     private ObjTables arTables[] = new ObjTables[3], objTable;
+    private SprCustomer sprCustomer;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
     private boolean isSitting, isOpen = true, isReleased;
@@ -98,14 +100,14 @@ public class SctMultiGuests implements Screen, InputProcessor {
         if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
         }
-            if (nTimer % 300 == 0) {
-                if (nGst < 4) {
-                    nGst++;
-                } else {
-                    nGst = 4;
-                }
-                nTimer = 0;
+        if (nTimer % 300 == 0) {
+            if (nGst < 4) {
+                nGst++;
+            } else {
+                nGst = 4;
             }
+            nTimer = 0;
+        }
 
         if (!objTable.isAvb(arliGuests.get(nTarget))) {
             isSitting = true;
@@ -128,9 +130,13 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            arliGuests.get(n).draw(batch);
-            arliGuests.get(n).updateStatus();
-            arliGuests.get(n).hearts(batch, objTable);
+
+            sprCustomer = arliGuests.get(n); //temporary Guest
+            sprCustomer.draw(batch);
+            sprCustomer.updateStatus(nGst);
+            sprCustomer.sittingDown(isSitting);
+            sprCustomer.hearts(batch, objTable);
+
 
         }
     }
@@ -194,17 +200,16 @@ public class SctMultiGuests implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-            for (int n = 0; n < 5; n++) {
-                sprCst = arliGuests.get(n); //temporary Guest
-                if (sprCst.getBoundingRectangle().contains(vTouch)) {
-                    nTarget = n;
-                }
+        for (int n = 0; n < 5; n++) {
+            sprCst = arliGuests.get(n); //temporary Guest
+            if (sprCst.getBoundingRectangle().contains(vTouch)) {
+                nTarget = n;
             }
+        }
 
-            return true;
+        return true;
 
     }
-
 
 
     @Override
@@ -214,8 +219,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-                    if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch)) {
-                    arliGuests.get(nTarget).drag(vTouch, viewport);
+        if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch)) {
+            arliGuests.get(nTarget).drag(vTouch, viewport);
 
         }
 

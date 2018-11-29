@@ -27,15 +27,14 @@ public class SctStackGuests implements Screen {
     private SpriteBatch batch;
     private Texture txtBG;
     private ObjTables objTable;
-    private boolean isSitting, isTFree = true, isDown = false;
+    private boolean isSitting, isTFree = true;
     Vector3 vTouch;
     private SprGuest sprGst;
     private int nTimer = 0, nGst = 0;
     private List<SprGuest> arliGuests;
-    private List<SprGuest> arliGuestsSat;
     private ObjButton btnHome;
     private ShapeRenderer sh;
-    private float fGoalY = 30, fY, fH;
+    private float  fY, fH;
 
 
     public SctStackGuests(GamMenu _gammenu) {
@@ -56,7 +55,6 @@ public class SctStackGuests implements Screen {
         // objTable2 = new ObjTables(800, 150, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         arliGuests = new ArrayList<SprGuest>();
-        arliGuestsSat = new ArrayList<SprGuest>();
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
 
         for (int i = 1; i <= 10; i++) {
@@ -76,12 +74,6 @@ public class SctStackGuests implements Screen {
         //Logic
         camera.update();
         batch.begin();
-        sh.begin(ShapeRenderer.ShapeType.Line);
-        sh.setColor(0, 0, 0, 1);
-        sh.line(0,30,200,30);
-        sh.line(0,165,200,165);
-        sh.line(0,295,200,295);
-        sh.line(0,425,200,425);
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         nTimer++;
@@ -94,6 +86,12 @@ public class SctStackGuests implements Screen {
 
         //Drawing
         batch.draw(txtBG, 0, 0);
+        sh.begin(ShapeRenderer.ShapeType.Line);
+        sh.setColor(0, 0, 0, 1);
+        sh.line(0,30,200,30);
+        sh.line(0,165,200,165);
+        sh.line(0,295,200,295);
+        sh.line(0,425,200,425);
         objTable.draw(batch);
         btnHome.update(batch);
         updateGuest(nGst, batch);

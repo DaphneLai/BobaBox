@@ -70,6 +70,7 @@ public class SprGuest extends Sprite {
             bCanDrag=true;
         }
 
+        //Updates the Goal
         if(nGst>1){
             fGoal = 30 + ((fH+fHh+5) * (nGst - 1));
         }
