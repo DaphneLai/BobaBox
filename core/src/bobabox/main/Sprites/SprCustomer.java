@@ -67,27 +67,34 @@ public class SprCustomer extends Sprite {
         if (bSitting) {
             setSize(0, 0);
             nStatus = 2;
+
+
+        }
+    }
+
+    public void walkDown(int nGst) {
+        nDir = 2;
+        setY(fY);
+
+        //Update Goal
+        if (nGst > 1) {
+            fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
+        }
+        //Customer move down
+        if (fY <= fGoal) {
+            nDir = 2;
+            nStatus = 1;
+        }
+
+        if (nStatus == 1) {
+            nDir = 4;
         }
     }
 
     public void updateStatus(int nGst) {
         directions();
         if (nStatus == 0) {
-            nDir = 2;
-            setY(fY);
-
-            //Update Goal
-            if (nGst > 1) {
-                fGoal = 30 + ((fH + fHh) * (nGst - 1));
-            }
-            //Customer move down
-            if (fY <= fGoal) {
-                nDir = 2;
-                nStatus = 1;
-                if (nStatus ==1) {
-                    nDir = 4;
-                }
-            }
+            walkDown(nGst);
 
         } else if (nStatus >= 1) {
             //  System.out.println("STATUS: Waiting for a table");
@@ -112,7 +119,7 @@ public class SprCustomer extends Sprite {
             //System.out.println("STATUS: Wants to pay");
 
         } else if (nStatus == 7) {
-          //  System.out.println("paying");
+            //  System.out.println("paying");
 
         } else if (nStatus == 8) {
             //System.out.println("STATUS:leaving");

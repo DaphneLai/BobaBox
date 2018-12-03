@@ -33,12 +33,13 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private Texture txtBG;
     private ObjButton btnHome;
     private ObjTables arTables[] = new ObjTables[3], objTable;
-    private SprCustomer sprCustomer;
+    private SprCustomer sprCustomer, sprCustSat;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
     private boolean isSitting, isOpen = true, isReleased;
     private int nTimer = 0, nGst = 0, nAdd, nTarget;
     private List<SprCustomer> arliGuests;
+    private List<SprCustomer> arliGuestsSat;
     private SprCustomer sprCst;
 
     public SctMultiGuests(GamMenu _gammenu) {
@@ -69,6 +70,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
         //guests
         arliGuests = new ArrayList<SprCustomer>();
+        arliGuestsSat = new ArrayList<SprCustomer>();
+
         for (int i = 1; i <= 5; i++) {
             arliGuests.add(new SprCustomer("data/GUEST1_spr.png"));
         }
@@ -109,14 +112,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
             nTimer = 0;
         }
 
-      /*  if (!objTable.isAvb(arliGuests.get(nTarget))) {
-            isSitting = true;
-            arliGuests.get(nTarget).sittingDown(isSitting);
-        } else if (objTable.isAvb((arliGuests.get(nTarget)))) {
-            isSitting = false;
-            arliGuests.get(nTarget).sittingDown(isSitting);
-        }
-        objTable.sittingDown(isSitting);*/
+
     }
 
     //Method runs through the array of tables
@@ -134,9 +130,28 @@ public class SctMultiGuests implements Screen, InputProcessor {
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
             sprCustomer.hearts(batch, objTable);
+            objTable.sittingDown(isSitting);
 
 
         }
+
+       if (!objTable.isAvb(arliGuests.get(nTarget))) {
+            isSitting = true;
+            arliGuests.get(nTarget).sittingDown(isSitting);
+        } else if (objTable.isAvb((arliGuests.get(nTarget)))) {
+            isSitting = false;
+            arliGuests.get(nTarget).sittingDown(isSitting);
+        }
+
+
+        if (isSitting) {
+            arliGuestsSat.add(arliGuests.get(nTarget));
+            arliGuests.remove(nTarget);
+            //System.out.println(arliGuests.size() + " SIZE ");
+
+
+       }
+
     }
 
 
@@ -211,7 +226,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch)) {
             arliGuests.get(nTarget).drag(vTouch, viewport);
-
         }
 
         return true;
