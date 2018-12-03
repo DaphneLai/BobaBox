@@ -52,8 +52,7 @@ public class SprServer extends Sprite {
 
     private void directions(SpriteBatch batch) {
         if(nDir < 4){
-            batch.draw(
-                    (TextureRegion)araniServer[nDir].getKeyFrame(fElapsedTime,true), fX, fY, fW-10, fH);
+            batch.draw((TextureRegion)araniServer[nDir].getKeyFrame(fElapsedTime,true), fX, fY, fW-10, fH);
         }
         if (nDir == 0) {
 //            System.out.println("NORTH");
