@@ -1,14 +1,12 @@
 package bobabox.main.Scratches;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
@@ -36,8 +34,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private SprCustomer sprCustomer, sprCustSat;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
-    private boolean isSitting, isOpen = true, isReleased;
-    private int nTimer = 0, nGst = 0, nAdd, nTarget;
+    private boolean isSitting, isOpen = true, isReleased, isChecked;
+    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private SprCustomer sprCst;
@@ -111,7 +109,12 @@ public class SctMultiGuests implements Screen, InputProcessor {
             }
             nTimer = 0;
         }
-
+      /**/  if (arliGuests.get(nTarget).isleaving()) {
+            System.out.println("leaving");
+            isSitting = false;
+            arliGuests.get(nTarget).sittingDown(isSitting);
+            arTables[nTable].sittingDown(isSitting);
+        }
 
     }
 
@@ -130,28 +133,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
             sprCustomer.hearts(batch, objTable);
-            objTable.sittingDown(isSitting);
-
-
         }
-
-       if (!objTable.isAvb(arliGuests.get(nTarget))) {
-            isSitting = true;
-            arliGuests.get(nTarget).sittingDown(isSitting);
-        } else if (objTable.isAvb((arliGuests.get(nTarget)))) {
-            isSitting = false;
-            arliGuests.get(nTarget).sittingDown(isSitting);
-        }
-
-
-        if (isSitting) {
-            arliGuestsSat.add(arliGuests.get(nTarget));
-            arliGuests.remove(nTarget);
-            //System.out.println(arliGuests.size() + " SIZE ");
-
-
-       }
-
     }
 
 
@@ -219,6 +201,18 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        if (!isSitting) {
+            if (arTables[nTable].isAvb()) {
+                if (arTables[nTable].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
+                    isSitting = true;
+                }
+                arliGuests.get(nTarget).sittingDown(isSitting);
+                arTables[nTable].sittingDown(isSitting);
+            }
+        }
+
+
         return false;
     }
 
@@ -227,6 +221,12 @@ public class SctMultiGuests implements Screen, InputProcessor {
         if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch)) {
             arliGuests.get(nTarget).drag(vTouch, viewport);
         }
+        for (int i = 0; i < 1; i++) {
+            if (arTables[i].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
+                nTable = i;
+            }
+        }
+
 
         return true;
     }

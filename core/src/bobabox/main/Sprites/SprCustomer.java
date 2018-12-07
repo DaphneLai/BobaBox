@@ -67,8 +67,7 @@ public class SprCustomer extends Sprite {
         if (bSitting) {
             setSize(0, 0);
             nStatus = 2;
-
-
+            bCanDrag = false;
         }
     }
 
@@ -99,6 +98,7 @@ public class SprCustomer extends Sprite {
         } else if (nStatus >= 1) {
             //  System.out.println("STATUS: Waiting for a table");
             nTimer++;
+            bCanDrag = true;
 
         } else if (nStatus == 2) {
             //   System.out.println("STATUS: Deciding order");
@@ -134,13 +134,15 @@ public class SprCustomer extends Sprite {
 
     //Active when the guest is dragged
     public void drag(Vector2 vTouch, StretchViewport viewport) {
-        nHearts = 0;
-        viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-        if (nStatus == 1) {
-            fX = vTouch.x - 50;
-            fY = vTouch.y - 60;
-            setX(fX);
-            setY(fY);
+        if (bCanDrag == true) {
+            nHearts = 0;
+            viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
+            if (nStatus == 1) {
+                fX = vTouch.x - 50;
+                fY = vTouch.y - 60;
+                setX(fX);
+                setY(fY);
+            }
         }
     }
 
@@ -168,6 +170,7 @@ public class SprCustomer extends Sprite {
 
         if (nHearts == 3) {
             leave();
+            isleaving();
         }
     }
 
@@ -204,6 +207,15 @@ public class SprCustomer extends Sprite {
                 isGone = true;
             }
         }
+    }
+    //check if guest is leaving after sitting
+    public boolean isleaving() {
+        if (nHearts == 3) {
+        //    System.out.println("leaving");
+            return true;
+
+        }
+        return false;
     }
 
 }

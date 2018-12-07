@@ -46,25 +46,13 @@ public class ObjTables extends Sprite {
             setTexture(nTxt1);
         }
     }
-    public boolean isAvb(SprCustomer sprGuest) { // Checks if the spr is over the table
-
-        fGY = sprGuest.getY();
-        fGX = sprGuest.getX();
-
-        if (fGX > fX && fGX < fX + fW) {
-            if (fGY > fY && fGY < fY + fH) {
-                super.setBounds(fX, fY, fW, fH);
-                if (Gdx.input.isTouched() && !isSitting) {
-                    super.setBounds(fX - 10, fY - 10, fW + 20, fH + 20);
-                    return true;
-
-                }
-                return false;
-            }
+    public boolean isAvb() {
+        if (isSitting) {
+            return false;
         }
-        super.setBounds(fX, fY, fW, fH);
         return true;
     }
+
     public boolean isAvb2(SprGuest sprGuest) { // Checks if the spr is over the table
 
         fGY = sprGuest.getY();
