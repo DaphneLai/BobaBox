@@ -27,7 +27,7 @@ public class ScrGame implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW, nH;
-    private boolean isTableClicked = false, isDown = false;
+    private boolean isTableClicked = false;
     private boolean isSitting = false;
     private Vector3 vTouch;
     private int nGameTimer = 60, nFPS;
@@ -37,7 +37,7 @@ public class ScrGame implements Screen, InputProcessor {
     private StretchViewport viewport;
     private SpriteBatch batch;
     //Assets
-    Texture txtBg;
+    Texture txtBg, txtStats;
     private SprGuest sprGuest;
     private SprServer sprServer;
     private ObjTables arTables[] = new ObjTables[3];
@@ -61,6 +61,7 @@ public class ScrGame implements Screen, InputProcessor {
         batch = new SpriteBatch();
         objBar = new ObjBar(viewport, new Rectangle(300, 300, 450, 80));
         txtBg = new Texture("data/GameBG_img.png");
+        txtStats = new Texture("data/STATS_img.png");
         btnPause = new ObjButton(940, 40, 90, 55, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
         bfFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         bfFont.setColor(Color.DARK_GRAY);
@@ -99,20 +100,24 @@ public class ScrGame implements Screen, InputProcessor {
         btnPause.update(batch);
         sprServer.update(fXG, fYG, batch);
         sprGuest.draw(batch);
-        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
 
         //Checks if bar is clicked
         if (objBar.isTapped()) {
             System.out.println("Bar is touched");
             fXG = objBar.rBar().x;
             fYG = objBar.rBar().y - 20;
+            System.out.println("FBX " + fXG + " FBY "+ fYG);
             sprServer.update(fXG, fYG, batch);
         }
+
         if (isTableClicked) {
             sprServer.update(fXG, fYG, batch);
         }
 
+        sprServer.carryDrink(batch, true, objBar);
         updateTable();
+        batch.draw(txtStats,nW - 200, nH - 165, 200, 150);
+        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
         batch.end();
 
         //ObjButton
