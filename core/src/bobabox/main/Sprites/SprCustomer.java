@@ -41,7 +41,7 @@ public class SprCustomer extends Sprite {
 
         //Customer specs
         fX = 80;
-        fY = 600; //330
+        fY = 330;
         fW = 80;
         fH = 100;
         fMove = 3.0f;
@@ -62,18 +62,16 @@ public class SprCustomer extends Sprite {
         nStatus = 0;
     }
 
-    public boolean sittingDown(boolean _isSitting) {
+    public void sittingDown(boolean _isSitting) {
         bSitting = _isSitting;
         if (bSitting) {
             setSize(0, 0);
             nStatus = 2;
             bCanDrag = false;
-            return true;
         }
-        return false;
     }
 
-    public void entering(int nGst) {
+    public void walkDown(int nGst) {
         nDir = 2;
         setY(fY);
 
@@ -81,58 +79,26 @@ public class SprCustomer extends Sprite {
         if (nGst > 1) {
             fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
         }
-        //Status Change
+        //Customer move down
         if (fY <= fGoal) {
+            nDir = 2;
             nStatus = 1;
         }
 
         if (nStatus == 1) {
             nDir = 4;
         }
-        if (fY <=60) {
-           // System.out.println("TRUE");
-            bCanDrag = true;
-        }
     }
-
-    //  ADD COMMENT
-    public void updateQueue(int nGst){
-        System.out.println("UPDATE QUEUE");
-        nDir = 2;
-        setY(fY);
-        nGst = nGst -1;
-        System.out.println(nGst +" NGST");
-
-        //Update Goal
-        if (nGst > 1) {
-            fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
-        }else{
-            fGoal=30;
-        }
-        //Status Change
-        if (fY <= fGoal) {
-            nStatus = 1;
-        }
-
-        if (nStatus == 1) {
-            nDir = 4;
-        }
-        if (fY <=60) {
-            // System.out.println("TRUE");
-            bCanDrag = true;
-        }
-    }
-
 
     public void updateStatus(int nGst) {
         directions();
         if (nStatus == 0) {
-   //         walkDown(nGst);
+            walkDown(nGst);
 
         } else if (nStatus >= 1) {
             //  System.out.println("STATUS: Waiting for a table");
             nTimer++;
-          //  bCanDrag = true;
+            bCanDrag = true;
 
         } else if (nStatus == 2) {
             //   System.out.println("STATUS: Deciding order");
@@ -242,11 +208,10 @@ public class SprCustomer extends Sprite {
             }
         }
     }
-
     //check if guest is leaving after sitting
     public boolean isleaving() {
         if (nHearts == 3) {
-            //    System.out.println("leaving");
+        //    System.out.println("leaving");
             return true;
 
         }

@@ -19,8 +19,6 @@ import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprCustomer;
 
 //NOT IN USE
-//https://stackoverflow.com/questions/12436732/index-out-of-bounds-exception-while-deleting-and-adding-to-the-list
-//^^ Link is used to gid rid of out of bounds error
 public class SctMultiGuests implements Screen, InputProcessor {
     private GamMenu gamMenu;
 
@@ -37,13 +35,14 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
     private boolean isSitting, isOpen = true, isReleased, isChecked;
-    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal;
+    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private SprCustomer sprCst;
 
     public SctMultiGuests(GamMenu _gammenu) {
         gamMenu = _gammenu;
+
 
         //game height and width
         fWORLD_WIDTH = 1000;
@@ -77,7 +76,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
         //    System.out.println("LIST:" + arliGuests);
         //  System.out.println("SIZE:" + arliGuests.size());
-        nGoal = 5;
     }
 
     @Override
@@ -99,27 +97,24 @@ public class SctMultiGuests implements Screen, InputProcessor {
         updateGuest(nGst, batch);
         batch.end();
 
-
         //Buttons
         if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
         }
-        queue();
         if (nTimer % 300 == 0) {
-            if (nGst <= nGoal) {
+            if (nGst < 4) {
                 nGst++;
+            } else {
+                nGst = 4;
             }
             nTimer = 0;
         }
-        /**/
-        if (arliGuests.get(nTarget).isleaving()) {
+      /**/  if (arliGuests.get(nTarget).isleaving()) {
             System.out.println("leaving");
             isSitting = false;
             arliGuests.get(nTarget).sittingDown(isSitting);
             arTables[nTable].sittingDown(isSitting);
         }
-
-        //  System.out.println(nGst+ " nGst");
 
     }
 
@@ -134,39 +129,11 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            // System.out.println(nGst);
             sprCustomer = arliGuests.get(n); //temporary Guest
             sprCustomer.draw(batch);
-            sprCustomer.updateStatus(n);
-            sprCustomer.entering(nGst);
+            sprCustomer.updateStatus(nGst);
             sprCustomer.hearts(batch, objTable);
         }
-
-
-    }
-
-
-    public void queue() {
-        if (isSitting) {
-            System.out.println(isSitting + " isSitting");
-            arliGuestsSat.add(arliGuests.get(nTarget));
-            sprCustSat = arliGuests.get(nTarget);
-            System.out.println(arliGuestsSat.get(nTarget).sittingDown(isSitting));
-            if (sprCustSat.sittingDown(isSitting)) {
-                arliGuests.remove(nTarget);
-                nGoal = arliGuests.size();
-                //isSitting = false;
-                for (int n = 0; n < nGoal; n++) {
-                    //  System.out.println(arliGuests.indexOf(n));
-                    System.out.println(n);
-                    arliGuests.get(n).updateQueue(nGst);
-                    isSitting=false;
-                    // sprCustomer.updateQueue(nGst);
-                }
-            }
-
-        }
-
     }
 
 
@@ -220,19 +187,15 @@ public class SctMultiGuests implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-        for (SprCustomer customer : arliGuests) {
-            if (customer.getBoundingRectangle().contains(vTouch)) {
-                ///
-            }
-        }
-        for (int n = 0; n < arliGuests.size(); n++) {
+        for (int n = 0; n < 5; n++) {
             sprCst = arliGuests.get(n); //temporary Guest
             if (sprCst.getBoundingRectangle().contains(vTouch)) {
                 nTarget = n;
-                // System.out.println(nTarget);
             }
         }
+
         return true;
+
     }
 
 
@@ -248,6 +211,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
                 arTables[nTable].sittingDown(isSitting);
             }
         }
+
+
         return false;
     }
 
