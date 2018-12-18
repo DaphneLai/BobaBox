@@ -41,7 +41,7 @@ public class SprCustomer extends Sprite {
 
         //Customer specs
         fX = 80;
-        fY = 330;
+        fY = 600; //330
         fW = 80;
         fH = 100;
         fMove = 3.0f;
@@ -62,16 +62,18 @@ public class SprCustomer extends Sprite {
         nStatus = 0;
     }
 
-    public void sittingDown(boolean _isSitting) {
+    public boolean sittingDown(boolean _isSitting) {
         bSitting = _isSitting;
         if (bSitting) {
             setSize(0, 0);
             nStatus = 2;
             bCanDrag = false;
+            return true;
         }
+        return false;
     }
 
-    public void walkDown(int nGst) {
+    public void entering(int nGst) {
         nDir = 2;
         setY(fY);
 
@@ -90,10 +92,15 @@ public class SprCustomer extends Sprite {
         }
     }
 
+    public void updateQueue(int nGst){
+        nDir = 2;
+        setY(fY);
+    }
+
     public void updateStatus(int nGst) {
         directions();
         if (nStatus == 0) {
-            walkDown(nGst);
+            //walkDown(nGst);
 
         } else if (nStatus >= 1) {
             //  System.out.println("STATUS: Waiting for a table");

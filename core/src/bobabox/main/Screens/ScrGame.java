@@ -11,13 +11,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bobabox.main.Objects.ObjBar;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
+import bobabox.main.Sprites.SprCustomer;
 import bobabox.main.Sprites.SprGuest;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprServer;
@@ -27,20 +32,31 @@ public class ScrGame implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW, nH;
-    private boolean isTableClicked = false, isDown = false;
-    private boolean isSitting = false;
     private Vector3 vTouch;
-    private int nGameTimer = 60, nFPS;
+    private Vector2 vTouch2;
+    private List<SprCustomer> arliGuests;
+    private List<SprCustomer> arliGuestsSat;
+
+    private boolean isTableClicked = false, isDown = false, isSitting, isOpen = true, isReleased, isChecked;
+    private int nGameTimer = 60, nFPS, nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal;
+
     private float fXG, fYG;
     //Logic
     private OrthographicCamera camera;
     private StretchViewport viewport;
     private SpriteBatch batch;
     //Assets
-    Texture txtBg;
+
+    //Texture txtBg;
     private SprGuest sprGuest;
+
+    private SprCustomer sprCustomer, sprCustSat, sprCst;
+
+    Texture txtBg, txtStats;
+    //  private SprGuest sprGuest;
+
     private SprServer sprServer;
-    private ObjTables arTables[] = new ObjTables[3];
+    private ObjTables arTables[] = new ObjTables[3], objTable;
     private ObjButton btnPause;
     private BitmapFont bfFont;
     private ObjBar objBar;
@@ -61,6 +77,7 @@ public class ScrGame implements Screen, InputProcessor {
         batch = new SpriteBatch();
         objBar = new ObjBar(viewport, new Rectangle(300, 300, 450, 80));
         txtBg = new Texture("data/GameBG_img.png");
+        txtStats = new Texture("data/STATS_img.png");
         btnPause = new ObjButton(940, 40, 90, 55, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
         bfFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         bfFont.setColor(Color.DARK_GRAY);
@@ -71,6 +88,15 @@ public class ScrGame implements Screen, InputProcessor {
         arTables[2] = new ObjTables(nW - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
         fXG = 850;
         fYG = 175;
+
+        //guests
+        arliGuests = new ArrayList<SprCustomer>();
+        arliGuestsSat = new ArrayList<SprCustomer>();
+
+        for (int i = 1; i <= 5; i++) {
+            arliGuests.add(new SprCustomer("data/GUEST1_spr.png"));
+        }
+
     }
 
 
@@ -98,21 +124,40 @@ public class ScrGame implements Screen, InputProcessor {
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
         sprServer.update(fXG, fYG, batch);
+
         sprGuest.draw(batch);
+
+        updateTable();
+        updateGuest(nGst, batch);
+
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
+
+        sprGuest.draw(batch);
+
 
         //Checks if bar is clicked
         if (objBar.isTapped()) {
             System.out.println("Bar is touched");
             fXG = objBar.rBar().x;
             fYG = objBar.rBar().y - 20;
+            System.out.println("FBX " + fXG + " FBY " + fYG);
             sprServer.update(fXG, fYG, batch);
         }
+
         if (isTableClicked) {
             sprServer.update(fXG, fYG, batch);
         }
 
+
         updateTable();
+
+        //  updateTable();
+
+        sprServer.carryDrink(batch, true, objBar);
+        updateTable();
+        batch.draw(txtStats, nW - 200, nH - 165, 200, 150);
+        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
+
         batch.end();
 
         //ObjButton
@@ -127,6 +172,7 @@ public class ScrGame implements Screen, InputProcessor {
     //Method runs through the array of tables
     private void updateTable() {
         for (int i = 0; i < 3; i++) {
+            objTable = arTables[i];
             arTables[i].draw(batch);
             sprGuest.hearts(batch, arTables[i]);
 
@@ -157,6 +203,39 @@ public class ScrGame implements Screen, InputProcessor {
                 arTables[i].sittingDown(isSitting);
             }
         }
+    }
+
+    private void updateGuest(int nGst, SpriteBatch batch) {
+        for (int n = 0; n < nGst; n++) {
+            sprCustomer = arliGuests.get(n); //temporary Guest
+            sprCustomer.draw(batch);
+            sprCustomer.updateStatus(nGst);
+            sprCustomer.entering(nGst);
+            sprCustomer.hearts(batch, objTable);
+        }
+    }
+
+    public void queue() {
+        if (isSitting) {
+            System.out.println(isSitting + " isSitting");
+            arliGuestsSat.add(arliGuests.get(nTarget));
+            sprCustSat = arliGuests.get(nTarget);
+            System.out.println(arliGuestsSat.get(nTarget).sittingDown(isSitting));
+            if (sprCustSat.sittingDown(isSitting)) {
+                arliGuests.remove(nTarget);
+                nGoal = arliGuests.size();
+                //isSitting = false;
+                for (int n = 0; n < nGoal; n++) {
+                    //  System.out.println(arliGuests.indexOf(n));
+                    System.out.println(n);
+                    arliGuests.get(n).updateQueue(nGst);
+                    isSitting=false;
+                    // sprCustomer.updateQueue(nGst);
+                }
+            }
+
+        }
+
     }
 
     public void reset() {
@@ -221,17 +300,51 @@ public class ScrGame implements Screen, InputProcessor {
         System.out.println("x: " + screenX);
         System.out.println("y: " + (screenY * -1 + 500));
 
-        return false;
+        viewport.unproject(vTouch2.set(Gdx.input.getX(), Gdx.input.getY()));
+        for (int n = 0; n < arliGuests.size(); n++) {
+            sprCst = arliGuests.get(n); //temporary Guest
+            if (sprCst.getBoundingRectangle().contains(vTouch2)) {
+                nTarget = n;
+            }
+        }
+
+        return true;
+
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+
+        if (!isSitting) {
+            if (arTables[nTable].isAvb()) {
+                if (arTables[nTable].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
+                    isSitting = true;
+                }
+                arliGuests.get(nTarget).sittingDown(isSitting);
+                arTables[nTable].sittingDown(isSitting);
+            }
+        }
+
+
         return false;
     }
 
+
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+
+        if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch2)) {
+            arliGuests.get(nTarget).drag(vTouch2, viewport);
+        }
+        for (int i = 0; i < 1; i++) {
+            if (arTables[i].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
+                nTable = i;
+            }
+        }
+
+
+        return true;
     }
 
     @Override

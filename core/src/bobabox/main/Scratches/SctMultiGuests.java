@@ -35,7 +35,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
     private boolean isSitting, isOpen = true, isReleased, isChecked;
-    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable;
+    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private SprCustomer sprCst;
@@ -76,6 +76,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
         //    System.out.println("LIST:" + arliGuests);
         //  System.out.println("SIZE:" + arliGuests.size());
+
+        nGoal=5;
     }
 
     @Override
@@ -102,7 +104,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
             gamMenu.updateScreen(2);
         }
         if (nTimer % 300 == 0) {
-            if (nGst < 4) {
+            if (nGst < nGoal) {
                 nGst++;
             } else {
                 nGst = 4;
@@ -132,10 +134,33 @@ public class SctMultiGuests implements Screen, InputProcessor {
             sprCustomer = arliGuests.get(n); //temporary Guest
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
+            sprCustomer.entering(nGst);
             sprCustomer.hearts(batch, objTable);
         }
     }
 
+    public void queue() {
+        if (isSitting) {
+            System.out.println(isSitting + " isSitting");
+            arliGuestsSat.add(arliGuests.get(nTarget));
+            sprCustSat = arliGuests.get(nTarget);
+            System.out.println(arliGuestsSat.get(nTarget).sittingDown(isSitting));
+            if (sprCustSat.sittingDown(isSitting)) {
+                arliGuests.remove(nTarget);
+                nGoal = arliGuests.size();
+                //isSitting = false;
+                for (int n = 0; n < nGoal; n++) {
+                    //  System.out.println(arliGuests.indexOf(n));
+                    System.out.println(n);
+                    arliGuests.get(n).updateQueue(nGst);
+                    isSitting=false;
+                    // sprCustomer.updateQueue(nGst);
+                }
+            }
+
+        }
+
+    }
 
     @Override
     public void dispose() {
@@ -187,7 +212,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-        for (int n = 0; n < 5; n++) {
+        for (int n = 0; n < arliGuests.size(); n++) {
             sprCst = arliGuests.get(n); //temporary Guest
             if (sprCst.getBoundingRectangle().contains(vTouch)) {
                 nTarget = n;
