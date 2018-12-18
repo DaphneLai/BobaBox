@@ -32,12 +32,12 @@ public class ScrGame implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW, nH;
+
     private Vector3 vTouch;
     private Vector2 vTouch2;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
-
-    private boolean isTableClicked = false, isDown = false, isSitting, isOpen = true, isReleased, isChecked;
+    private boolean isTableClicked = false, isDown = false, isSitting = false, isOpen = true, isReleased, isChecked;
     private int nGameTimer = 60, nFPS, nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal;
 
     private float fXG, fYG;
@@ -46,13 +46,9 @@ public class ScrGame implements Screen, InputProcessor {
     private StretchViewport viewport;
     private SpriteBatch batch;
     //Assets
-
-    //Texture txtBg;
-    private SprGuest sprGuest;
-
-    private SprCustomer sprCustomer, sprCustSat, sprCst;
-
     Texture txtBg, txtStats;
+    private SprGuest sprGuest;
+    private SprCustomer sprCustomer, sprCustSat, sprCst;
     //  private SprGuest sprGuest;
 
     private SprServer sprServer;
@@ -124,14 +120,12 @@ public class ScrGame implements Screen, InputProcessor {
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
         sprServer.update(fXG, fYG, batch);
-
         sprGuest.draw(batch);
 
         updateTable();
         updateGuest(nGst, batch);
 
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
-
         sprGuest.draw(batch);
 
 
@@ -141,14 +135,13 @@ public class ScrGame implements Screen, InputProcessor {
             fXG = objBar.rBar().x;
             fYG = objBar.rBar().y - 20;
             System.out.println("FBX " + fXG + " FBY " + fYG);
+            System.out.println("FBX " + fXG + " FBY "+ fYG);
             sprServer.update(fXG, fYG, batch);
         }
 
         if (isTableClicked) {
             sprServer.update(fXG, fYG, batch);
         }
-
-
         updateTable();
 
         //  updateTable();
@@ -157,7 +150,10 @@ public class ScrGame implements Screen, InputProcessor {
         updateTable();
         batch.draw(txtStats, nW - 200, nH - 165, 200, 150);
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
-
+        sprServer.carryDrink(batch, true, objBar);
+        updateTable();
+        batch.draw(txtStats,nW - 200, nH - 165, 200, 150);
+        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
         batch.end();
 
         //ObjButton
