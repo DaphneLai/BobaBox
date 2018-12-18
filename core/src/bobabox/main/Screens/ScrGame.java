@@ -32,14 +32,12 @@ public class ScrGame implements Screen, InputProcessor {
     GamMenu gamMenu;
     //Values
     int nW, nH;
-
     private Vector3 vTouch;
     private Vector2 vTouch2;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private boolean isTableClicked = false, isDown = false, isSitting = false, isOpen = true, isReleased, isChecked;
     private int nGameTimer = 60, nFPS, nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal;
-
     private float fXG, fYG;
     //Logic
     private OrthographicCamera camera;
@@ -78,6 +76,7 @@ public class ScrGame implements Screen, InputProcessor {
         bfFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
         bfFont.setColor(Color.DARK_GRAY);
         bfFont.getData().setScale(1f, 1f);
+        nGoal=5;
         //table
         arTables[0] = new ObjTables(280, 80, "data/TABLE1_obj.png", "data/TABLE12_obj.png", viewport);
         arTables[1] = new ObjTables(nW / 2, 50, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
@@ -88,7 +87,6 @@ public class ScrGame implements Screen, InputProcessor {
         //guests
         arliGuests = new ArrayList<SprCustomer>();
         arliGuestsSat = new ArrayList<SprCustomer>();
-
         for (int i = 1; i <= 5; i++) {
             arliGuests.add(new SprCustomer("data/GUEST1_spr.png"));
         }
@@ -109,6 +107,7 @@ public class ScrGame implements Screen, InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         nFPS++;
+        nTimer++;
         if (nFPS % 60 == 0) {
             nGameTimer--;
         }
@@ -120,13 +119,10 @@ public class ScrGame implements Screen, InputProcessor {
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
         sprServer.update(fXG, fYG, batch);
-        sprGuest.draw(batch);
-
+        queue();
         updateTable();
         updateGuest(nGst, batch);
-
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
-        sprGuest.draw(batch);
 
 
         //Checks if bar is clicked
@@ -144,8 +140,6 @@ public class ScrGame implements Screen, InputProcessor {
         }
         updateTable();
 
-        //  updateTable();
-
         sprServer.carryDrink(batch, true, objBar);
         updateTable();
         batch.draw(txtStats, nW - 200, nH - 165, 200, 150);
@@ -155,6 +149,14 @@ public class ScrGame implements Screen, InputProcessor {
         batch.draw(txtStats,nW - 200, nH - 165, 200, 150);
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
         batch.end();
+
+        //Timer for Guests to enter
+        if (nTimer % 300 == 0) {
+            if (nGst < nGoal) {
+                nGst++;
+            }
+            nTimer = 0;
+        }
 
         //ObjButton
         checkButtons();
@@ -201,8 +203,10 @@ public class ScrGame implements Screen, InputProcessor {
         }
     }
 
+    //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
+            System.out.println(nGst);
             sprCustomer = arliGuests.get(n); //temporary Guest
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
@@ -211,6 +215,7 @@ public class ScrGame implements Screen, InputProcessor {
         }
     }
 
+    //updates the SprCustomer's Queue
     public void queue() {
         if (isSitting) {
             System.out.println(isSitting + " isSitting");
@@ -292,9 +297,7 @@ public class ScrGame implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
-        System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY * -1 + 500));
+
 
         viewport.unproject(vTouch2.set(Gdx.input.getX(), Gdx.input.getY()));
         for (int n = 0; n < arliGuests.size(); n++) {
@@ -310,8 +313,6 @@ public class ScrGame implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-
         if (!isSitting) {
             if (arTables[nTable].isAvb()) {
                 if (arTables[nTable].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
@@ -329,7 +330,6 @@ public class ScrGame implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-
         if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch2)) {
             arliGuests.get(nTarget).drag(vTouch2, viewport);
         }

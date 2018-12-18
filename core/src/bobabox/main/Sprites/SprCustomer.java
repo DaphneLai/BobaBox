@@ -73,6 +73,7 @@ public class SprCustomer extends Sprite {
         return false;
     }
 
+    //Assures guest is walking down at the start
     public void entering(int nGst) {
         nDir = 2;
         setY(fY);
@@ -92,6 +93,7 @@ public class SprCustomer extends Sprite {
         }
     }
 
+    //Updates the Guest line once one customer is removed
     public void updateQueue(int nGst){
         nDir = 2;
         setY(fY);

@@ -95,6 +95,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBG, 0, 0);
         btnHome.update(batch);
+        queue();
         updateTable();
         updateGuest(nGst, batch);
         batch.end();
@@ -103,6 +104,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
         if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
         }
+
+        //Timer for guests to enter
         if (nTimer % 300 == 0) {
             if (nGst < nGoal) {
                 nGst++;
@@ -131,6 +134,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
+            System.out.println(nGst);
             sprCustomer = arliGuests.get(n); //temporary Guest
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
@@ -139,6 +143,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
         }
     }
 
+    //updates the SprCustomer's Queue
     public void queue() {
         if (isSitting) {
             System.out.println(isSitting + " isSitting");
