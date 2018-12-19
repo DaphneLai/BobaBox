@@ -9,6 +9,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import bobabox.main.Objects.ObjTables;
 
+
+
+//SPRGUEST IS AN UNUSED CLASS
+//IT'S ONLY USED AS A REFERENCE FOR SPRCUSTOMER
+
+
 public class SprGuest extends Sprite {
 
     private SpriteBatch batch;
@@ -21,7 +27,7 @@ public class SprGuest extends Sprite {
     private ObjTables objTable;
     private Texture arHearts[] = new Texture[4];
     private double rand = Math.random() * 301;
-    private int nStatus;
+
     /* nStatus is an integer to update the guest's current activity
     0 - is ready to order
     1 - has ordered, waiting for drink

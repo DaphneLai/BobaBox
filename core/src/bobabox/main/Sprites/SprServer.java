@@ -14,18 +14,16 @@ import java.util.List;
 
 import bobabox.main.Objects.ObjBar;
 
-//https://github.com/TimCatana/gamegravity/blob/master/core/src/com/catani/gamegravity/SprChar.java
-
 public class SprServer extends Sprite {
 
-    private float fX, fY, fW, fH;//Server X, Y, W, H
+    private float fX, fY, fW, fH, fXG, fYG;//Server X, Y, W, H
     private int nDir = 4, nTimer = 0;
     private Texture txtSheet, txtServer, txtDrink;
     private TextureRegion[] traniFrames;
     private TextureRegion[][] trTmpFrames;
     private Animation[] araniServer;
-    private float fElapsedTime, fMove = 1.5f;
-    private boolean bHasDrink = false, HasOrder;
+    private float fElapsedTime, fMove = 1.5f, fDx[], fDy[];
+    private boolean bHasDrink = false, bHasOrder = false;
     // nDir: 0 = North, 1 = East, 2 = South, 3 = West, 4 = stop
 
     public SprServer(float _fX, float _fY) {
@@ -35,6 +33,9 @@ public class SprServer extends Sprite {
         fY = _fY;
         fW = 80;
         fH = 100;
+        fDx = new float[] {0,1,0,-1,0};
+        fDy = new float[] {1,0,-1,0,0};
+
         setFlip(false, false);
 
         txtDrink = new Texture("data/BubbleTea_img.png");
@@ -56,38 +57,25 @@ public class SprServer extends Sprite {
         if (nDir < 4) {
             batch.draw((TextureRegion) araniServer[nDir].getKeyFrame(fElapsedTime, true), fX, fY, fW - 10, fH);
         }
-        if (nDir == 0) {
-//            System.out.println("NORTH");
-            fY += fMove;
-            setY(fY);
+        fX += fDx[nDir];
+        fY += fDy[nDir];
+        setX(fX);
+        setY(fY);
 
-        } else if (nDir == 1) {
-//            System.out.println("EAST");
-            fX += fMove;
-            setX(fX);
 
-        } else if (nDir == 2) {
-//            System.out.println("SOUTH");
-            fY -= fMove;
-            setY(fY);
-
-        } else if (nDir == 3) {
-//            System.out.println("WEST");
-            fX -= fMove;
-            setX(fX);
-
-        } else if (nDir == 4) {
+         if (nDir == 4) {
 //            System.out.println("STOP");
             batch.draw(txtServer, fX, fY, fW, fH);
-            setX(fX);
-            setY(fY);
         }
     }
 
 
     // Makes server move to table coordinates
     public void update(float fXG, float fYG, SpriteBatch batch) {
-//        System.out.println("ndir" + nDir);
+        this.fXG = fXG;
+        this.fYG = fYG;
+        System.out.println("FXG: " + fX);
+        System.out.println("FYG: " + fY);
         fElapsedTime += Gdx.graphics.getDeltaTime();//make sure to stop this timer when the game pauses
         directions(batch);
         //North
@@ -107,26 +95,35 @@ public class SprServer extends Sprite {
         }
     }
 
-    public void carryDrink(SpriteBatch batch, boolean hasOrder, ObjBar objBar) {
-        HasOrder = hasOrder;
-//        System.out.println("NDIRytrset7yfghcf" + " "+ nDir);
-//        System.out.println("FX " + fX + " FY "+ fY);
-        System.out.println("nTimer " + nTimer);
-        if (fX == objBar.rBar().x + 1 && fY == objBar.rBar().y - 20) {
-            if (HasOrder && nDir == 4) {
+    //server has arrived to table/bar
+    public boolean arrived() {
+        if (fY == fYG && fX == fXG && nDir == 4) {
+            System.out.println("HAS ARRIVED AT THE GOAL LOCATION MUAHAHHAHAHAHAH");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void carryDrink(SpriteBatch batch, boolean bHasOrder, int nClickedBar) {
+        this.bHasOrder = bHasOrder;
+
+        if (bHasOrder && nClickedBar == 1) {
+            if (arrived()) {
                 nTimer++;
             }
         }
-        if(bHasDrink){
-            HasOrder = false;
-            nTimer = 0;
-            batch.draw(txtDrink, fX, fY +10,  50, 50);
-        }
-        if (nTimer >= 60 && HasOrder) {
-            batch.draw(txtDrink, objBar.rBar().x + fW, objBar.rBar().y + 50 , 50, 50);
-            if (objBar.isTapped()) {
+        if (nTimer >= 120) {
+            batch.draw(txtDrink, 300 + fW, 350, 50, 50);
+            if (nClickedBar >= 2) {
                 bHasDrink = true;
             }
+        }
+        if (bHasDrink) {
+            System.out.println("HAS DRINK");
+            nTimer = 0;
+            batch.draw(txtDrink, fX, fY + 10, 50, 50);
+
         }
     }
 }
