@@ -217,7 +217,7 @@ public class ScrGame implements Screen, InputProcessor {
             sprCustomer = arliGuests.get(n); //temporary Guest
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
-            sprCustomer.entering(nGst);
+            sprCustomer.entering(nGst, n);
             sprCustomer.hearts(batch, objTable);
         }
     }

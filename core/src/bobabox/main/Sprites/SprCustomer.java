@@ -30,7 +30,7 @@ public class SprCustomer extends Sprite {
     private SpriteBatch batch;
     private float fX, fY, fH, fW, fMove, fGoal = 30; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
-    private boolean bCanDrag = false, bSitting = false, isGone = false;
+    private boolean bCanDrag = false, bSitting = false, isGone = false, bQueue = true;
     private StretchViewport viewport;
     private Texture arHearts[] = new Texture[4];
     private ObjTables objTable;
@@ -73,30 +73,45 @@ public class SprCustomer extends Sprite {
         return false;
     }
 
+    public boolean bQueue(boolean bQueue1) {
+        bQueue = bQueue1;
+        return false;
+    }
+
     //Assures guest is walking down at the start
-    public void entering(int nGst) {
-        nDir = 2;
-        setY(fY);
-
-        //Update Goal
-        if (nGst > 1) {
-            fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
-        }
-        //Customer move down
-        if (fY <= fGoal) {
+    public void entering(int nGst, int n) {
+        if (bQueue) {
             nDir = 2;
-            nStatus = 1;
+
+            //Update Goal
+            if (nGst > 1) {
+                fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
+            }
+            //Customer move down
+            if (fY <= fGoal) {
+                nStatus = 1;
+                nDir = 4;
+            }
+        } else if (!bQueue) {
+            updateQueue(n);
         }
 
-        if (nStatus == 1) {
-            nDir = 4;
-        }
     }
 
     //Updates the Guest line once one customer is removed
-    public void updateQueue(int nGst){
+    public void updateQueue(int nGst) {
         nDir = 2;
-        setY(fY);
+        if (nGst == 0) {
+            fGoal = 30;
+        } else if (nGst > 0){
+            fGoal = 30 + ((fH + fHh) * (nGst));
+        }
+
+        if (fY <= fGoal) {
+            nDir = 4;
+        }
+
+
     }
 
     public void updateStatus(int nGst) {
@@ -194,6 +209,7 @@ public class SprCustomer extends Sprite {
         }
         if (nDir == 2) { //south
             fY -= fMove;
+            setY(fY);
         } else if (nDir == 3) { //West
             fX -= fMove;
             setX(fX);
@@ -217,10 +233,11 @@ public class SprCustomer extends Sprite {
             }
         }
     }
+
     //check if guest is leaving after sitting
     public boolean isleaving() {
         if (nHearts == 3) {
-        //    System.out.println("leaving");
+            //    System.out.println("leaving");
             return true;
 
         }
