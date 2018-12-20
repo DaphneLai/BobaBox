@@ -179,10 +179,10 @@ public class ScrGame implements Screen, InputProcessor {
 
             // Checks if mouse is over table and clicked
             if (arTables[i].isTableClicked()) {
-                fXG = arTables[i].getX() + (arTables[i].getWidth() / 2 - 40);
-                fYG = arTables[i].getY() + arTables[i].getHeight();
-                System.out.println("The x location for the table: " + fXG);
-                System.out.println("The y location for the table: " + fYG);
+                fXG = Math.round(arTables[i].getX() + (arTables[i].getWidth() / 2 - 40));
+                fYG = Math.round(arTables[i].getY() + arTables[i].getHeight());
+//                System.out.println("The x location for the table: " + fXG);
+//                System.out.println("The y location for the table: " + fYG);
 
                 isTableClicked = true;
             }

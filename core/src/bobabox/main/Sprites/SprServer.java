@@ -54,16 +54,16 @@ public class SprServer extends Sprite {
 
 
     private void directions(SpriteBatch batch) {
-        if (nDir < 4) {
-            batch.draw((TextureRegion) araniServer[nDir].getKeyFrame(fElapsedTime, true), fX, fY, fW - 10, fH);
-        }
+
         fX += fDx[nDir];
         fY += fDy[nDir];
         setX(fX);
         setY(fY);
 
-
-         if (nDir == 4) {
+        if (nDir < 4) {
+            batch.draw((TextureRegion) araniServer[nDir].getKeyFrame(fElapsedTime, true), fX, fY, fW - 10, fH);
+        }
+        if (nDir == 4) {
 //            System.out.println("STOP");
             batch.draw(txtServer, fX, fY, fW, fH);
         }
@@ -72,25 +72,25 @@ public class SprServer extends Sprite {
 
     // Makes server move to table coordinates
     public void update(float fXG, float fYG, SpriteBatch batch) {
+        directions(batch);
         this.fXG = fXG;
         this.fYG = fYG;
-        System.out.println("FXG: " + fX);
-        System.out.println("FYG: " + fY);
+//        System.out.println("FXG: " + fXG);
+//        System.out.println("FYG: " + fYG);
         fElapsedTime += Gdx.graphics.getDeltaTime();//make sure to stop this timer when the game pauses
-        directions(batch);
         //North
-        if (fY < fYG - 1) {
+        if (fY <= fYG - 1) {
             nDir = 0;
         } //East
-        else if (fX < fXG - 1) {
+         else if (fX <= fXG - 1) {
             nDir = 1;
         } //South
-        else if (fY > fYG + 1) {
+         else if (fY >= fYG + 1) {
             nDir = 2;
         } //West
-        else if (fX > fXG + 1) {
+         else if (fX >= fXG + 1) {
             nDir = 3;
-        } else {
+        }  else {
             nDir = 4;
         }
     }
@@ -113,6 +113,7 @@ public class SprServer extends Sprite {
                 nTimer++;
             }
         }
+        
         if (nTimer >= 120) {
             batch.draw(txtDrink, 300 + fW, 350, 50, 50);
             if (nClickedBar >= 2) {
