@@ -34,7 +34,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private SprCustomer sprCustomer, sprCustSat;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
-    private boolean isSitting, isOpen = true, isReleased, isChecked, bQueue = true;
+    private boolean isSitting, isOpen = true, isReleased, isChecked, bCustSat = false;
     private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
@@ -116,8 +116,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
         }
         /**/
         if (arliGuests.get(nTarget).isleaving()) {
-            System.out.println("leaving");
             isSitting = false;
+            arliGuestsSat.get(nTarget).sittingDown(isSitting);
             arliGuests.get(nTarget).sittingDown(isSitting);
             arTables[nTable].sittingDown(isSitting);
         }
@@ -146,21 +146,15 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //updates the SprCustomer's Queue
     public void queue() {
         if (isSitting) {
-        //    System.out.println(isSitting + " isSitting");
             arliGuestsSat.add(arliGuests.get(nTarget));
             sprCustSat = arliGuests.get(nTarget);
-          //  System.out.println(arliGuestsSat.get(nTarget).sittingDown(isSitting));
             if (sprCustSat.sittingDown(isSitting)) {
                 arliGuests.remove(nTarget);
                 nGoal = arliGuests.size();
                 isSitting = false;
                 for (int n = 0; n < nGoal; n++) {
-                    //  System.out.println(arliGuests.indexOf(n));
-                    //  System.out.println(n);
-                   // arliGuests.get(n).updateQueue(n);
-                    bQueue = false;
-                    arliGuests.get(n).bQueue(bQueue);
-                    // sprCustomer.updateQueue(nGst);
+                    bCustSat = true;
+                    arliGuests.get(n).isSat(bCustSat);
                 }
             }
 

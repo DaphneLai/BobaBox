@@ -33,7 +33,7 @@ public class ScrGame implements Screen, InputProcessor {
     //Values
     private Vector2 vTouch;
     private boolean bArrived = false, bHasOrder = false; //boolean for server
-    private boolean isTableClicked = false, isSitting = false; //boolean for guests
+    private boolean isTableClicked = false, isSitting = false, bCustSat = false; //boolean for guests
     private int nW, nH, nGameTimer = 60, nTable; //int for game
     private int nFPS, nStatGst, nClickedBar = 0; //int for server
     private int nTimer = 0, nGst = 0, nTarget, nGoal; //int for guests
@@ -167,6 +167,12 @@ public class ScrGame implements Screen, InputProcessor {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
+        if (arliGuests.get(nTarget).isleaving()) {
+            isSitting = false;
+            arliGuestsSat.get(nTarget).sittingDown(isSitting);
+            arliGuests.get(nTarget).sittingDown(isSitting);
+            arTables[nTable].sittingDown(isSitting);
+        }
 
     }
 
@@ -213,7 +219,6 @@ public class ScrGame implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-//            System.out.println(nGst);
             sprCustomer = arliGuests.get(n); //temporary Guest
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(nGst);
@@ -225,20 +230,15 @@ public class ScrGame implements Screen, InputProcessor {
     //Updates the SprCustomer's Queue
     private void queue() {
         if (isSitting) {
-            System.out.println(isSitting + " isSitting");
             arliGuestsSat.add(arliGuests.get(nTarget));
             sprCustSat = arliGuests.get(nTarget);
-            System.out.println(arliGuestsSat.get(nTarget).sittingDown(isSitting));
             if (sprCustSat.sittingDown(isSitting)) {
                 arliGuests.remove(nTarget);
                 nGoal = arliGuests.size();
-                //isSitting = false;
+                isSitting = false;
                 for (int n = 0; n < nGoal; n++) {
-                    //  System.out.println(arliGuests.indexOf(n));
-                    System.out.println(n);
-                    arliGuests.get(n).updateQueue(nGst);
-                    isSitting=false;
-                    // sprCustomer.updateQueue(nGst);
+                    bCustSat = true;
+                    arliGuests.get(n).isSat(bCustSat);
                 }
             }
 

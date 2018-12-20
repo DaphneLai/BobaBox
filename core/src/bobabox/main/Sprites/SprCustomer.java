@@ -30,7 +30,7 @@ public class SprCustomer extends Sprite {
     private SpriteBatch batch;
     private float fX, fY, fH, fW, fMove, fGoal = 30; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
-    private boolean bCanDrag = false, bSitting = false, isGone = false, bQueue = true;
+    private boolean bCanDrag = false, bSitting = false, isGone = false, bCustSat = false;
     private StretchViewport viewport;
     private Texture arHearts[] = new Texture[4];
     private ObjTables objTable;
@@ -41,7 +41,7 @@ public class SprCustomer extends Sprite {
 
         //Customer specs
         fX = 80;
-        fY = 600; //330
+        fY = 330;
         fW = 80;
         fH = 100;
         fMove = 3.0f;
@@ -73,28 +73,33 @@ public class SprCustomer extends Sprite {
         return false;
     }
 
-    public boolean bQueue(boolean bQueue1) {
-        bQueue = bQueue1;
+    //Updates the boolean's status from the Screen level
+    public boolean isSat(boolean bCustSat2) {
+        bCustSat = bCustSat2;
         return false;
     }
 
     //Assures guest is walking down at the start
     public void entering(int nGst, int n) {
-        if (bQueue) {
-            nDir = 2;
+        if (!bCanDrag) {
+            if (!bCustSat) {
+                nDir = 2;
 
-            //Update Goal
-            if (nGst > 1) {
-                fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
+                //Update Goal
+                if (nGst > 1) {
+                    fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
+                }
+                //Customer move down
+                if (fY <= fGoal) {
+                    nStatus = 1;
+                    nDir = 4;
+                }
             }
-            //Customer move down
-            if (fY <= fGoal) {
-                nStatus = 1;
-                nDir = 4;
-            }
-        } else if (!bQueue) {
-            updateQueue(n);
         }
+        if (bCustSat) {
+                updateQueue(n);
+            }
+
 
     }
 
@@ -103,16 +108,17 @@ public class SprCustomer extends Sprite {
         nDir = 2;
         if (nGst == 0) {
             fGoal = 30;
-        } else if (nGst > 0){
-            fGoal = 30 + ((fH + fHh) * (nGst));
+        } else if (nGst > 0) {
+            fGoal = 30 + ((fH + fHh+10) * (nGst));
         }
 
-        if (fY <= fGoal) {
-            nDir = 4;
-        }
-
-
+        if(fY <=fGoal) {
+        nDir = 4;
+        nStatus = 1;
     }
+
+
+}
 
     public void updateStatus(int nGst) {
         directions();
