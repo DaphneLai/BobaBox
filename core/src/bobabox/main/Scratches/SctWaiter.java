@@ -35,7 +35,7 @@ public class SctWaiter implements Screen {
     private ObjTables arTables[] = new ObjTables[3];
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT, fXG, fYG;
-    private boolean isTableClicked = false;
+    private boolean isTableClicked = false, bGstDrag;
 
     public SctWaiter(GamMenu _gammenu) {
         gamMenu = _gammenu;
@@ -116,7 +116,7 @@ public class SctWaiter implements Screen {
             System.out.println("Bar is touched");
             fXG = objBar.rBar().x;
             fYG = objBar.rBar().y;
-            sprServer.update(fXG,fYG, batch);
+            sprServer.update(fXG,fYG, batch, bGstDrag);
         }
     }
 
@@ -127,27 +127,27 @@ public class SctWaiter implements Screen {
             sh.rect(arTables[i].getX(), arTables[i].getY(), arTables[i].getWidth(), arTables[i].getHeight());
 
             // Checks if mouse is over table and clicked
-            if (arTables[i].isTableClicked()) {
+            if (isTableClicked) {
                 fXG = arTables[i].getX() + (arTables[i].getWidth()/2 - 40);
                 fYG = arTables[i].getY() + arTables[i].getHeight();
                 isTableClicked = true;
             }
 
             if (isTableClicked) {
-                sprServer.update(fXG, fYG, batch);
+                sprServer.update(fXG, fYG, batch, bGstDrag);
             }
 
 
-            //Debugging stuff
-            if (arTables[0].isTableClicked()) {
-                System.out.println("TABLE 11111111 WAS CLICKEDD");
-            }
-            if (arTables[1].isTableClicked()) {
-                System.out.println("TABLE 22222222 WAS CLICKEDD");
-            }
-            if (arTables[2].isTableClicked()) {
-                System.out.println("TABLE 33333333 WAS CLICKEDD");
-            }
+//            //Debugging stuff
+//            if (arTables[0].isTableClicked()) {
+//                System.out.println("TABLE 11111111 WAS CLICKEDD");
+//            }
+//            if (arTables[1].isTableClicked()) {
+//                System.out.println("TABLE 22222222 WAS CLICKEDD");
+//            }
+//            if (arTables[2].isTableClicked()) {
+//                System.out.println("TABLE 33333333 WAS CLICKEDD");
+//            }
 
         }
     }

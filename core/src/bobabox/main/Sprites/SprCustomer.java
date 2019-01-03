@@ -57,7 +57,6 @@ public class SprCustomer extends Sprite {
         arHearts[2] = new Texture("data/Hearts-03.png");
         arHearts[3] = new Texture("data/Hearts-04.png");
 
-
         //nStatus
         nStatus = 0;
     }

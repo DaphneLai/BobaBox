@@ -80,7 +80,7 @@ public class ObjTables extends Sprite {
         viewport.unproject(vTouch);
         if (vTouch.x > fX && vTouch.x < fX + fW) {
             if (vTouch.y > fY && vTouch.y < fY + fH) {
-                if (Gdx.input.isTouched()) {
+                if (Gdx.input.justTouched()) {
                     return true;
                 }
             }

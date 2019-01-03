@@ -33,7 +33,7 @@ public class ScrGame implements Screen, InputProcessor {
     //Values
     private Vector2 vTouch;
     private boolean bArrived = false, bHasOrder = false; //boolean for server
-    private boolean isTableClicked = false, isSitting, bCustSat = false, bTemp; //boolean for guests
+    private boolean isTableClicked = false, isSitting, bCustSat = false, bGstDrag= false; //boolean for guests
     private int nW, nH, nGameTimer = 60, nTable; //int for game
     private int nFPS, nStatGst, nClickedBar = 0; //int for server
     private int nTimer = 0, nGst = 0, nTarget, nGoal; //int for guests
@@ -116,8 +116,7 @@ public class ScrGame implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
-        sprServer.update(fXG, fYG, batch);
-        updateTable();
+        sprServer.update(fXG, fYG, batch,bGstDrag);
         updateGuest(nGst, batch);
         queue();
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
@@ -130,11 +129,11 @@ public class ScrGame implements Screen, InputProcessor {
             fXG = objBar.rBar().x + 1;
             fYG = objBar.rBar().y - 20;
 //            System.out.println("FBX " + fXG + " FBY "+ fYG);
-            sprServer.update(fXG, fYG, batch);
+            sprServer.update(fXG, fYG, batch, bGstDrag);
         }
 
         if (isTableClicked) {
-            sprServer.update(fXG, fYG, batch);
+            sprServer.update(fXG, fYG, batch, bGstDrag);
             bArrived = sprServer.arrived();
             //server can take order from customer
             if(nStatGst == 3){
@@ -151,6 +150,7 @@ public class ScrGame implements Screen, InputProcessor {
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
         batch.draw(txtStats,nW - 200, nH - 165, 200, 150);
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
+        updateTable();
         batch.end();
 
         //Timer for Guests to enter
@@ -279,6 +279,7 @@ public class ScrGame implements Screen, InputProcessor {
         for (int n = 0; n < arliGuests.size(); n++) {
             sprCst = arliGuests.get(n); //temporary Guest
             if (sprCst.getBoundingRectangle().contains(vTouch)) {
+                bGstDrag = true;
                 nTarget = n;
             }
         }
@@ -299,6 +300,7 @@ public class ScrGame implements Screen, InputProcessor {
                 arTables[nTable].sittingDown(isSitting);
             }
         }
+        bGstDrag = false;
         return false;
     }
 
@@ -313,8 +315,7 @@ public class ScrGame implements Screen, InputProcessor {
             }
         }
 
-
-        return true;
+        return false;
     }
 
 
