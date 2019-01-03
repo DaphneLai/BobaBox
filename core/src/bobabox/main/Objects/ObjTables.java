@@ -28,8 +28,8 @@ public class ObjTables extends Sprite {
         viewport = _viewport;
         fW = 187;
         fH = 110;
-        fX = _fX ;
-        fY = _fY ;
+        fX = _fX;
+        fY = _fY;
         setPosition(fX, fY);
         setSize(fW, fH);
         setFlip(false, false);
@@ -37,21 +37,23 @@ public class ObjTables extends Sprite {
         setTexture(nTxt1);
     }
 
-    public void sittingDown(boolean _isSitting) {
+    public boolean sittingDown(boolean _isSitting) {
         isSitting = _isSitting;
-        //   System.out.println("isSitting:" + isSitting);
         if (isSitting) {
             setTexture(nTxt2);
-        } else if (!isSitting) {
-            setTexture(nTxt1);
+            return true;
         }
+        return false;
     }
-    public boolean isAvb() {
+
+    public boolean isAvb(SprCustomer sprGuest) {
         if (isSitting) {
             return false;
         }
+
         return true;
     }
+
 
     public boolean isAvb2(SprGuest sprGuest) { // Checks if the spr is over the table
 
@@ -84,6 +86,12 @@ public class ObjTables extends Sprite {
             }
         }
         return false;
+    }
+    public void leave(boolean _bSitting) {
+        isSitting = _bSitting;
+        if(!isSitting) {
+            setTexture(nTxt1);
+        }
     }
 }
 

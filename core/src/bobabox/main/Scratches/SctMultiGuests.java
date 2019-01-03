@@ -228,7 +228,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         if (!isSitting) {
-            if (arTables[nTable].isAvb()) {
+            if (arTables[nTable].isAvb(arliGuests.get(nTarget))) {
                 if (arTables[nTable].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
                     isSitting = true;
                 }

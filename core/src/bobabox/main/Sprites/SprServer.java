@@ -98,7 +98,7 @@ public class SprServer extends Sprite {
     //server has arrived to table/bar
     public boolean arrived() {
         if (fY == fYG && fX == fXG && nDir == 4) {
-            System.out.println("HAS ARRIVED AT THE GOAL LOCATION MUAHAHHAHAHAHAH");
+         //   System.out.println("HAS ARRIVED AT THE GOAL LOCATION MUAHAHHAHAHAHAH");
             return true;
         } else {
             return false;
