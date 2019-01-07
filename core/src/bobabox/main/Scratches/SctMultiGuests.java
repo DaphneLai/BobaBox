@@ -34,15 +34,14 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private SprCustomer sprCustomer, sprCustSat;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
-    private boolean isSitting, isOpen = true, isReleased, isChecked, bCustSat = false;
-    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal;
+    private boolean isSitting, isOpen = true, isReleased, isChecked, bCustSat = false, bGuestLimit = false;
+    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal, nGuestTracker = 0;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private SprCustomer sprCst;
 
     public SctMultiGuests(GamMenu _gammenu) {
         gamMenu = _gammenu;
-
 
         //game height and width
         fWORLD_WIDTH = 1000;
@@ -109,8 +108,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
         if (nTimer % 300 == 0) {
             if (nGst < nGoal) {
                 nGst++;
-            } else {
-                nGst = 4;
+                nGuestTracker++;
             }
             nTimer = 0;
         }
@@ -122,6 +120,10 @@ public class SctMultiGuests implements Screen, InputProcessor {
             arTables[nTable].sittingDown(isSitting);
         }
 
+        if (nGuestTracker >= 3) {
+            bGuestLimit = true;
+            arliGuests.get(nTarget).isAtLimit(bGuestLimit);
+        }
     }
 
     //Method runs through the array of tables
@@ -135,11 +137,18 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            sprCustomer = arliGuests.get(n); //temporary Guest
-            sprCustomer.draw(batch);
-            sprCustomer.updateStatus(nGst);
-            sprCustomer.entering(nGst, n);
-            sprCustomer.hearts(batch, objTable);
+            if (!bGuestLimit) {
+                sprCustomer = arliGuests.get(n); //temporary Guest
+                sprCustomer.draw(batch);
+                sprCustomer.updateStatus(nGst);
+                sprCustomer.entering(nGst, n);
+                sprCustomer.hearts(batch, objTable);
+            }
+
+            if(bGuestLimit){
+                sprCustomer.draw(batch);
+                sprCustomer.hearts(batch, objTable);
+            }
         }
     }
 
@@ -157,9 +166,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
                     arliGuests.get(n).isSat(bCustSat);
                 }
             }
-
         }
-
     }
 
     @Override

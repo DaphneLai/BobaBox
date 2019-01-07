@@ -30,7 +30,7 @@ public class SprCustomer extends Sprite {
     private SpriteBatch batch;
     private float fX, fY, fH, fW, fMove, fGoal = 30; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
-    private boolean bCanDrag = false, bSitting = false, isGone = false, bCustSat = false;
+    private boolean bCanDrag = false, bSitting = false, isGone = false, bCustSat = false, bAtLimit=false;
     private StretchViewport viewport;
     private Texture arHearts[] = new Texture[4];
     private ObjTables objTable;
@@ -78,28 +78,35 @@ public class SprCustomer extends Sprite {
         return false;
     }
 
+    public boolean isAtLimit(boolean bAtLimit2){
+        bAtLimit= bAtLimit2;
+        return false;
+
+    }
+
     //Assures guest is walking down at the start
     public void entering(int nGst, int n) {
         if (!bCanDrag) {
-            if (!bCustSat) {
-                nDir = 2;
+            if (!bCustSat ) {
+                    nDir = 2;
 
-                //Update Goal
-                if (nGst > 1) {
-                    fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
-                }
-                //Customer move down
-                if (fY <= fGoal) {
-                    nStatus = 1;
-                    nDir = 4;
-                }
+                    //Update Goal
+                    if (nGst > 1) {
+                        fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
+                    }
+                    //Customer move down
+                    if (fY <= fGoal) {
+                        nStatus = 1;
+                        nDir = 4;
+                    }
             }
+        }
+        if(bAtLimit){
+            System.out.println("true");
         }
         if (bCustSat) {
                 updateQueue(n);
-            }
-
-
+        }
     }
 
     //Updates the Guest line once one customer is removed
@@ -108,16 +115,16 @@ public class SprCustomer extends Sprite {
         if (nGst == 0) {
             fGoal = 30;
         } else if (nGst > 0) {
-            fGoal = 30 + ((fH + fHh+10) * (nGst));
+            fGoal = 30 + ((fH + fHh + 10) * (nGst));
         }
 
-        if(fY <=fGoal) {
-        nDir = 4;
-        nStatus = 1;
+        if (fY <= fGoal) {
+            nDir = 4;
+            nStatus = 1;
+        }
+
+
     }
-
-
-}
 
     public void updateStatus(int nGst) {
         directions();
