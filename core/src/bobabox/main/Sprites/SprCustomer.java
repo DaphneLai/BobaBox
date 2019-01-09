@@ -32,7 +32,7 @@ public class SprCustomer extends Sprite {
     private boolean bHasOrder = false, bHasFood = false, bHasPaid = false;
     private Texture txtarHearts[] = new Texture[4], txtExclaim;
     private ObjTables objTable;
-    private int nTimer = 0, nHearts = 0, nStatus, nDir;
+    private int nTimer = 1, nHearts = 0, nStatus, nDir;
 
     public SprCustomer(String sFile, SpriteBatch _batch) {
         super(new Texture(Gdx.files.internal(sFile)));

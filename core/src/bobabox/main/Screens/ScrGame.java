@@ -214,7 +214,7 @@ public class ScrGame implements Screen, InputProcessor {
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
             this.sprCustomer = arliGuests.get(n); //temporary Guest
-            nStatGst = sprCustomer.updateStatus(isSitting);
+           // nStatGst = sprCustomer.updateStatus(isSitting);
             sprCustomer.draw(batch);
             sprCustomer.updateStatus(isSitting);
             sprCustomer.entering(nGst, n, bCustSat);
@@ -225,10 +225,14 @@ public class ScrGame implements Screen, InputProcessor {
     //Updates the SprCustomer's Queue
     private void queue() {
         if (isSitting) {
-            arliGuestsSat.add(arliGuests.get(nTarget));
+            SprCustomer sprC = new SprCustomer("data/GUEST1_spr.png", batch);
+            sprC = arliGuests.get(nTarget);
+            arliGuestsSat.add(sprC);
             sprCustSat = arliGuests.get(nTarget);
+            nStatGst = arliGuestsSat.get(0).updateStatus(isSitting);
+            arliGuestsSat.get(nTarget).updateStatus(isSitting);
             if (sprCustSat.sittingDown(isSitting)) {
-                arliGuests.remove(nTarget);
+                arliGuests.remove(sprC);
                 nGoal = arliGuests.size();
                 isSitting = false;
                 for (int n = 0; n < nGoal; n++) {
