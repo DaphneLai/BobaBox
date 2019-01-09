@@ -9,11 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import java.util.ArrayList;
@@ -28,7 +25,7 @@ import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprServer;
 
 public class ScrGame implements Screen, InputProcessor {
-    GamMenu gamMenu;
+    private GamMenu gamMenu;
 
     //Values
     private Vector2 vTouch;
@@ -43,7 +40,7 @@ public class ScrGame implements Screen, InputProcessor {
     private StretchViewport viewport;
     private SpriteBatch batch;
     //Assets
-    Texture txtBg, txtStats;
+    private Texture txtBg, txtStats;
     private SprGuest sprGuest;
     private List<SprCustomer> arliGuests, arliGuestsSat;
     private SprCustomer sprCustomer, sprCustSat, sprCst;
@@ -89,11 +86,9 @@ public class ScrGame implements Screen, InputProcessor {
         arliGuests = new ArrayList<SprCustomer>();
         arliGuestsSat = new ArrayList<SprCustomer>();
         for (int i = 1; i <= 5; i++) {
-            arliGuests.add(new SprCustomer("data/GUEST1_spr.png"));
+            arliGuests.add(new SprCustomer("data/GUEST1_spr.png", batch));
         }
 
-        //server
-        nStatGst = 3;
     }
 
     @Override
@@ -117,14 +112,12 @@ public class ScrGame implements Screen, InputProcessor {
         batch.draw(txtBg, 0, 0, nW, nH);
         btnPause.update(batch);
         sprServer.update(fXG, fYG, batch,bGstDrag);
-        updateGuest(nGst, batch);
-        queue();
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
 
 
         //Checks if bar is clicked
         if (objBar.isTapped()) {
-            System.out.println("Bar is touched");
+//            System.out.println("Bar is touched");
             nClickedBar++;
             fXG = objBar.rBar().x + 1;
             fYG = objBar.rBar().y - 20;
@@ -134,7 +127,7 @@ public class ScrGame implements Screen, InputProcessor {
 
         if (isTableClicked) {
             sprServer.update(fXG, fYG, batch, bGstDrag);
-            bArrived = sprServer.arrived();
+            this.bArrived = sprServer.arrived();
             //server can take order from customer
             if(nStatGst == 3){
                 if(bArrived && nClickedBar == 0){
@@ -146,11 +139,12 @@ public class ScrGame implements Screen, InputProcessor {
 //        System.out.println("1 bar was clicked: " + nClickedBar);
 //        System.out.println("2 picked up order: " + bHasOrder);
 
-      //  updateTable();
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
         batch.draw(txtStats,nW - 200, nH - 165, 200, 150);
         bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
+        queue();
         updateTable();
+        updateGuest(nGst, batch);
         batch.end();
 
         //Timer for Guests to enter
@@ -167,12 +161,12 @@ public class ScrGame implements Screen, InputProcessor {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
-       if (arliGuests.get(nTarget).isleaving()) {
+       if (arliGuests.get(nTarget).isLeaving()) {
             isSitting = false;
-            arliGuests.get(nTarget).sittingDown(isSitting);
-            arTables[nTable].sittingDown(isSitting);
-            arTables[nTable].leave(isSitting);
-        }
+           arliGuests.get(nTarget).sittingDown(isSitting);
+           arTables[nTable].sittingDown(isSitting);
+           arTables[nTable].leave(isSitting);
+       }
 
     }
 
@@ -192,7 +186,7 @@ public class ScrGame implements Screen, InputProcessor {
 
                 isTableClicked = true;
             }
-            //Table Debugging stuff
+//            Table Debugging stuff
 //            if (arTables[0].isTableClicked()) {
 //                System.out.println("TABLE 11111111 WAS CLICKEDD");
 //            }
@@ -205,11 +199,11 @@ public class ScrGame implements Screen, InputProcessor {
 
             //Table and guest interaction
 
-            if (arTables[i].isAvb(arliGuests.get(nTarget)) == false) {
+            if (!arTables[i].isAvb(arliGuests.get(nTarget))) {
                 isSitting = true;
                 sprGuest.sittingDown(isSitting);
                 arTables[i].sittingDown(isSitting);
-            } else if (arTables[i].isAvb(arliGuests.get(nTarget)) == true) {
+            } else if (arTables[i].isAvb(arliGuests.get(nTarget))) {
                 isSitting = false;
                 arTables[i].sittingDown(isSitting);
             }
@@ -219,11 +213,12 @@ public class ScrGame implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            sprCustomer = arliGuests.get(n); //temporary Guest
+            this.sprCustomer = arliGuests.get(n); //temporary Guest
+            nStatGst = sprCustomer.updateStatus(isSitting);
             sprCustomer.draw(batch);
-            sprCustomer.updateStatus(nGst);
-            sprCustomer.entering(nGst, n);
-            sprCustomer.hearts(batch, objTable);
+            sprCustomer.updateStatus(isSitting);
+            sprCustomer.entering(nGst, n, bCustSat);
+            sprCustomer.hearts(objTable);
         }
     }
 
@@ -238,7 +233,6 @@ public class ScrGame implements Screen, InputProcessor {
                 isSitting = false;
                 for (int n = 0; n < nGoal; n++) {
                     bCustSat = true;
-                    arliGuests.get(n).isSat(bCustSat);
                 }
             }
 
@@ -319,25 +313,27 @@ public class ScrGame implements Screen, InputProcessor {
     }
 
 
+
+
+//-------------------------------------------------------------------------------------------------------------
     //VOIDS NOT IN USE
     @Override
     public void show() {
-        return;
     }
 
     @Override
     public void pause() {
-        return;
+
     }
 
     @Override
     public void resume() {
-        return;
+
     }
 
     @Override
     public void hide() {
-        return;
+
     }
 
     //BOOLEANS NOT IN USE

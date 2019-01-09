@@ -50,7 +50,6 @@ public class ObjTables extends Sprite {
         if (isSitting) {
             return false;
         }
-
         return true;
     }
 

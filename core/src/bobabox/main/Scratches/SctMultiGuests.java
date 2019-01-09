@@ -34,8 +34,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private SprCustomer sprCustomer, sprCustSat;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
-    private boolean isSitting, isOpen = true, isReleased, isChecked, bCustSat = false, bGuestLimit = false;
-    private int nTimer = 0, nGst = 0, nAdd, nTarget, nTable, nGoal, nGuestTracker = 0;
+    private boolean isSitting, bCustSat = false, bGuestLimit = false;
+    private int nTimer = 0, nGst = 0, nTarget, nTable, nGoal, nGuestTracker = 0;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private SprCustomer sprCst;
@@ -70,12 +70,11 @@ public class SctMultiGuests implements Screen, InputProcessor {
         arliGuestsSat = new ArrayList<SprCustomer>();
 
         for (int i = 1; i <= 5; i++) {
-            arliGuests.add(new SprCustomer("data/GUEST1_spr.png"));
+            arliGuests.add(new SprCustomer("data/GUEST1_spr.png", batch));
         }
 
         //    System.out.println("LIST:" + arliGuests);
         //  System.out.println("SIZE:" + arliGuests.size());
-
         nGoal = 5;
     }
 
@@ -113,7 +112,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
             nTimer = 0;
         }
         /**/
-        if (arliGuests.get(nTarget).isleaving()) {
+        if (arliGuests.get(nTarget).isLeaving()) {
             isSitting = false;
             arliGuestsSat.get(nTarget).sittingDown(isSitting);
             arliGuests.get(nTarget).sittingDown(isSitting);
@@ -140,20 +139,20 @@ public class SctMultiGuests implements Screen, InputProcessor {
             if (!bGuestLimit) {
                 sprCustomer = arliGuests.get(n); //temporary Guest
                 sprCustomer.draw(batch);
-                sprCustomer.updateStatus(nGst);
-                sprCustomer.entering(nGst, n);
-                sprCustomer.hearts(batch, objTable);
+                sprCustomer.updateStatus(isSitting);
+                sprCustomer.entering(nGst, n, bCustSat);
+                sprCustomer.hearts(objTable);
             }
 
             if(bGuestLimit){
                 sprCustomer.draw(batch);
-                sprCustomer.hearts(batch, objTable);
+                sprCustomer.hearts(objTable);
             }
         }
     }
 
     //updates the SprCustomer's Queue
-    public void queue() {
+    private void queue() {
         if (isSitting) {
             arliGuestsSat.add(arliGuests.get(nTarget));
             sprCustSat = arliGuests.get(nTarget);
@@ -163,7 +162,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
                 isSitting = false;
                 for (int n = 0; n < nGoal; n++) {
                     bCustSat = true;
-                    arliGuests.get(n).isSat(bCustSat);
                 }
             }
         }
@@ -186,37 +184,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-
-    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
         for (int n = 0; n < arliGuests.size(); n++) {
@@ -229,7 +196,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
         return true;
 
     }
-
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -259,10 +225,15 @@ public class SctMultiGuests implements Screen, InputProcessor {
             }
         }
 
-
         return true;
     }
 
+
+
+
+
+    //----------------------------------------------------------------------------------------------------------------
+    //FUNCTIONS NOT IN USE
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         return false;
@@ -271,5 +242,35 @@ public class SctMultiGuests implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 }
