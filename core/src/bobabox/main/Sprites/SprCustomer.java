@@ -149,6 +149,7 @@ public class SprCustomer extends Sprite {
 
     //Assures guest is walking down at the start
     public void entering(int nGst, int n, boolean bCustSat) {
+        directions();
         if (!bCanDrag) {
             if (!bCustSat) {
                 nDir = 2;
@@ -209,7 +210,6 @@ public class SprCustomer extends Sprite {
         fHx = fX - 10;
         fHy = fY + 110;
 
-
         //Level of hearts
         if (!isGone) {
             batch.draw(txtarHearts[nHearts], fHx, fHy, fHw, fHh);
@@ -225,7 +225,7 @@ public class SprCustomer extends Sprite {
         }
 
         if (nHearts == 3) {
-            isLeaving();
+            nStatus = 9;
         }
     }
 
