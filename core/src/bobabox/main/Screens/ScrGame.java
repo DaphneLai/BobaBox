@@ -223,7 +223,7 @@ public class ScrGame implements Screen, InputProcessor {
             sprCustomerS.updateStatus();
             sprCustomerS.hearts(objTable);
             nStatGst = arliGuestsSat.get(nTarget).updateStatus();
-            if(nStatGst >= 6){
+            if (nStatGst >= 6) {
                 isSitting = false;
             }
         }
@@ -276,6 +276,7 @@ public class ScrGame implements Screen, InputProcessor {
                 isCstDragged = true;
                 sprCustMove = arliGuests.get(nTarget);
                 arliGuests.remove(sprCustMove);
+                nGst = nGst - 1;
             }
         }
         nGstsSize = arliGuests.size();
@@ -293,9 +294,9 @@ public class ScrGame implements Screen, InputProcessor {
         //When a customer is sat at an available table
         if (isCstDragged) {
             if (sprCustMove.getBoundingRectangle().overlaps(arTables[nTable].getBoundingRectangle())) {
-                    isSitting = true;
-                    arliGuestsSat.add(sprCustMove);
-                    arTables[nTable].isAvb(isSitting); //<< should now be !isAvb
+                isSitting = true;
+                arliGuestsSat.add(sprCustMove);
+                arTables[nTable].isAvb(isSitting); //<< should now be !isAvb
 
             }
         }
