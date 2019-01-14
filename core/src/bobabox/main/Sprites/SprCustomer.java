@@ -27,9 +27,9 @@ public class SprCustomer extends Sprite {
     private SpriteBatch batch;
     private float fX, fY, fH, fW, fMove, fGoal = 30; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
-    private boolean bCanDrag = false, bSitting = false, isGone = false, bCustSat = false, bAtLimit = false;
+    private boolean bCanDrag = false, isGone = false, bCustSat = false, bAtLimit = false;
     //booleans related to server
-    private boolean bHasOrder = false, bHasFood = false, bHasPaid = false;
+    private boolean bHasOrder = false, bHasBoba = false, bHasPaid = false;
     private Texture txtarHearts[] = new Texture[4], txtExclaim;
     private ObjTables objTable;
     private int nTimer = 1, nHearts = 0, nStatus, nDir;
@@ -63,81 +63,74 @@ public class SprCustomer extends Sprite {
         nStatus = 0;
     }
 
-    public int updateStatus(boolean isSitting) {
+    //is only called once seated
+    public int updateStatus() {
         directions();
-        this.bSitting = isSitting;
-        if (nStatus == 1) {
-            System.out.println("STATUS: Waiting for a table");
-            nTimer++;
-            bCanDrag = true;
-            if (bSitting) {
-                nStatus = 2;
-                nTimer = 0;
-            }
-        } else if (nStatus == 2) {
-            System.out.println("STATUS: Deciding order");
+        System.out.println("The Timer: " + nTimer);
+
+        if(nStatus >= 0 && nStatus <= 5) {
+            setSize(0, 0);
             bCanDrag = false;
+        }
+
+        if (nStatus == 0) {
+            System.out.println("STATUS: Deciding order");
             nTimer++;
             if (nTimer >= 240) {
-                nStatus = 3;
+                nStatus = 1;
             }
 
-        } else if (nStatus == 3) {
+        } else if (nStatus == 1) {
             System.out.println("STATUS: Ready to order");
             nTimer++;
-            batch.draw(txtExclaim, fX + fW/2, fY + fH, 50, 60);
-            //bHasOrder = true;
-            if(!bHasOrder){
-                nStatus = 4;
+            bHasOrder = true;
+            batch.draw(txtExclaim, fX + fW / 2, fY + fH, 50, 60);
+            if (!bHasOrder) {
+                nStatus = 2;
             }
-        } else if (nStatus == 4) {
-             System.out.println("STATUS: Waiting for food");
-            nTimer ++;
-            if(bHasFood){
-                nStatus = 5;
+        } else if (nStatus == 2) {
+            System.out.println("STATUS: Waiting for food");
+            nTimer++;
+            if (bHasBoba) {
+                nStatus = 3;
                 nTimer = 0;
             }
             //bHasOrder = false;
 
-        } else if (nStatus == 5) {
+        } else if (nStatus == 3) {
             System.out.println("STATUS: Eating, nom nom nom");
             nTimer++;
-            if(nTimer <= 600){
-                bHasFood = false;
+            if (nTimer >= 360) {
+                bHasBoba = false;
                 bHasPaid = false;
-                nStatus = 6;
+                nStatus = 4;
             }
-            //bHasFood = true
+            //bHasBoba = true
 
-        } else if (nStatus == 6) {
+        } else if (nStatus == 4) {
             nTimer++;
             System.out.println("STATUS: Wants to pay");
-         //under the condition that the server has arrived
-        } else if (nStatus == 7) {
-              System.out.println("paying");
-            if(nTimer <= 120){
-                nStatus = 8;
+            batch.draw(txtExclaim, fX + fW / 2, fY + fH, 50, 60);
+            if (bHasPaid) {
+                nStatus = 5;
+            }
+
+        } else if (nStatus == 5) {
+            System.out.println("paying");
+            if (nTimer <= 120) {
+                nStatus = 6;
                 bHasPaid = true;
             }
-        } else if (nStatus == 8) {
+        } else if (nStatus == 6) {
             System.out.println("STATUS:leaving");
             leave();
 
-        } else if (nStatus == 9) {
+        } else if (nStatus == 7) {
             System.out.println("STATUS: This is horrible service!");
+            leave();
             isLeaving();
         }
         return nStatus;
-    }
-
-    public boolean sittingDown(boolean _isSitting) {
-        bSitting = _isSitting;
-        if (bSitting) {
-            setSize(0, 0);
-            bCanDrag = false;
-            return true;
-        }
-        return false;
     }
 
     //for debugging NOT IN USE
@@ -152,16 +145,19 @@ public class SprCustomer extends Sprite {
         directions();
         if (!bCanDrag) {
             if (!bCustSat) {
-                nDir = 2;
+                nDir = 2; //coming down
 
                 //Update Goal
                 if (nGst > 1) {
                     fGoal = 30 + ((fH + fHh + 10) * (nGst - 1));
                 }
+
                 //Customer move down
                 if (fY <= fGoal) {
-                    nStatus = 1;
+                    nStatus = 0;
                     nDir = 4;
+                    bCanDrag = true;
+//                    System.out.println("REACHED GOAL");
                 }
             }
         }
@@ -170,8 +166,11 @@ public class SprCustomer extends Sprite {
         }
         if (bCustSat) {
             updateQueue(n);
+            nStatus = 0;
+            bCanDrag = false;
         }
     }
+
     //Updates the Guest line once one customer is removed
     private void updateQueue(int nGst) {
         nDir = 2;
@@ -180,7 +179,8 @@ public class SprCustomer extends Sprite {
         } else if (nGst > 0) {
             fGoal = 30 + ((fH + fHh + 10) * (nGst));
         }
-
+//        System.out.println("Goal for: " + nGst + " is " + fGoal);
+//        System.out.println("The Y for: " + nGst + " is " + fY);
         if (fY <= fGoal) {
             nDir = 4;
             nStatus = 1;
@@ -191,16 +191,12 @@ public class SprCustomer extends Sprite {
 
     //Active when the guest is dragged
     public void drag(Vector2 vTouch, StretchViewport viewport) {
-        if (bCanDrag) {
             nHearts = 0;
             viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-            if (nStatus == 1) {
-                fX = vTouch.x - 50;
-                fY = vTouch.y - 60;
-                setX(fX);
-                setY(fY);
-            }
-        }
+            fX = vTouch.x - 50;
+            fY = vTouch.y - 60;
+            setX(fX);
+            setY(fY);
     }
 
     //Update hearts
@@ -213,19 +209,19 @@ public class SprCustomer extends Sprite {
         //Level of hearts
         if (!isGone) {
             batch.draw(txtarHearts[nHearts], fHx, fHy, fHw, fHh);
-            if (nStatus >= 2 && nStatus <= 7) {
-                fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
-                fHy = objTable.getY() + objTable.getHeight();
+            if (nStatus <= 5) {
+                fHx = objTable.getX() + objTable.getWidth() / 2 + 20;
+                fHy = objTable.getY();
             }
         }
-        if ((nTimer % 600 == 0) && nStatus >= 1) {
+        if ((nTimer % 300 == 0) && nStatus >= 1) {
             if (nHearts < 3) {
                 nHearts++;
             }
         }
 
         if (nHearts == 3) {
-            nStatus = 9;
+            nStatus = 7;
         }
     }
 
@@ -251,16 +247,17 @@ public class SprCustomer extends Sprite {
         }
     }
 
+    //instructs the customer to leave through the door
     private void leave() {
         setSize(80, 100);
+//        bSitting = false;
         directions();
-        bSitting = false;
         nDir = 3;
-        if (nDir == 3 && getX() > 75 && getX() < 85) {
+        if (getX() > 75 && getX() < 85) {
             nDir = 0;
             if (getY() < 335 && getY() > 325) {
                 nDir = 4;
-                setSize(0, 0);
+                setSize(fW, fH);
                 isGone = true;
             }
         }
@@ -269,9 +266,8 @@ public class SprCustomer extends Sprite {
     //check if guest is leaving after sitting
     public boolean isLeaving() {
         if (nHearts == 3) {
-            //    System.out.println("leaving");
             return true;
         }
-            return false;
+        return false;
     }
 }

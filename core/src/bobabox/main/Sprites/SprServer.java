@@ -53,9 +53,9 @@ public class SprServer extends Sprite {
     }
 
     //under the condition that the
-    private void directions(SpriteBatch batch, boolean bGstDrag) {
+    private void directions(SpriteBatch batch, boolean isCstDragged) {
 
-        if (!bGstDrag) {
+        if (!isCstDragged) {
             fX += fDx[nDir];
             fY += fDy[nDir];
             setX(fX);
@@ -76,9 +76,9 @@ public class SprServer extends Sprite {
 
 
     // Makes server move to table coordinates
-    public void update(float fXG, float fYG, SpriteBatch batch, boolean bGstDrag) {
+    public void update(float fXG, float fYG, SpriteBatch batch, boolean isCstDragged) {
         fElapsedTime += Gdx.graphics.getDeltaTime();//make sure to stop this timer when the game pauses
-            directions(batch, bGstDrag);
+            directions(batch, isCstDragged);
             this.fXG = fXG;
             this.fYG = fYG;
 //        System.out.println("FXG: " + fXG);

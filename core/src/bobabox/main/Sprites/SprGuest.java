@@ -120,7 +120,6 @@ public class SprGuest extends Sprite {
         //Importing
         objTable = _objTable;
         batch = _batch;
-        objTable.sittingDown(bSitting);
         fHx = fX - 10;
         fHy = fY + 105; //+120
         if (isDown) {

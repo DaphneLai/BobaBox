@@ -93,7 +93,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
         //Drawing
         batch.draw(txtBG, 0, 0);
         btnHome.update(batch);
-        queue();
+//        queue();
         updateTable();
         updateGuest(nGst, batch);
         batch.end();
@@ -114,9 +114,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
         /**/
         if (arliGuests.get(nTarget).isLeaving()) {
             isSitting = false;
-            arliGuestsSat.get(nTarget).sittingDown(isSitting);
-            arliGuests.get(nTarget).sittingDown(isSitting);
-            arTables[nTable].sittingDown(isSitting);
+//            arliGuestsSat.get(nTarget).sittingDown(isSitting);
+//            arliGuests.get(nTarget).sittingDown(isSitting);
         }
 
         if (nGuestTracker >= 3) {
@@ -139,7 +138,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
             if (!bGuestLimit) {
                 sprCustomer = arliGuests.get(n); //temporary Guest
                 sprCustomer.draw(batch);
-                sprCustomer.updateStatus(isSitting);
+                sprCustomer.updateStatus();
                 sprCustomer.entering(nGst, n, bCustSat);
                 sprCustomer.hearts(objTable);
             }
@@ -152,20 +151,20 @@ public class SctMultiGuests implements Screen, InputProcessor {
     }
 
     //updates the SprCustomer's Queue
-    private void queue() {
-        if (isSitting) {
-            arliGuestsSat.add(arliGuests.get(nTarget));
-            sprCustSat = arliGuests.get(nTarget);
-            if (sprCustSat.sittingDown(isSitting)) {
-                arliGuests.remove(nTarget);
-                nGoal = arliGuests.size();
-                isSitting = false;
-                for (int n = 0; n < nGoal; n++) {
-                    bCustSat = true;
-                }
-            }
-        }
-    }
+//    private void queue() {
+//        if (isSitting) {
+//            arliGuestsSat.add(arliGuests.get(nTarget));
+//            sprCustSat = arliGuests.get(nTarget);
+//            if (sprCustSat.sittingDown(isSitting)) {
+//                arliGuests.remove(nTarget);
+//                nGoal = arliGuests.size();
+//                isSitting = false;
+//                for (int n = 0; n < nGoal; n++) {
+//                    bCustSat = true;
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void dispose() {
@@ -201,12 +200,11 @@ public class SctMultiGuests implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         if (!isSitting) {
-            if (arTables[nTable].isAvb(arliGuests.get(nTarget))) {
+            if (arTables[nTable].isAvb(isSitting)) {
                 if (arTables[nTable].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
                     isSitting = true;
                 }
-                arliGuests.get(nTarget).sittingDown(isSitting);
-                arTables[nTable].sittingDown(isSitting);
+//                arliGuests.get(nTarget).sittingDown(isSitting);
             }
         }
 

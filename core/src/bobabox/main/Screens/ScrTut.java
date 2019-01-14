@@ -6,17 +6,21 @@ import com.badlogic.gdx.Screen;
 
 import bobabox.main.GamMenu;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import bobabox.main.Objects.ObjButton;
 
 
-public class ScrTut implements Screen , InputProcessor{
+public class ScrTut implements Screen, InputProcessor {
 
     GamMenu gamMenu;
     //Values
@@ -26,6 +30,9 @@ public class ScrTut implements Screen , InputProcessor{
     private OrthographicCamera camera;
     private StretchViewport viewport; //how it's seen
     private SpriteBatch batch;
+    private BitmapFont bfFontHeader, bfFontSubtitle, bfFontParagraph;
+    private Table table;
+    private Label lbHeader, lbParagraph1, lbHeader2, lbParagraph2;
     //Assets
     private Texture txtBg;
     private ObjButton btnStart, btnHome;
@@ -44,10 +51,46 @@ public class ScrTut implements Screen , InputProcessor{
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         resize(nW, nH);
         batch = new SpriteBatch();
+        table = new Table();
+        table.top();
+        table.setFillParent(true);
 
-        txtBg = new Texture("data/Test_img.jpg");
-        btnStart = new ObjButton(70, 70, 260/2, 70/2, "data/START1_btn.png", "data/START2_btn.png",viewport);
-        btnHome = new ObjButton(70, 30, 260/2, 70/2,"data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
+        bfFontHeader = new BitmapFont(Gdx.files.internal("data/gamefnt.fnt"));
+        bfFontSubtitle = new BitmapFont(Gdx.files.internal("data/gamefnt.fnt"));
+        bfFontParagraph = new BitmapFont(Gdx.files.internal("data/gamefnt.fnt"));
+
+        bfFontHeader.setColor(Color.WHITE);
+        bfFontSubtitle.setColor(Color.WHITE);
+        bfFontParagraph.setColor(Color.WHITE);
+        bfFontHeader.getData().setScale(1f, 1f);
+        bfFontSubtitle.getData().setScale(0.75f, 0.75f);
+        bfFontParagraph.getData().setScale(0.45f, 0.45f);
+        txtBg = new Texture("data/Tut_bg.png");
+        btnStart = new ObjButton(70, 70, 260 / 2, 70 / 2, "data/START1_btn.png", "data/START2_btn.png", viewport);
+        btnHome = new ObjButton(70, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
+
+        lbHeader = new Label("Welcome to Bobabox", new Label.LabelStyle(bfFontHeader, Color.BLACK));
+        lbParagraph1 = new Label("We are so happy to have you be part of the team!\n" +
+                "Your goal is to give the customers the \n" +
+                "best service they can get.\n", new Label.LabelStyle(bfFontParagraph, Color.BLACK));
+        lbHeader2 = new Label("How to play:", new Label.LabelStyle(bfFontSubtitle, Color.BLACK));
+        lbParagraph2 = new Label("Customers will walk into the cafe and wait to be seated.\n" +
+                "You can seat them by dragging and dropping the customer to a table.\n" +
+                "When seated, they will call you over when ready to order.\n" +
+                "Pick up their order and then drop it off at the bar for the bartender to make.\n" +
+                "(be careful! If you are too slow, they will lose their patience)\n" +
+                "When done drinking their boba, cash them out and collect tips.\n" +
+                "(tips are dependant on how satisfied the customer was).\n", new Label.LabelStyle(bfFontParagraph, Color.BLACK));
+
+    table.add(lbHeader).center().padTop(20);
+    table.row();
+    table.add(lbParagraph1).padTop(20);
+    table.row();
+    table.add(lbHeader2).center().padTop(20);
+    table.row();
+    table.add(lbParagraph2).padTop(20);
+
+
     }
 
     @Override
@@ -65,6 +108,8 @@ public class ScrTut implements Screen , InputProcessor{
 
         //Drawing
         batch.draw(txtBg, 0, 0, nW, nH);
+       
+
         btnHome.update(batch);
         btnStart.update(batch);
 
@@ -74,7 +119,7 @@ public class ScrTut implements Screen , InputProcessor{
         checkButtons();
     }
 
-    private void checkButtons(){ // Checks if Buttons are pressed
+    private void checkButtons() { // Checks if Buttons are pressed
         if (btnStart.justClicked()) {
             gamMenu.updateScreen(0);
         }

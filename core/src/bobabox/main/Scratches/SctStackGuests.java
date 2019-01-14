@@ -61,8 +61,8 @@ public class SctStackGuests implements Screen {
             arliGuests.add(new SprGuest("data/GUEST1_spr.png", viewport));
         }
 
-        System.out.println("LIST:" + arliGuests);
-        System.out.println("SIZE:" + arliGuests.size());
+//        System.out.println("LIST:" + arliGuests);
+//        System.out.println("SIZE:" + arliGuests.size());
 
         sh = new ShapeRenderer();
 

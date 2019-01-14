@@ -17,7 +17,7 @@ public class ObjTables extends Sprite {
     private Vector3 vTouch;
     private StretchViewport viewport;
     private Texture nTxt1, nTxt2;
-    private boolean isSitting = false;
+    private boolean bSitting = false;
 
     public ObjTables(float _fX, float _fY, String _sOpenT, String _sSittingT, StretchViewport _viewport) {
         super(new Texture(Gdx.files.internal(_sOpenT)));
@@ -37,18 +37,13 @@ public class ObjTables extends Sprite {
         setTexture(nTxt1);
     }
 
-    public boolean sittingDown(boolean _isSitting) {
-        isSitting = _isSitting;
-        if (isSitting) {
+    public boolean isAvb(boolean _isSitting) {
+        this.bSitting = _isSitting;
+        if (bSitting) {
             setTexture(nTxt2);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isAvb(SprCustomer sprGuest) {
-        if (isSitting) {
             return false;
+        } else {
+            setTexture(nTxt1);
         }
         return true;
     }
@@ -62,7 +57,7 @@ public class ObjTables extends Sprite {
         if (fGX > fX && fGX < fX + fW) {
             if (fGY > fY && fGY < fY + fH) {
                 super.setBounds(fX, fY, fW, fH);
-                if (Gdx.input.isTouched() && !isSitting) {
+                if (Gdx.input.isTouched() && !bSitting) {
                     super.setBounds(fX - 10, fY - 10, fW + 20, fH + 20);
                     return true;
 
@@ -85,12 +80,6 @@ public class ObjTables extends Sprite {
             }
         }
         return false;
-    }
-    public void leave(boolean _bSitting) {
-        isSitting = _bSitting;
-        if(!isSitting) {
-            setTexture(nTxt1);
-        }
     }
 }
 

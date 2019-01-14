@@ -20,7 +20,6 @@ import bobabox.main.Objects.ObjBar;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.GamMenu;
 import bobabox.main.Sprites.SprCustomer;
-import bobabox.main.Sprites.SprGuest;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprServer;
 
@@ -29,11 +28,11 @@ public class ScrGame implements Screen, InputProcessor {
 
     //Values
     private Vector2 vTouch;
-    private boolean bArrived = false, bHasOrder = false, bDragging; //boolean for server
-    private boolean isTableClicked = false, isSitting, bCustSat = false, bGstDrag= false; //boolean for guests
+    private boolean bArrived = false, bHasOrder = false, isCstDragged = false; //boolean for server
+    private boolean isTableClicked = false, isSitting, bCustSat = false; //boolean for guests
     private int nW, nH, nGameTimer = 60, nTable; //int for game
     private int nFPS, nStatGst, nClickedBar = 0; //int for server
-    private int nTimer = 0, nGst = 0, nTarget, nGoal; //int for guests
+    private int nTimer = 0, nGst = 0, nTarget, nGstsSize; //int for guests
     private float fXG, fYG;
     //Logic
     private OrthographicCamera camera;
@@ -42,7 +41,7 @@ public class ScrGame implements Screen, InputProcessor {
     //Assets
     private Texture txtBg, txtStats;
     private List<SprCustomer> arliGuests, arliGuestsSat;
-    private SprCustomer sprCustomer, sprCst, sprCustMove;
+    private SprCustomer sprCustomerE, sprCst, sprCustMove, sprCustomerS;
     private SprServer sprServer;
     private ObjTables arTables[] = new ObjTables[3], objTable;
     private ObjButton btnPause;
@@ -69,7 +68,7 @@ public class ScrGame implements Screen, InputProcessor {
         txtBg = new Texture("data/GameBG_img.png");
         txtStats = new Texture("data/STATS_img.png");
         btnPause = new ObjButton(940, 40, 90, 55, "data/PAUSE1_btn.png", "data/PAUSE2_btn.png", viewport);
-        bfFont = new BitmapFont(Gdx.files.internal("data/font.fnt"));
+        bfFont = new BitmapFont(Gdx.files.internal("data/gamefnt32.fnt"));
         bfFont.setColor(Color.DARK_GRAY);
         bfFont.getData().setScale(1f, 1f);
 
@@ -81,7 +80,7 @@ public class ScrGame implements Screen, InputProcessor {
         fYG = 175;
 
         //guests
-        nGoal = 5;
+        nGstsSize = 5;
         arliGuests = new ArrayList<SprCustomer>();
         arliGuestsSat = new ArrayList<SprCustomer>();
         for (int i = 1; i <= 5; i++) {
@@ -98,60 +97,66 @@ public class ScrGame implements Screen, InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         Gdx.input.setInputProcessor(this);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Initial drawing
+        batch.draw(txtBg, 0, 0, nW, nH);
+        sprServer.update(fXG, fYG, batch, isCstDragged);
+        btnPause.update(batch);
+        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
+
+        //Game Timer (1 min. round)
         nFPS++;
         nTimer++;
         if (nFPS % 60 == 0) {
             nGameTimer--;
         }
         if (nGameTimer == 0) {
+            //Sends player to ScrEnd
             gamMenu.updateScreen(1);
         }
 
-        //Drawing
-        batch.draw(txtBg, 0, 0, nW, nH);
-        btnPause.update(batch);
-        sprServer.update(fXG, fYG, batch,bGstDrag);
-        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 138);
 
-
-        //Checks if bar is clicked
+        //Checks if Bar is clicked (for Waiter)
         if (objBar.isTapped()) {
             nClickedBar++;
             fXG = objBar.rBar().x + 1;
             fYG = objBar.rBar().y - 20;
-            sprServer.update(fXG, fYG, batch, bGstDrag);
+            sprServer.update(fXG, fYG, batch, isCstDragged);
         }
 
+        //Checks if Table is clicked (for Waiter)
         if (isTableClicked) {
-            sprServer.update(fXG, fYG, batch, bGstDrag);
-            this.bArrived = sprServer.arrived();
+            sprServer.update(fXG, fYG, batch, isCstDragged);
+            bArrived = sprServer.arrived();
             //server can take order from customer
-            if(nStatGst == 3){
-                if(bArrived && nClickedBar == 0){
+            if (nStatGst == 3) {
+                if (bArrived && nClickedBar == 0) {
                     bHasOrder = true;
                 }
             }
         }
         sprServer.carryDrink(batch, bHasOrder, nClickedBar);
-//        System.out.println("1 bar was clicked: " + nClickedBar);
-//        System.out.println("2 picked up order: " + bHasOrder);
+//        System.out.println("BAR WAS CLICKED: " + nClickedBar + " TIMES");
+//        System.out.println("PICKED UP ORDER?: " + bHasOrder);
 
-        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
-        batch.draw(txtStats,nW - 200, nH - 165, 200, 150);
-        bfFont.draw(batch, Integer.toString(nGameTimer), nW - 100, nH - 135);
-       // queue();
         updateTable();
         updateGuest(nGst, batch);
-        if (bDragging) {
+
+        if (isCstDragged) {
             sprCustMove.draw(batch);
             sprCustMove.hearts(objTable);
-            sprCustMove.updateStatus(isSitting);
         }
+
+        //Fonts for game status + timer
+        batch.draw(txtStats, nW - 200, nH - 165, 200, 150);
+        bfFont.draw(batch, Integer.toString(nGameTimer) + "s", nW - 100, nH - 135);
+        bfFont.draw(batch, "0.00*", nW - 120, nH - 80); //*temporarily placing a hard value
+
         batch.end();
 
         //Timer for Guests to enter
         if (nTimer % 300 == 0) {
-            if (nGst < nGoal) {
+            if (nGst < nGstsSize) {
                 nGst++;
             }
             nTimer = 0;
@@ -163,65 +168,65 @@ public class ScrGame implements Screen, InputProcessor {
             System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
-       if (arliGuests.get(nTarget).isLeaving()) {
-            isSitting = false;
-           arliGuests.get(nTarget).sittingDown(isSitting);
-           arTables[nTable].sittingDown(isSitting);
-           arTables[nTable].leave(isSitting);
-       }
+
+//        if (arliGuests.get(nTarget).isLeaving()) {
+//            isSitting = false;
+//            arTables[nTable].isAvb(isSitting);
+//        }
 
     }
 
     //Method runs through the array of tables
     private void updateTable() {
         for (int i = 0; i < 3; i++) {
-            objTable = arTables[i];
-            arTables[i].draw(batch);
-         //   arliGuestsSat.get(nTarget).hearts(arTables[i]);
+            objTable = arTables[i]; //temp. table
+            objTable.draw(batch);
 
             // Checks if mouse is over table and clicked
-            if (arTables[i].isTableClicked()) {
-                fXG = Math.round(arTables[i].getX() + (arTables[i].getWidth() / 2 - 40));
-                fYG = Math.round(arTables[i].getY() + arTables[i].getHeight());
+            if (objTable.isTableClicked()) {
+                ObjTables objTableServed;
+                int nTargetTble;
+                nTargetTble = i;
+                objTableServed = arTables[nTargetTble];
+
+                fXG = Math.round(arTables[i].getX() + (objTableServed.getWidth() / 2 - 40));
+                fYG = Math.round(arTables[i].getY() + objTableServed.getHeight());
 
                 isTableClicked = true;
+
             }
 //            Table Debugging stuff
 //            if (arTables[0].isTableClicked()) {
-//                System.out.println("TABLE 11111111 WAS CLICKEDD");
+//                System.out.println("TABLE 1 WAS CLICKED!");
 //            }
 //            if (arTables[1].isTableClicked()) {
-//                System.out.println("TABLE 22222222 WAS CLICKEDD");
+//                System.out.println("TABLE 2 WAS CLICKED!!");
 //            }
 //            if (arTables[2].isTableClicked()) {
-//                System.out.println("TABLE 33333333 WAS CLICKEDD");
+//                System.out.println("TABLE 3 WAS CLICKED!!!");
 //            }
 
-            //Table and guest interaction
 
-            if (!arTables[i].isAvb(sprCustMove)) {
-                isSitting = true;
-                arliGuestsSat.get(nTarget).sittingDown(isSitting);
-                arTables[i].sittingDown(isSitting);
-            } else if (arTables[i].isAvb(sprCustMove)) {
-                isSitting = false;
-                arTables[i].sittingDown(isSitting);
-            }
         }
     }
 
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            this.sprCustomer = arliGuests.get(n); //temporary Guest
-            sprCustomer.draw(batch);
-            sprCustomer.entering(nGst, n, bCustSat);
-            sprCustomer.hearts(objTable);
+            sprCustomerE = arliGuests.get(n); //temporary Customer 'E'ntered
+            sprCustomerE.draw(batch);
+            sprCustomerE.entering(nGst, n, bCustSat);
+            sprCustomerE.hearts(objTable);
         }
-       /* if (nStatGst > 7) {
-            System.out.println("Leaving");
-           // arliGuestsSat.get(nTarget).draw(batch);
-        }*/
+        for (int z = 0; z < arliGuestsSat.size(); z++) {
+            sprCustomerS = arliGuestsSat.get(z); //temporary Customer 'S'at
+            sprCustomerS.updateStatus();
+            sprCustomerS.hearts(objTable);
+            nStatGst = arliGuestsSat.get(nTarget).updateStatus();
+            if(nStatGst >= 6){
+                isSitting = false;
+            }
+        }
     }
 
 
@@ -229,10 +234,19 @@ public class ScrGame implements Screen, InputProcessor {
         sprServer = new SprServer(850, 175);
         isTableClicked = false;
         nFPS = 0;
+        bArrived = false;
+        bHasOrder = false;
+        isCstDragged = false;
+        isSitting = false;
+        bCustSat = false;
         nGameTimer = 60;
+        nClickedBar = 0;
+        nTimer = 0;
+        nGst = 0;
     }
 
-    private void checkButtons() { // Checks if buttons are pressed
+    // Checks if buttons are pressed
+    private void checkButtons() {
         if (btnPause.justClicked()) {
             gamMenu.updateScreen(2);
         }
@@ -256,38 +270,40 @@ public class ScrGame implements Screen, InputProcessor {
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
         for (int n = 0; n < arliGuests.size(); n++) {
             sprCst = arliGuests.get(n); //temporary Guest
+
             if (sprCst.getBoundingRectangle().contains(vTouch)) {
-                bGstDrag = true;
                 nTarget = n;
+                isCstDragged = true;
                 sprCustMove = arliGuests.get(nTarget);
                 arliGuests.remove(sprCustMove);
-                bDragging = true;
             }
         }
+        nGstsSize = arliGuests.size();
+        System.out.println("SAT SIZE: " + arliGuestsSat.size());
+        System.out.println("CUSTOMER SIZE: " + arliGuests.size());
 
-        return true;
+
+        return false;
 
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (!isSitting) {
-            if (arTables[nTable].isAvb(sprCustMove)) {
-                if (arTables[nTable].getBoundingRectangle().overlaps(sprCustMove.getBoundingRectangle())) {
+
+        //When a customer is sat at an available table
+        if (isCstDragged) {
+            if (sprCustMove.getBoundingRectangle().overlaps(arTables[nTable].getBoundingRectangle())) {
                     isSitting = true;
                     arliGuestsSat.add(sprCustMove);
-                }
-                arliGuestsSat.get(nTarget).sittingDown(isSitting);
-                arTables[nTable].sittingDown(isSitting);
+                    arTables[nTable].isAvb(isSitting); //<< should now be !isAvb
+
             }
         }
-        nStatGst = arliGuestsSat.get(nTarget).updateStatus(isSitting);
-        arliGuestsSat.get(nTarget).updateStatus(isSitting);
-        nGoal = arliGuests.size();
-        for (int n = 0; n < nGoal; n++) {
+
+        for (int n = 0; n < nGstsSize; n++) {
             bCustSat = true;
         }
-        bGstDrag = false;
+        isCstDragged = false;
         return false;
     }
 
@@ -295,9 +311,13 @@ public class ScrGame implements Screen, InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (sprCustMove.getBoundingRectangle().contains(vTouch)) {
             sprCustMove.drag(vTouch, viewport);
+            isCstDragged = true;
+        } else {
+            isCstDragged = false;
         }
+
         for (int i = 0; i < 3; i++) {
-            if (arTables[i].getBoundingRectangle().overlaps(sprCustMove.getBoundingRectangle())) {
+            if (sprCustMove.getBoundingRectangle().overlaps(arTables[i].getBoundingRectangle())) {
                 nTable = i;
             }
         }
@@ -306,9 +326,7 @@ public class ScrGame implements Screen, InputProcessor {
     }
 
 
-
-
-//-------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------
     //VOIDS NOT IN USE
     @Override
     public void show() {
