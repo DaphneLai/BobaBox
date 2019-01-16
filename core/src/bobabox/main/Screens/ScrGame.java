@@ -31,7 +31,7 @@ public class ScrGame implements Screen, InputProcessor {
     private boolean bArrived = false, bHasOrder = false, isCstDragged = false; //boolean for server
     private boolean isTableClicked = false, isSitting, bCustSat = false; //boolean for guests
     private int nW, nH, nGameTimer = 60, nTable; //int for game
-    private int nFPS, nStatGst, nClickedBar = 0; //int for server
+    private int nFPS, nStatGst, nClickedBar = 0, nGstQueueTracker; //int for server
     private int nTimer = 0, nGst = 0, nTarget, nGstsSize; //int for guests
     private float fXG, fYG;
     //Logic
@@ -156,9 +156,10 @@ public class ScrGame implements Screen, InputProcessor {
         batch.end();
 
         //Timer for Guests to enter
-        if (nTimer % 300 == 0) {
+        if (nTimer % 300 == 0&& nGstQueueTracker<=2) {
             if (nGst < nGstsSize) {
                 nGst++;
+                nGstQueueTracker++; // Tracks the wait line allowing only 3 customers to go be in line
             }
             nTimer = 0;
         }
@@ -279,6 +280,7 @@ public class ScrGame implements Screen, InputProcessor {
                 sprCustMove = arliGuests.get(nTarget);
                 arliGuests.remove(sprCustMove);
                 nGst = nGst - 1;
+                nGstQueueTracker--;
             }
         }
         nGstsSize = arliGuests.size();

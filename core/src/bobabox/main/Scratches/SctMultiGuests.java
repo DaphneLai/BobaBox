@@ -34,8 +34,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private SprCustomer sprCustomer, sprCustSat;
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
-    private boolean isSitting, bCustSat = false, bGuestLimit = false;
-    private int nTimer = 0, nGst = 0, nTarget, nTable, nGoal, nGuestTracker = 0;
+    private boolean isSitting, bCustSat = false;
+    private int nTimer = 0, nGst = 0, nTarget, nTable, nGoal;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private SprCustomer sprCst;
@@ -107,7 +107,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
         if (nTimer % 300 == 0) {
             if (nGst < nGoal) {
                 nGst++;
-                nGuestTracker++;
             }
             nTimer = 0;
         }
@@ -116,11 +115,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
             isSitting = false;
 //            arliGuestsSat.get(nTarget).sittingDown(isSitting);
 //            arliGuests.get(nTarget).sittingDown(isSitting);
-        }
-
-        if (nGuestTracker >= 3) {
-            bGuestLimit = true;
-            arliGuests.get(nTarget).isAtLimit(bGuestLimit);
         }
     }
 
@@ -135,18 +129,11 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            if (!bGuestLimit) {
-                sprCustomer = arliGuests.get(n); //temporary Guest
-                sprCustomer.draw(batch);
-                sprCustomer.updateStatus();
-                sprCustomer.entering(nGst, n, bCustSat);
-                sprCustomer.hearts(objTable);
-            }
-
-            if(bGuestLimit){
-                sprCustomer.draw(batch);
-                sprCustomer.hearts(objTable);
-            }
+            sprCustomer = arliGuests.get(n); //temporary Guest
+            sprCustomer.draw(batch);
+            sprCustomer.updateStatus();
+            sprCustomer.entering(nGst, n, bCustSat);
+            sprCustomer.hearts(objTable);
         }
     }
 
@@ -225,9 +212,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
         return true;
     }
-
-
-
 
 
     //----------------------------------------------------------------------------------------------------------------

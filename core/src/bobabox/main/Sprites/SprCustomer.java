@@ -27,7 +27,7 @@ public class SprCustomer extends Sprite {
     private SpriteBatch batch;
     private float fX, fY, fH, fW, fMove, fGoal = 30; //Guest
     private float fHx, fHy, fHw, fHh; //Hearts
-    private boolean bCanDrag = false, isGone = false, bCustSat = false, bAtLimit = false;
+    private boolean bCanDrag = false, isGone = false, bCustSat = false;
     //booleans related to server
     private boolean bHasOrder = false, bHasBoba = false, bHasPaid = false;
     private Texture txtarHearts[] = new Texture[4], txtExclaim;
@@ -133,13 +133,6 @@ public class SprCustomer extends Sprite {
         return nStatus;
     }
 
-    //for debugging NOT IN USE
-    public boolean isAtLimit(boolean bAtLimit2) {
-        bAtLimit = bAtLimit2;
-        return false;
-
-    }
-
     //Assures guest is walking down at the start
     public void entering(int nGst, int n, boolean bCustSat) {
         directions();
@@ -160,9 +153,6 @@ public class SprCustomer extends Sprite {
 //                    System.out.println("REACHED GOAL");
                 }
             }
-        }
-        if (bAtLimit) {
-            System.out.println("true");
         }
         if (bCustSat) {
             updateQueue(n);
