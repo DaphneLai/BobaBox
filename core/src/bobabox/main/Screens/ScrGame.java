@@ -97,6 +97,7 @@ public class ScrGame implements Screen, InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         Gdx.input.setInputProcessor(this);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        nStatGst = 3; //temporary, helps test the server's ability to get an order
 
         //Initial drawing
         batch.draw(txtBg, 0, 0, nW, nH);
@@ -223,6 +224,7 @@ public class ScrGame implements Screen, InputProcessor {
             sprCustomerS.updateStatus();
             sprCustomerS.hearts(objTable);
             nStatGst = arliGuestsSat.get(nTarget).updateStatus();
+            System.out.println("Status: " + nStatGst + " for " + z);
             if (nStatGst >= 6) {
                 isSitting = false;
             }
@@ -280,8 +282,7 @@ public class ScrGame implements Screen, InputProcessor {
             }
         }
         nGstsSize = arliGuests.size();
-        System.out.println("SAT SIZE: " + arliGuestsSat.size());
-        System.out.println("CUSTOMER SIZE: " + arliGuests.size());
+
 
 
         return false;
@@ -304,6 +305,14 @@ public class ScrGame implements Screen, InputProcessor {
         for (int n = 0; n < nGstsSize; n++) {
             bCustSat = true;
         }
+
+        //not in use, please ignore all hard coding :D
+        for (int t = 0; t <= 2; t++) {
+            if(arTables[t].getBoundingRectangle().contains(vTouch)){
+                System.out.println("TABLE "+ t + " WAS CLICKED");
+            }
+        }
+
         isCstDragged = false;
         return false;
     }
