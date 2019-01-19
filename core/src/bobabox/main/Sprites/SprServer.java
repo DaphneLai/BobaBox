@@ -79,10 +79,8 @@ public class SprServer extends Sprite {
     public void update(float fXG, float fYG, SpriteBatch batch, boolean isCstDragged) {
         fElapsedTime += Gdx.graphics.getDeltaTime();//make sure to stop this timer when the game pauses
             directions(batch, isCstDragged);
-            this.fXG = fXG;
+            this.fXG = fXG; //Goal co-ordinates
             this.fYG = fYG;
-//        System.out.println("FXG: " + fXG);
-//        System.out.println("FYG: " + fYG);
 
         //North
         if (fY <= fYG - 1) {

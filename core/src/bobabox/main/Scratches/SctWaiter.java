@@ -1,13 +1,14 @@
 package bobabox.main.Scratches;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjBar;
@@ -17,14 +18,14 @@ import bobabox.main.Sprites.SprServer;
 
 //Sarah
 //Help from Grondin & Daph
-//Release 2.9 Scratch
-public class SctWaiter implements Screen {
+//testing tap, response function from the waiter
+public class SctWaiter implements Screen, InputProcessor {
 
     //Logic
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private StretchViewport viewport;
-    Vector3 vTouch;
+    Vector2 vTouch;
     //Assets
     private Texture txBG;
     private SprServer sprServer;
@@ -32,26 +33,28 @@ public class SctWaiter implements Screen {
     private GamMenu gamMenu;
     private ShapeRenderer sh;
     private ObjBar objBar;
-    private ObjTables arTables[] = new ObjTables[3];
+    private ObjTables objTable, arTables[] = new ObjTables[3];
     //Values
-    private float fWORLD_WIDTH, fWORLD_HEIGHT, fXG, fYG;
-    private boolean isTableClicked = false, bGstDrag;
+    private int nWORLD_WIDTH, nWORLD_HEIGHT;
+    private float fXG, fYG;
+    private boolean isTableClicked = false, bArrived = false;
 
     public SctWaiter(GamMenu _gammenu) {
         gamMenu = _gammenu;
 
         //game height and width
-        fWORLD_WIDTH = 1000;
-        fWORLD_HEIGHT = 500;
+        nWORLD_WIDTH = 1000;
+        nWORLD_HEIGHT = 500;
 
         //camera
         camera = new OrthographicCamera();
-        vTouch = new Vector3();
+        vTouch = new Vector2();
         viewport = new StretchViewport(1000, 500, camera);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport.apply();
         camera.setToOrtho(false);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
+        resize(nWORLD_WIDTH, nWORLD_HEIGHT);
 
         //textures
         txBG = new Texture("data/GameBG_img.png");
@@ -64,11 +67,13 @@ public class SctWaiter implements Screen {
 
         //table
         arTables[0] = new ObjTables(280, 80, "data/TABLE1_obj.png", "data/TABLE12_obj.png", viewport);
-        arTables[1] = new ObjTables(fWORLD_WIDTH / 2, 50, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
-        arTables[2] = new ObjTables(fWORLD_WIDTH - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
+        arTables[1] = new ObjTables(nWORLD_WIDTH / 2, 50, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
+        arTables[2] = new ObjTables(nWORLD_WIDTH - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
 
         //server
-        sprServer = new SprServer(fWORLD_WIDTH / 2, fWORLD_HEIGHT / 2); //850, 175
+        fXG = 850;
+        fYG = 175;
+        sprServer = new SprServer(fXG, fYG); //850, 175
 
         //Buttons
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
@@ -87,24 +92,18 @@ public class SctWaiter implements Screen {
         //set up
         camera.update();
         batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        batch.draw(txBG, 0, 0, fWORLD_WIDTH, fWORLD_HEIGHT);
         sh.begin(ShapeRenderer.ShapeType.Line);
+        batch.setProjectionMatrix(camera.combined);
+        batch.draw(txBG, 0, 0, nWORLD_WIDTH, nWORLD_HEIGHT);
+        Gdx.input.setInputProcessor(this);
         sh.setColor(0, 0, 0, 1);
 
-        //Matches touched coordinates and screen coordinates
-        if (Gdx.input.isTouched()) {
-            vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            viewport.unproject(vTouch);
-        }
-
         //drawing
-        updateTable();
+        sprServer.update(fXG, fYG, batch, false);
         btnHome.draw(batch);
-        batch.end();
+
         //Rectangle for Server
         sh.rect(sprServer.getX(), sprServer.getY(), sprServer.getWidth(), sprServer.getHeight());
-        sh.end();
 
         //if home button clicked. Goes back to home screen
         if (btnHome.justClicked()) {
@@ -114,42 +113,57 @@ public class SctWaiter implements Screen {
         //Checks if bar is clicked
         if (objBar.isTapped()) {
             System.out.println("Bar is touched");
-            fXG = objBar.rBar().x;
-            fYG = objBar.rBar().y;
-            sprServer.update(fXG,fYG, batch, bGstDrag);
+            fXG = objBar.rBar().x + 1;
+            fYG = objBar.rBar().y - 20;
+            sprServer.update(fXG,fYG, batch, false); //isCstDragged is true for testing
         }
+
+        //Checks if Table is Clicked
+        if (isTableClicked) {
+            System.out.println("X GOAL " +  fXG  + "Y GOAL " + fYG);
+            sprServer.update(fXG, fYG, batch, false);
+            bArrived = sprServer.arrived();
+        }
+        updateTable();
+        batch.end();
+        sh.end();
     }
 
     //Method runs through the array of tables
     private void updateTable() {
         for (int i = 0; i < 3; i++) {
-            arTables[i].draw(batch);
-            sh.rect(arTables[i].getX(), arTables[i].getY(), arTables[i].getWidth(), arTables[i].getHeight());
-
+            objTable = arTables[i]; //temp. table
+            objTable.draw(batch);
+            sh.rect(objTable.getX(),objTable.getY(),objTable.getWidth(),objTable.getHeight());
             // Checks if mouse is over table and clicked
-            if (isTableClicked) {
-                fXG = arTables[i].getX() + (arTables[i].getWidth()/2 - 40);
-                fYG = arTables[i].getY() + arTables[i].getHeight();
+            if (objTable.isTableClicked()) {
+
+                fXG = Math.round(arTables[i].getX() + (objTable.getWidth() / 2 - 40));
+                fYG = Math.round(arTables[i].getY() + objTable.getHeight());
+
                 isTableClicked = true;
+
             }
 
-            if (isTableClicked) {
-                sprServer.update(fXG, fYG, batch, bGstDrag);
+            //Debugging stuff
+            if (arTables[0].isTableClicked()) {
+                System.out.println("TABLE 11111111 WAS CLICKEDD");
             }
-
-
-//            //Debugging stuff
-//            if (arTables[0].isTableClicked()) {
-//                System.out.println("TABLE 11111111 WAS CLICKEDD");
-//            }
-//            if (arTables[1].isTableClicked()) {
-//                System.out.println("TABLE 22222222 WAS CLICKEDD");
-//            }
-//            if (arTables[2].isTableClicked()) {
-//                System.out.println("TABLE 33333333 WAS CLICKEDD");
-//            }
+            if (arTables[1].isTableClicked()) {
+                System.out.println("TABLE 22222222 WAS CLICKEDD");
+            }
+            if (arTables[2].isTableClicked()) {
+                System.out.println("TABLE 33333333 WAS CLICKEDD");
+            }
 
         }
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        viewport.unproject(vTouch);
+
+        return false;
     }
 
     @Override
@@ -178,4 +192,38 @@ public class SctWaiter implements Screen {
         txBG.dispose();
     }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
 }
