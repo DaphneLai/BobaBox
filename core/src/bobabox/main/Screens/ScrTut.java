@@ -3,10 +3,7 @@ package bobabox.main.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-
 import bobabox.main.GamMenu;
-
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,10 +13,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import bobabox.main.Objects.ObjButton;
 
-
+//Tutorial Screen
 public class ScrTut implements Screen, InputProcessor {
 
     GamMenu gamMenu;
@@ -30,9 +26,6 @@ public class ScrTut implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private StretchViewport viewport; //how it's seen
     private SpriteBatch batch;
-    private BitmapFont bfFontHeader, bfFontSubtitle, bfFontParagraph;
-    private Table table;
-    private Label lbHeader, lbParagraph1, lbHeader2, lbParagraph2;
     //Assets
     private Texture txtBg;
     private ObjButton btnStart, btnHome;

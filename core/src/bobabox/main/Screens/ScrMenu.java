@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import bobabox.main.Objects.ObjButton;
 
-
+//Menu Screen
 public class ScrMenu implements Screen, InputProcessor {
     GamMenu gamMenu;
 
@@ -140,8 +140,6 @@ public class ScrMenu implements Screen, InputProcessor {
         //Readjusts input coordinates (vTouch.x and vTouch.y are our new input coordinates)
         //Gdx.input.getX/Y >> vTouch.x/y
         viewport.unproject(vTouch);
-//        System.out.println("vTouchX: " + vTouch.x);
-//        System.out.println("vTouchY: " + vTouch.y);
 
         return true;
     }

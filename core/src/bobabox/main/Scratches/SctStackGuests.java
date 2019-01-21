@@ -19,6 +19,7 @@ import bobabox.main.Sprites.SprGuest;
 
 //NOT IN USE
 //Help from Grondin & Daph
+//Guests lining up
 public class SctStackGuests implements Screen {
     GamMenu gamMenu;
 
@@ -61,9 +62,6 @@ public class SctStackGuests implements Screen {
             arliGuests.add(new SprGuest("data/GUEST1_spr.png", viewport));
         }
 
-//        System.out.println("LIST:" + arliGuests);
-//        System.out.println("SIZE:" + arliGuests.size());
-
         sh = new ShapeRenderer();
 
     }
@@ -77,7 +75,6 @@ public class SctStackGuests implements Screen {
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         nTimer++;
-        //System.out.println("TIME:" + nTimer);
 
         //Setting input
         if (Gdx.input.isTouched()) {
@@ -105,7 +102,6 @@ public class SctStackGuests implements Screen {
                 nTimer = 0;
             }
         }
-       // System.out.println("nGST:" + nGst);
         batch.end();
         sh.end();
 
@@ -121,7 +117,6 @@ public class SctStackGuests implements Screen {
     //Runs all of the SprGuests' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            // System.out.println(n + " N");
             sprGst = arliGuests.get(n); //temporary Guest
             sprGst.draw(batch);
             sprGst.walkDown(nGst);

@@ -9,12 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import bobabox.main.Objects.ObjButton;
-
 import bobabox.main.GamMenu;
 
-
+//Game over screen
 public class ScrEnd implements Screen, InputProcessor {
 
     GamMenu gamMenu;

@@ -16,6 +16,7 @@ import org.omg.CORBA.VersionSpecHelper;
 import bobabox.main.GamMenu;
 
 //Thanks Joel https://github.com/brauj1894/Yoilith/blob/master/core/src/com/icsgame/objects/Button.java
+//Creates all the buttons
 
 public class ObjButton extends Sprite implements InputProcessor {
 

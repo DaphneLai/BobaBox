@@ -91,7 +91,6 @@ public class SprGuest extends Sprite {
             System.out.println(nTimer);
             setSize(0, 0);
             bCanDrag = false;
-            //  System.out.println("bSitting:" + bSitting);
         }
     }
 
@@ -131,33 +130,6 @@ public class SprGuest extends Sprite {
             fHx = objTable.getX() + objTable.getWidth() / 2 - 60;
             fHy = objTable.getY() + objTable.getHeight();
         }
-
-        //Ordering (isn't in use cause we're waiting for server code)
-        /*
-        if (nTimer == ??){
-            nStatus = 0;
-            nTimer = 0;
-            System.out.println("Ready to Order");
-        }
-        if (nStatus == 0 && sprServer is at Table){
-            nStatus = 1;
-            nTimer = 0;
-            System.out.println("Waiting for drinks");
-        }
-        if (nStatus == 1 && sprServer gives drinks){
-            nStatus = 2;
-            nTimer = 0;
-            System.out.println("drinkinggggg"):
-        } if (nStatus == 2 && nTimer == 300) {
-            nStatus = 3;
-            nTimer = 0;
-            System.out.println("DONE");
-        }
-        if (nStatus == 3 && sprServer is at table){
-            nStatus == 4;
-            leave();
-        }
-        */
 
         //Level of hearts
         if (!isGone) {

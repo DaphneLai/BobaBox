@@ -1,25 +1,23 @@
 package bobabox.main.Scratches;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprGuest;
 
 
+//NOT IN USE
+//Demonstrates the use of the guest
 public class SctGuests implements Screen {
     GamMenu gamMenu;
     private OrthographicCamera camera;
@@ -37,6 +35,7 @@ public class SctGuests implements Screen {
     public SctGuests(GamMenu _gammenu) {
         gamMenu = _gammenu;
 
+        //Logic
         camera = new OrthographicCamera();
         vTouch = new Vector3();
         viewport = new StretchViewport(1000, 500, camera);
@@ -45,6 +44,8 @@ public class SctGuests implements Screen {
         camera.setToOrtho(false);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0); //camera looks at the center of the screen
         batch = new SpriteBatch();
+
+        //Loads assets
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         objTable = new ObjTables(500, 250, "data/TABLE3_obj.png", "data/TABLE32_obj.png",viewport);
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
@@ -63,7 +64,6 @@ public class SctGuests implements Screen {
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         nTimer++;
-        //System.out.println("TIME:" + nTimer);
 
         //Setting input
         if (Gdx.input.isTouched()) {
@@ -75,6 +75,8 @@ public class SctGuests implements Screen {
         objTable.draw(batch);
         btnHome.update(batch);
         updateGuest(nGst, batch);
+
+        //Timer for the guests to enter
         if (isTFree) {
             if (nTimer % 300 == 0) {
                 if (nGst < 5) {
@@ -85,19 +87,18 @@ public class SctGuests implements Screen {
                 nTimer = 0;
             }
         }
-        // System.out.println("nGST:" + nGst);
+
         batch.end();
-
-
 
         //Buttons
         if (btnHome.justClicked()) {
             gamMenu.updateScreen(2);
         }
+
     }
+    //Runs through all the guests functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            // System.out.println(n + " N");
             sprGst = arliGuests.get(n); //temporary Guest
             sprGst.draw(batch);
             sprGst.walkDown(nGst);

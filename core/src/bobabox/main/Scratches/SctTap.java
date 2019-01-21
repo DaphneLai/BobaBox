@@ -2,7 +2,6 @@ package bobabox.main.Scratches;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 
 //https://www.youtube.com/watch?v=qlJUrcpQXo8
 //DOESN'T HAVE A BACK BUTTON
+//Demonstrates tapping on android
 
 public class SctTap implements Screen {
 
