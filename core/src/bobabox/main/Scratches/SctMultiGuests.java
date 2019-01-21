@@ -9,16 +9,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
 import bobabox.main.Sprites.SprCustomer;
 
-//NOT IN USE
+//Demonstrates multiple guests using arrays
 public class SctMultiGuests implements Screen, InputProcessor {
     private GamMenu gamMenu;
 
@@ -158,7 +156,6 @@ public class SctMultiGuests implements Screen, InputProcessor {
             sprCustomerS.updateStatus();
             sprCustomerS.hearts(objTable);
             nStatGst = arliGuestsSat.get(nTarget).updateStatus();
-            System.out.println("Status: " + nStatGst + " for " + z);
             if (nStatGst >= 6) {
                 isSitting = false;
             }
@@ -225,7 +222,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
         //not in use, please ignore all hard coding :D
         for (int t = 0; t <= 2; t++) {
             if (arTables[t].getBoundingRectangle().contains(vTouch)) {
-                System.out.println("TABLE " + t + " WAS CLICKED");
+                //Checks which table was being clicked
+             //   System.out.println("TABLE " + t + " WAS CLICKED");
             }
         }
 
