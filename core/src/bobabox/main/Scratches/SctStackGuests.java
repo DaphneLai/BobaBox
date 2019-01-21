@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjButton;
 import bobabox.main.Objects.ObjTables;
@@ -35,7 +37,7 @@ public class SctStackGuests implements Screen {
     private List<SprGuest> arliGuests;
     private ObjButton btnHome;
     private ShapeRenderer sh;
-    private float  fY, fH;
+    private float fY, fH;
 
 
     public SctStackGuests(GamMenu _gammenu) {
@@ -85,10 +87,10 @@ public class SctStackGuests implements Screen {
         batch.draw(txtBG, 0, 0);
         sh.begin(ShapeRenderer.ShapeType.Line);
         sh.setColor(0, 0, 0, 1);
-        sh.line(0,30,200,30);
-        sh.line(0,165,200,165);
-        sh.line(0,295,200,295);
-        sh.line(0,425,200,425);
+        sh.line(0, 30, 200, 30);
+        sh.line(0, 165, 200, 165);
+        sh.line(0, 295, 200, 295);
+        sh.line(0, 425, 200, 425);
         objTable.draw(batch);
         btnHome.update(batch);
         updateGuest(nGst, batch);
@@ -123,15 +125,6 @@ public class SctStackGuests implements Screen {
             sprGst.drag();
             sprGst.sittingDown(isSitting);
             sprGst.hearts(batch, objTable);
-
-            if (objTable.isAvb2(sprGst)) {
-                isSitting = false;
-                isTFree = true;
-            } else if (!objTable.isAvb2(sprGst)) {
-                isSitting = true;
-                isTFree = false;
-                sprGst.sittingDown(isSitting);
-            }
         }
     }
 

@@ -27,17 +27,20 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private SpriteBatch batch;
     private StretchViewport viewport;
     private Vector2 vTouch;
+
     //Assets
     private Texture txtBG;
     private ObjButton btnHome;
     private ObjTables arTables[] = new ObjTables[3], objTable;
-    private SprCustomer sprCustomer, sprCustSat;
+    private SprCustomer  sprCustomerS, sprCustMove, sprCustomerE;
+
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
-    private boolean isSitting, bCustSat = false;
-    private int nTimer = 0, nGst = 0, nTarget, nTable, nGoal;
+    private boolean isSitting, bCustSat = false, isCstDragged = false, isTableClicked = false;
+    private int nTimer = 0, nGst = 0, nTarget, nTable, nGoal, nStatGst, nGstQueueTracker, nGstsSize;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
+    private float fXG, fYG;
     private SprCustomer sprCst;
 
     public SctMultiGuests(GamMenu _gammenu) {
@@ -61,21 +64,21 @@ public class SctMultiGuests implements Screen, InputProcessor {
         arTables[0] = new ObjTables(280, 80, "data/TABLE1_obj.png", "data/TABLE12_obj.png", viewport);
         arTables[1] = new ObjTables(fWORLD_WIDTH / 2, 50, "data/TABLE2_obj.png", "data/TABLE22_obj.png", viewport);
         arTables[2] = new ObjTables(fWORLD_WIDTH - 280, 80, "data/TABLE3_obj.png", "data/TABLE32_obj.png", viewport);
+        fXG = 850;
+        fYG = 175;
 
+        //button
         txtBG = new Texture(Gdx.files.internal("data/Test_img.jpg"));
         btnHome = new ObjButton(900, 30, 260 / 2, 70 / 2, "data/HOME1_btn.png", "data/HOME2_btn.png", viewport);
 
         //guests
         arliGuests = new ArrayList<SprCustomer>();
         arliGuestsSat = new ArrayList<SprCustomer>();
-
         for (int i = 1; i <= 5; i++) {
             arliGuests.add(new SprCustomer("data/GUEST1_spr.png", batch));
         }
-
-        //    System.out.println("LIST:" + arliGuests);
-        //  System.out.println("SIZE:" + arliGuests.size());
         nGoal = 5;
+        nGstsSize = 5;
     }
 
     @Override
@@ -88,14 +91,16 @@ public class SctMultiGuests implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         nTimer++;
-//        System.out.println("TIME:" + nTimer);
 
         //Drawing
         batch.draw(txtBG, 0, 0);
         btnHome.update(batch);
-//        queue();
         updateTable();
         updateGuest(nGst, batch);
+        if (isCstDragged) {
+            sprCustMove.draw(batch);
+            sprCustMove.hearts(objTable);
+        }
         batch.end();
 
         //Buttons
@@ -110,48 +115,57 @@ public class SctMultiGuests implements Screen, InputProcessor {
             }
             nTimer = 0;
         }
-        /**/
+        
         if (arliGuests.get(nTarget).isLeaving()) {
             isSitting = false;
-//            arliGuestsSat.get(nTarget).sittingDown(isSitting);
-//            arliGuests.get(nTarget).sittingDown(isSitting);
         }
     }
 
     //Method runs through the array of tables
     private void updateTable() {
         for (int i = 0; i < 1; i++) {
-            objTable = arTables[i];
-            arTables[i].draw(batch);
+            objTable = arTables[i]; //temp. table
+            objTable.draw(batch);
+
+            // Checks if mouse is over table and clicked
+            if (objTable.isTableClicked()) {
+                ObjTables objTableServed;
+                int nTargetTble;
+                nTargetTble = i;
+                objTableServed = arTables[nTargetTble];
+
+                fXG = Math.round(arTables[i].getX() + (objTableServed.getWidth() / 2 - 40));
+                fYG = Math.round(arTables[i].getY() + objTableServed.getHeight());
+
+                isTableClicked = true;
+
+            }
+
         }
     }
 
     //Runs all of the SprCustomers' functions
     private void updateGuest(int nGst, SpriteBatch batch) {
         for (int n = 0; n < nGst; n++) {
-            sprCustomer = arliGuests.get(n); //temporary Guest
-            sprCustomer.draw(batch);
-            sprCustomer.updateStatus();
-            sprCustomer.entering(nGst, n, bCustSat);
-            sprCustomer.hearts(objTable);
+            sprCustomerE = arliGuests.get(n); //temporary Guest
+            sprCustomerE.draw(batch);
+            sprCustomerE.entering(nGst, n, bCustSat);
+            sprCustomerE.hearts(objTable);
         }
+
+        for (int z = 0; z < arliGuestsSat.size(); z++) {
+            sprCustomerS = arliGuestsSat.get(z); //temporary Customer 'S'at
+            sprCustomerS.updateStatus();
+            sprCustomerS.hearts(objTable);
+            nStatGst = arliGuestsSat.get(nTarget).updateStatus();
+            System.out.println("Status: " + nStatGst + " for " + z);
+            if (nStatGst >= 6) {
+                isSitting = false;
+            }
+        }
+
     }
 
-    //updates the SprCustomer's Queue
-//    private void queue() {
-//        if (isSitting) {
-//            arliGuestsSat.add(arliGuests.get(nTarget));
-//            sprCustSat = arliGuests.get(nTarget);
-//            if (sprCustSat.sittingDown(isSitting)) {
-//                arliGuests.remove(nTarget);
-//                nGoal = arliGuests.size();
-//                isSitting = false;
-//                for (int n = 0; n < nGoal; n++) {
-//                    bCustSat = true;
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public void dispose() {
@@ -174,43 +188,67 @@ public class SctMultiGuests implements Screen, InputProcessor {
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
         for (int n = 0; n < arliGuests.size(); n++) {
             sprCst = arliGuests.get(n); //temporary Guest
+
             if (sprCst.getBoundingRectangle().contains(vTouch)) {
                 nTarget = n;
+                isCstDragged = true;
+                sprCustMove = arliGuests.get(nTarget);
+                arliGuests.remove(sprCustMove);
+                nGst = nGst - 1;
+                nGstQueueTracker--;
             }
         }
+        nGstsSize = arliGuests.size();
 
-        return true;
+
+        return false;
 
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-        if (!isSitting) {
-            if (arTables[nTable].isAvb(isSitting)) {
-                if (arTables[nTable].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
-                    isSitting = true;
-                }
-//                arliGuests.get(nTarget).sittingDown(isSitting);
+        //When a customer is sat at an available table
+        if (isCstDragged) {
+            if (sprCustMove.getBoundingRectangle().overlaps(arTables[nTable].getBoundingRectangle())) {
+                isSitting = true;
+                arliGuestsSat.add(sprCustMove);
+                arTables[nTable].isAvb(isSitting); //<< should now be !isAvb
+
             }
         }
 
+        for (int n = 0; n < nGstsSize; n++) {
+            bCustSat = true;
+        }
 
+        //not in use, please ignore all hard coding :D
+        for (int t = 0; t <= 2; t++) {
+            if (arTables[t].getBoundingRectangle().contains(vTouch)) {
+                System.out.println("TABLE " + t + " WAS CLICKED");
+            }
+        }
+
+        isCstDragged = false;
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if (arliGuests.get(nTarget).getBoundingRectangle().contains(vTouch)) {
-            arliGuests.get(nTarget).drag(vTouch, viewport);
+        if (sprCustMove.getBoundingRectangle().contains(vTouch)) {
+            sprCustMove.drag(vTouch, viewport);
+            isCstDragged = true;
+        } else {
+            isCstDragged = false;
         }
-        for (int i = 0; i < 1; i++) {
-            if (arTables[i].getBoundingRectangle().overlaps(arliGuests.get(nTarget).getBoundingRectangle())) {
+
+        for (int i = 0; i < 3; i++) {
+            if (sprCustMove.getBoundingRectangle().overlaps(arTables[i].getBoundingRectangle())) {
                 nTable = i;
             }
         }
 
-        return true;
+        return false;
     }
 
 
