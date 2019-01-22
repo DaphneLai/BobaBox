@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 import bobabox.main.GamMenu;
 import bobabox.main.Objects.ObjBar;
 import bobabox.main.Objects.ObjButton;
@@ -33,9 +34,9 @@ public class SctWaiter implements Screen, InputProcessor {
     private GamMenu gamMenu;
     private ShapeRenderer sh;
     private ObjBar objBar;
-    private ObjTables objTable, arTables[] = new ObjTables[3];
+    private ObjTables objTable, arTables[] = new ObjTables[3], objTableServed;
     //Values
-    private int nWORLD_WIDTH, nWORLD_HEIGHT;
+    private int nWORLD_WIDTH, nWORLD_HEIGHT, nTargetTble;
     private float fXG, fYG;
     private boolean isTableClicked = false, bArrived = false;
 
@@ -115,15 +116,16 @@ public class SctWaiter implements Screen, InputProcessor {
             System.out.println("Bar is touched");
             fXG = objBar.rBar().x + 1;
             fYG = objBar.rBar().y - 20;
-            sprServer.update(fXG,fYG, batch, false); //isCstDragged is true for testing
+            sprServer.update(fXG, fYG, batch, false); //isCstDragged is false for testing
         }
 
         //Checks if Table is Clicked
         if (isTableClicked) {
-            System.out.println("X GOAL " +  fXG  + "Y GOAL " + fYG);
+            System.out.println("X GOAL " + fXG + "Y GOAL " + fYG);
             sprServer.update(fXG, fYG, batch, false);
             bArrived = sprServer.arrived();
         }
+
         updateTable();
         batch.end();
         sh.end();
@@ -134,34 +136,48 @@ public class SctWaiter implements Screen, InputProcessor {
         for (int i = 0; i < 3; i++) {
             objTable = arTables[i]; //temp. table
             objTable.draw(batch);
-            sh.rect(objTable.getX(),objTable.getY(),objTable.getWidth(),objTable.getHeight());
+            sh.rect(objTable.getX(), objTable.getY(), objTable.getWidth(), objTable.getHeight());
             // Checks if mouse is over table and clicked
-            if (objTable.isTableClicked()) {
-
-                fXG = Math.round(arTables[i].getX() + (objTable.getWidth() / 2 - 40));
-                fYG = Math.round(arTables[i].getY() + objTable.getHeight());
-
-                isTableClicked = true;
-
-            }
-
-            //Debugging stuff
-            if (arTables[0].isTableClicked()) {
-                System.out.println("TABLE 11111111 WAS CLICKEDD");
-            }
-            if (arTables[1].isTableClicked()) {
-                System.out.println("TABLE 22222222 WAS CLICKEDD");
-            }
-            if (arTables[2].isTableClicked()) {
-                System.out.println("TABLE 33333333 WAS CLICKEDD");
-            }
+//            if (objTable.isTableClicked()) {
+//
+//                fXG = Math.round(arTables[i].getX() + (objTable.getWidth() / 2 - 40));
+//                fYG = Math.round(arTables[i].getY() + objTable.getHeight());
+//
+//                isTableClicked = true;
+//
+//            }
+//
+//            //Debugging stuff
+//            if (arTables[0].isTableClicked()) {
+//                System.out.println("TABLE 11111111 WAS CLICKEDD");
+//            }
+//            if (arTables[1].isTableClicked()) {
+//                System.out.println("TABLE 22222222 WAS CLICKEDD");
+//            }
+//            if (arTables[2].isTableClicked()) {
+//                System.out.println("TABLE 33333333 WAS CLICKEDD");
+//            }
 
         }
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        viewport.unproject(vTouch);
+        viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
+//        System.out.println("tappp");
+        for (int i = 0; i < 3; i++) {
+            objTable = arTables[i]; //temp. table
+            if (objTable.getBoundingRectangle().contains(vTouch)) {
+                nTargetTble = i;
+                objTableServed = arTables[nTargetTble];
+
+                fXG = Math.round(objTableServed.getX() + (objTableServed.getWidth() / 2 - 40));
+                fYG = Math.round(objTableServed.getY() + objTableServed.getHeight());
+                System.out.println("TABLE " + i + " WAS CLICKED");
+
+                isTableClicked = true;
+            }
+        }
 
         return false;
     }

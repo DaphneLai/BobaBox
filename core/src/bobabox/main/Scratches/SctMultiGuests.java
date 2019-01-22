@@ -40,6 +40,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     private List<SprCustomer> arliGuestsSat;
     private float fXG, fYG;
     private SprCustomer sprCst;
+    int nTargetTble;
 
     public SctMultiGuests(GamMenu _gammenu) {
         gamMenu = _gammenu;
@@ -124,21 +125,10 @@ public class SctMultiGuests implements Screen, InputProcessor {
         for (int i = 0; i < 1; i++) {
             objTable = arTables[i]; //temp. table
             objTable.draw(batch);
-
-            // Checks if mouse is over table and clicked
-            if (objTable.isTableClicked()) {
-                ObjTables objTableServed;
-                int nTargetTble;
+            if (isTableClicked){
                 nTargetTble = i;
-                objTableServed = arTables[nTargetTble];
-
-                fXG = Math.round(arTables[i].getX() + (objTableServed.getWidth() / 2 - 40));
-                fYG = Math.round(arTables[i].getY() + objTableServed.getHeight());
-
-                isTableClicked = true;
 
             }
-
         }
     }
 
@@ -197,7 +187,18 @@ public class SctMultiGuests implements Screen, InputProcessor {
         }
         nGstsSize = arliGuests.size();
 
+// Checks if mouse is over table and clicked
+        if (objTable.getBoundingRectangle().contains(vTouch)) {
+            ObjTables objTableServed;
 
+            objTableServed = arTables[nTargetTble];
+
+            fXG = Math.round(objTableServed.getX() + (objTableServed.getWidth() / 2 - 40));
+            fYG = Math.round(objTableServed.getY() + objTableServed.getHeight());
+
+            isTableClicked = true;
+
+        }
         return false;
 
     }
@@ -210,7 +211,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
             if (sprCustMove.getBoundingRectangle().overlaps(arTables[nTable].getBoundingRectangle())) {
                 isSitting = true;
                 arliGuestsSat.add(sprCustMove);
-                arTables[nTable].isAvb(isSitting); //<< should now be !isAvb
+                arTables[nTable].isAvb(isSitting, sprCustMove); //<< should now be !isAvb
 
             }
         }

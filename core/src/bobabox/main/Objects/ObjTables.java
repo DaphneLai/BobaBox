@@ -17,6 +17,7 @@ public class ObjTables extends Sprite {
     private Vector3 vTouch;
     private StretchViewport viewport;
     private Texture nTxt1, nTxt2;
+    private SprCustomer sprCustomer;
     private boolean bSitting = false;
 
     public ObjTables(float _fX, float _fY, String _sOpenT, String _sSittingT, StretchViewport _viewport) {
@@ -37,8 +38,10 @@ public class ObjTables extends Sprite {
         setTexture(nTxt1);
     }
 
-    public boolean isAvb(boolean _isSitting) {
+    public boolean isAvb(boolean _isSitting, SprCustomer _sprCustomer) {
         this.bSitting = _isSitting;
+        this.sprCustomer = _sprCustomer;
+
         if (bSitting) {
             setTexture(nTxt2);
             return false;
@@ -49,6 +52,7 @@ public class ObjTables extends Sprite {
     }
 
 
+    //this is used in scratches, not in ScrGame
     public boolean isAvb2(SprGuest sprGuest) { // Checks if the spr is over the table
 
         fGY = sprGuest.getY();
@@ -69,17 +73,22 @@ public class ObjTables extends Sprite {
         return true;
     }
 
-    public boolean isTableClicked() {
-        vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        viewport.unproject(vTouch);
-        if (vTouch.x > fX && vTouch.x < fX + fW) {
-            if (vTouch.y > fY && vTouch.y < fY + fH) {
-                if (Gdx.input.justTouched()) {
-                    return true;
-                }
-            }
-        }
-        return false;
+//    public boolean isTableClicked() {
+//        vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+//        viewport.unproject(vTouch);
+//        if (vTouch.x > fX && vTouch.x < fX + fW) {
+//            if (vTouch.y > fY && vTouch.y < fY + fH) {
+//                if (Gdx.input.justTouched()) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+
+    //gives the customer that's seated to the server
+    public SprCustomer giveCustomer(){
+        return sprCustomer;
     }
 }
 

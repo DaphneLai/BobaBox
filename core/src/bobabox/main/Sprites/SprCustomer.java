@@ -29,8 +29,8 @@ public class SprCustomer extends Sprite {
     private float fHx, fHy, fHw, fHh; //Hearts
     private boolean bCanDrag = false, isGone = false, bCustSat = false;
     //booleans related to server
-    private boolean bHasOrder = false, bHasBoba = false, bHasPaid = false;
-    private Texture txtarHearts[] = new Texture[4], txtExclaim;
+    private boolean bServerHasOrder, bSvrHasBoba, bHasPaid;
+    private Texture txtarHearts[] = new Texture[4], txtExclaim, txtDrink;
     private ObjTables objTable;
     private int nTimer = 1, nHearts = 0, nStatus, nDir;
 
@@ -54,7 +54,7 @@ public class SprCustomer extends Sprite {
         txtarHearts[1] = new Texture("data/Hearts-02.png");
         txtarHearts[2] = new Texture("data/Hearts-03.png");
         txtarHearts[3] = new Texture("data/Hearts-04.png");
-
+        txtDrink = new Texture("data/BubbleTea_img.png");
         txtExclaim = new Texture("data/Exclamation_img.png");
 
         this.batch = _batch;
@@ -63,70 +63,79 @@ public class SprCustomer extends Sprite {
         nStatus = 0;
     }
 
+    //takes booleans between the server and guest
+    //there's definitely a more convenient way to go about with this, however we're on a time crunch and I 
+    //wish to get the concept to work
+    public void serviceValues(boolean bServerHasOrder, boolean bSvrHasBoba, boolean bHasPaid) {
+        this.bServerHasOrder = bServerHasOrder;
+        this.bSvrHasBoba = bSvrHasBoba;
+        this.bHasPaid = bHasPaid;
+    }
+
     //is only called once seated
     public int updateStatus() {
         directions();
         System.out.println("The Timer: " + nTimer);
+        System.out.println("size of guest: " + fW + " " + fH);
 
-        if(nStatus >= 0 && nStatus <= 5) {
-            setSize(0, 0);
+        if (nStatus >= 0 && nStatus <= 5) {
             bCanDrag = false;
         }
 
-        if (nStatus == 0) {
-            System.out.println("STATUS: Deciding order");
+        if (nStatus != 3) {
             nTimer++;
+        } else {
+            nTimer = 0;
+        }
+
+        if (nStatus == 0) {
+//            System.out.println("STATUS: Deciding order");
             if (nTimer >= 240) {
                 nStatus = 1;
             }
 
         } else if (nStatus == 1) {
-            System.out.println("STATUS: Ready to order");
-            nTimer++;
-            bHasOrder = true;
+//            System.out.println("STATUS: Ready to order");
             batch.draw(txtExclaim, fX + fW / 2, fY + fH, 50, 60);
-            if (!bHasOrder) {
+            if (bServerHasOrder) {
                 nStatus = 2;
             }
+
         } else if (nStatus == 2) {
-            System.out.println("STATUS: Waiting for food");
-            nTimer++;
-            if (bHasBoba) {
+//            System.out.println("STATUS: Waiting for food");
+            if (!bSvrHasBoba && !bServerHasOrder) {
                 nStatus = 3;
-                nTimer = 0;
             }
-            //bHasOrder = false;
 
         } else if (nStatus == 3) {
-            System.out.println("STATUS: Eating, nom nom nom");
+//            System.out.println("STATUS: Eating, nom nom nom");
             nTimer++;
+            batch.draw(txtDrink, objTable.getX() / 2, objTable.getY() / 3, 50, 50);
+
             if (nTimer >= 360) {
-                bHasBoba = false;
                 bHasPaid = false;
                 nStatus = 4;
             }
-            //bHasBoba = true
 
         } else if (nStatus == 4) {
-            nTimer++;
-            System.out.println("STATUS: Wants to pay");
+//            System.out.println("STATUS: Wants to pay");
             batch.draw(txtExclaim, fX + fW / 2, fY + fH, 50, 60);
             if (bHasPaid) {
                 nStatus = 5;
             }
 
         } else if (nStatus == 5) {
-            System.out.println("paying");
+//            System.out.println("paying");
             if (nTimer <= 120) {
                 nStatus = 6;
                 bHasPaid = true;
             }
         } else if (nStatus == 6) {
-            System.out.println("STATUS:leaving");
+//            System.out.println("STATUS:leaving");
             leave();
 
         } else if (nStatus == 7) {
-            System.out.println("STATUS: This is horrible service!");
+//            System.out.println("STATUS: This is horrible service!");
             leave();
             isLeaving();
         }
@@ -171,6 +180,7 @@ public class SprCustomer extends Sprite {
         }
 //        System.out.println("Goal for: " + nGst + " is " + fGoal);
 //        System.out.println("The Y for: " + nGst + " is " + fY);
+
         if (fY <= fGoal) {
             nDir = 4;
             nStatus = 1;
@@ -181,12 +191,12 @@ public class SprCustomer extends Sprite {
 
     //Active when the guest is dragged
     public void drag(Vector2 vTouch, StretchViewport viewport) {
-            nHearts = 0;
-            viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
-            fX = vTouch.x - 50;
-            fY = vTouch.y - 60;
-            setX(fX);
-            setY(fY);
+        nHearts = 0;
+        viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
+        fX = vTouch.x - 50;
+        fY = vTouch.y - 60;
+        setX(fX);
+        setY(fY);
     }
 
     //Update hearts
@@ -204,7 +214,7 @@ public class SprCustomer extends Sprite {
                 fHy = objTable.getY();
             }
         }
-        if ((nTimer % 300 == 0) && nStatus >= 1) {
+        if ((nTimer % 360 == 0) && nStatus != 0 && nStatus != 3) {
             if (nHearts < 3) {
                 nHearts++;
             }
@@ -239,15 +249,12 @@ public class SprCustomer extends Sprite {
 
     //instructs the customer to leave through the door
     private void leave() {
-        setSize(80, 100);
-//        bSitting = false;
         directions();
         nDir = 3;
         if (getX() > 75 && getX() < 85) {
             nDir = 0;
             if (getY() < 335 && getY() > 325) {
                 nDir = 4;
-                setSize(fW, fH);
                 isGone = true;
             }
         }

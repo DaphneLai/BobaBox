@@ -13,17 +13,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.List;
 
 import bobabox.main.Objects.ObjBar;
+import bobabox.main.Objects.ObjTables;
 
 public class SprServer extends Sprite {
 
     private float fX, fY, fW, fH, fXG, fYG;//Server X, Y, W, H
-    private int nDir = 4, nTimer = 0;
+    private int nDir = 4, nTimer = 0, nStatCst;
     private Texture txtSheet, txtServer, txtDrink;
     private TextureRegion[] traniFrames;
     private TextureRegion[][] trTmpFrames;
     private Animation[] araniServer;
     private float fElapsedTime, fDx[], fDy[];
-    private boolean bHasDrink = false, bHasOrder = false;
+    private boolean bHasDrink = false, bHasOrder = false, bHasPaid = false;
+    private SprCustomer sprCustomer;
     // nDir: 0 = North, 1 = East, 2 = South, 3 = West, 4 = stop
 
     public SprServer(float _fX, float _fY) {
@@ -33,8 +35,8 @@ public class SprServer extends Sprite {
         fY = _fY;
         fW = 80;
         fH = 100;
-        fDx = new float[]{0, 1, 0, -1, 0};
-        fDy = new float[]{1, 0, -1, 0, 0};
+        fDx = new float[]{0, 2, 0, -2, 0};
+        fDy = new float[]{2, 0, -2, 0, 0};
 
         setFlip(false, false);
 
@@ -63,9 +65,9 @@ public class SprServer extends Sprite {
         } else {
             nDir = 4;
         }
-            if (nDir < 4) {
-                batch.draw((TextureRegion) araniServer[nDir].getKeyFrame(fElapsedTime, true), fX, fY, fW - 10, fH);
-            }
+        if (nDir < 4) {
+            batch.draw((TextureRegion) araniServer[nDir].getKeyFrame(fElapsedTime, true), fX, fY, fW - 10, fH);
+        }
 
 
         if (nDir == 4) {
@@ -78,21 +80,24 @@ public class SprServer extends Sprite {
     // Makes server move to table coordinates
     public void update(float fXG, float fYG, SpriteBatch batch, boolean isCstDragged) {
         fElapsedTime += Gdx.graphics.getDeltaTime();//make sure to stop this timer when the game pauses
-            directions(batch, isCstDragged);
-            this.fXG = fXG; //Goal co-ordinates
-            this.fYG = fYG;
+        directions(batch, isCstDragged);
+        this.fXG = fXG; //Goal co-ordinates
+        this.fYG = fYG - 1;
+//        System.out.println("FXG: AND FYG: " + fXG + " + " + this.fYG);
+//        System.out.println("FX: AND FY: " + fX + " + " + fY);
+        //        System.out.println("DIRECTION: " + nDir);
 
         //North
-        if (fY <= fYG - 1) {
+        if (fY <= fYG - 2) {
             nDir = 0;
         } //East
-        else if (fX <= fXG - 1) {
+        else if (fX <= fXG - 2) {
             nDir = 1;
         } //South
-        else if (fY >= fYG + 1) {
+        else if (fY >= fYG + 1) { //due to how the middle table is located, the South condition is offset by 1
             nDir = 2;
         } //West
-        else if (fX >= fXG + 1) {
+        else if (fX >= fXG + 2) {
             nDir = 3;
         } else {
             nDir = 4;
@@ -102,21 +107,31 @@ public class SprServer extends Sprite {
     //server has arrived to table/bar
     public boolean arrived() {
         if (fY == fYG && fX == fXG && nDir == 4) {
-//            System.out.println("HAS ARRIVED AT THE GOAL LOCATION MUAHAHHAHAHAHAH");
+//            System.out.println("HAS ARRIVED AT THE GOAL LOCATION");
             return true;
         } else {
             return false;
         }
     }
 
-    public void carryDrink(SpriteBatch batch, boolean bHasOrder, int nClickedBar) {
-        this.bHasOrder = bHasOrder;
+    public void service(SpriteBatch batch, boolean _bHasOrder, int nClickedBar, ObjTables objTable) {
+        this.bHasOrder = _bHasOrder; //for getting drink from bar
+        sprCustomer = objTable.giveCustomer();
+        this.nStatCst = sprCustomer.updateStatus();
 
-        if (bHasOrder && nClickedBar == 1) {
-            if (arrived()) {
-                nTimer++;
+        //server can take order from customer
+        if (nStatCst == 1) {
+            if (arrived() && nClickedBar == 0) {
+                bHasOrder = true;
+                sprCustomer.serviceValues(bHasOrder, bHasDrink, bHasPaid);
+            }
+            if (bHasOrder && nClickedBar == 1) {
+                if (arrived()) {
+                    nTimer++;
+                }
             }
         }
+
 
         if (nTimer >= 120) {
             batch.draw(txtDrink, 300 + fW, 350, 50, 50);
@@ -124,11 +139,15 @@ public class SprServer extends Sprite {
                 bHasDrink = true;
             }
         }
+
         if (bHasDrink) {
-            System.out.println("HAS DRINK");
+//            System.out.println("HAS DRINK");
             nTimer = 0;
             batch.draw(txtDrink, fX, fY + 10, 50, 50);
+        }
 
+        if (arrived() && bHasDrink) {
+            bHasDrink = false;
         }
     }
 }
