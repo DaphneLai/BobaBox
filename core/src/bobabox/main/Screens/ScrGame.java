@@ -29,7 +29,7 @@ public class ScrGame implements Screen, InputProcessor {
     //Values
     private Vector2 vTouch;
     private boolean bHasOrder, isCstDragged = false; //boolean for server
-    private boolean isTableClicked = false, isSitting, bCustSat = false; //boolean for guests
+    private boolean isTableClicked = false, isSitting, bCustSat = false, bTempHere = false; //boolean for guests
     private int nW, nH, nGameTimer = 60, nTable; //int for game
     private int nFPS, nStatGst, nClickedBar = 0, nGstQueueTracker; //int for server
     private int nTimer = 0, nGst = 0, nTarget, nGstsSize; //int for guests
@@ -90,7 +90,7 @@ public class ScrGame implements Screen, InputProcessor {
         }
 
         //server
-         }
+    }
 
     @Override
     public void render(float delta) {
@@ -135,7 +135,7 @@ public class ScrGame implements Screen, InputProcessor {
             if (!objTableServed.isAvb(isSitting, objTableServed.giveCstI())) {
                 sprServer.service(batch, nClickedBar, arliGuestsSat.get(objTableServed.giveCstI()));
                 nStatGst = arliGuestsSat.get(objTableServed.giveCstI()).updateStatus();
-                System.out.println("Status: " + nStatGst + " for SprCustomer:" + objTableServed.giveCstI() );
+                System.out.println("Status: " + nStatGst + " for SprCustomer:" + objTableServed.giveCstI());
 
             }
         }
@@ -143,7 +143,13 @@ public class ScrGame implements Screen, InputProcessor {
         updateTable();
         updateGuest(nGst, batch);
 
-        if (isCstDragged) {
+      /* if (isCstDragged) {
+            sprCustMove.draw(batch);
+            sprCustMove.hearts(objTable);
+
+        }*/
+
+        if (bTempHere) {
             sprCustMove.draw(batch);
             sprCustMove.hearts(objTable);
         }
@@ -167,7 +173,7 @@ public class ScrGame implements Screen, InputProcessor {
         //ObjButton
         checkButtons();
         if (btnPause.isMousedOver() && Gdx.input.isTouched()) {
-           // System.out.println("Pause");
+            // System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
 
@@ -194,9 +200,9 @@ public class ScrGame implements Screen, InputProcessor {
             sprCustomerS.updateStatus();
             sprCustomerS.hearts(objTable);
 
-                if (nStatGst >= 6) {
-                    isSitting = false;
-                }
+            if (nStatGst >= 6) {
+                isSitting = false;
+            }
         }
     }
 
@@ -255,16 +261,22 @@ public class ScrGame implements Screen, InputProcessor {
         }
 
         //for Customers
-        for (int n = 0; n < arliGuests.size(); n++) {
-            sprCst = arliGuests.get(n); //temporary Guest
+        // ** bTempHere checks if a temporary guest is present.
+        // ** Prevents dragging of next customer in line
 
-            if (sprCst.getBoundingRectangle().contains(vTouch)) {
-                nTarget = n;
-                isCstDragged = true;
-                sprCustMove = arliGuests.get(nTarget);
-                arliGuests.remove(sprCustMove);
-                nGst = nGst - 1;
-                nGstQueueTracker--;
+        if(!bTempHere) {
+            for (int n = 0; n < arliGuests.size(); n++) {
+                sprCst = arliGuests.get(n); //temporary Guest
+
+                if (sprCst.getBoundingRectangle().contains(vTouch)) {
+                    nTarget = n;
+                    isCstDragged = true;
+                    sprCustMove = arliGuests.get(nTarget);
+                    bTempHere = true;
+                    arliGuests.remove(sprCustMove);
+                    nGst = nGst - 1;
+                    nGstQueueTracker--;
+                }
             }
         }
         nGstsSize = arliGuests.size();
@@ -282,6 +294,7 @@ public class ScrGame implements Screen, InputProcessor {
                 isSitting = true;
                 arTables[nTable].isAvb(isSitting, arliGuestsSat.size()); //sets table to unavailable and gives table the customer
                 arliGuestsSat.add(sprCustMove);
+                bTempHere = false;
             }
         }
 

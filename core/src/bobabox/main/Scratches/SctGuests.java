@@ -17,7 +17,7 @@ import bobabox.main.Sprites.SprGuest;
 
 
 //NOT IN USE
-//Demonstrates the use of the guest
+//Demonstrates the use of the guest and uses old SprGuest class
 public class SctGuests implements Screen {
     GamMenu gamMenu;
     private OrthographicCamera camera;

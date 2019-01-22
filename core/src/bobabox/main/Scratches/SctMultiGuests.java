@@ -35,7 +35,7 @@ public class SctMultiGuests implements Screen, InputProcessor {
     //Values
     private float fWORLD_WIDTH, fWORLD_HEIGHT;
     private boolean isSitting, bCustSat = false, isCstDragged = false, isTableClicked = false;
-    private int nTimer = 0, nGst = 0, nTarget, nTable, nGoal, nStatGst, nGstQueueTracker, nGstsSize;
+    private int nTimer = 0, nGst = 0, nTarget, nTable, nStatGst, nGstQueueTracker, nGstsSize;
     private List<SprCustomer> arliGuests;
     private List<SprCustomer> arliGuestsSat;
     private float fXG, fYG;
@@ -76,13 +76,11 @@ public class SctMultiGuests implements Screen, InputProcessor {
         for (int i = 1; i <= 5; i++) {
             arliGuests.add(new SprCustomer("data/GUEST1_spr.png", batch));
         }
-        nGoal = 5;
         nGstsSize = 5;
     }
 
     @Override
     public void render(float delta) {
-
         //set up
         camera.update();
         batch.begin();
@@ -109,15 +107,15 @@ public class SctMultiGuests implements Screen, InputProcessor {
 
         //Timer for guests to enter
         if (nTimer % 300 == 0) {
-            if (nGst < nGoal) {
+            if (nGst < nGstsSize) {
                 nGst++;
             }
             nTimer = 0;
         }
-        
-        if (arliGuests.get(nTarget).isLeaving()) {
+
+     /*   if (arliGuests.get(nTarget).isLeaving()) {
             isSitting = false;
-        }
+        }*/
     }
 
     //Method runs through the array of tables
