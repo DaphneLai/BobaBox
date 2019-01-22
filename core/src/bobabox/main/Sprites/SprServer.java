@@ -147,6 +147,9 @@ public class SprServer extends Sprite {
 //            System.out.println("HAS DRINK");
             nTimer = 0;
             batch.draw(txtDrink, fX, fY + 10, 50, 50);
+            if(arrived()){
+                bHasDrink = false;
+            }
         }
 
         if (arrived() && bHasDrink) {

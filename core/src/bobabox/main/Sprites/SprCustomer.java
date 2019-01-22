@@ -72,6 +72,8 @@ public class SprCustomer extends Sprite {
         this.bHasPaid = bHasPaid;
     }
 
+    public int getStatus() { return nStatus; }
+
     //is only called once seated
     public int updateStatus() {
         directions();
@@ -100,7 +102,7 @@ public class SprCustomer extends Sprite {
             }
 
         } else if (nStatus == 3) {
-//            System.out.println("STATUS: Eating, nom nom nom");
+            System.out.println("STATUS: Eating, nom nom nom");
             batch.draw(txtDrink, objTable.getX() / 2, objTable.getY() / 3, 50, 50);
 
             if (nTimer >= 360) {
@@ -183,6 +185,7 @@ public class SprCustomer extends Sprite {
     //Active when the guest is dragged
     public void drag(Vector2 vTouch, StretchViewport viewport) {
         nHearts = 0;
+//        System.out.println("DRAGGING AFJDIAOJFHWFDAFCFHGJBKJA");
         viewport.unproject(vTouch.set(Gdx.input.getX(), Gdx.input.getY()));
         fX = vTouch.x - 50;
         fY = vTouch.y - 60;
