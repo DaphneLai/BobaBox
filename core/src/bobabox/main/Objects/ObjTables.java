@@ -17,7 +17,7 @@ public class ObjTables extends Sprite {
     private Vector3 vTouch;
     private StretchViewport viewport;
     private Texture nTxt1, nTxt2;
-    private SprCustomer sprCustomer;
+    private int nCustIndex ;
     private boolean bSitting = false;
 
     public ObjTables(float _fX, float _fY, String _sOpenT, String _sSittingT, StretchViewport _viewport) {
@@ -38,10 +38,9 @@ public class ObjTables extends Sprite {
         setTexture(nTxt1);
     }
 
-    public boolean isAvb(boolean _isSitting, SprCustomer _sprCustomer) {
-        this.bSitting = _isSitting;
-        this.sprCustomer = _sprCustomer;
-
+    public boolean isAvb(boolean _isSitting, int _nCustIndex) {
+        bSitting = _isSitting;
+        nCustIndex = _nCustIndex;
         if (bSitting) {
             setTexture(nTxt2);
             return false;
@@ -73,22 +72,9 @@ public class ObjTables extends Sprite {
         return true;
     }
 
-//    public boolean isTableClicked() {
-//        vTouch = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-//        viewport.unproject(vTouch);
-//        if (vTouch.x > fX && vTouch.x < fX + fW) {
-//            if (vTouch.y > fY && vTouch.y < fY + fH) {
-//                if (Gdx.input.justTouched()) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-
-    //gives the customer that's seated to the server
-    public SprCustomer giveCustomer(){
-        return sprCustomer;
+    //gives the customer's index withing the array to the server
+    public int giveCstI(){
+        return nCustIndex;
     }
 }
 

@@ -108,8 +108,8 @@ public class ScrEnd implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         viewport.unproject(vTouch.set(screenX, (screenY * (-1) + nH), 0));
-        System.out.println("x: " + screenX);
-        System.out.println("y: " + (screenY * -1 + 500));
+//        System.out.println("x: " + screenX);
+//        System.out.println("y: " + (screenY * -1 + 500));
 
         return false;
     }

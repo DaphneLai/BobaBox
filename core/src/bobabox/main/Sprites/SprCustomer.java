@@ -75,18 +75,10 @@ public class SprCustomer extends Sprite {
     //is only called once seated
     public int updateStatus() {
         directions();
-        System.out.println("The Timer: " + nTimer);
-        System.out.println("size of guest: " + fW + " " + fH);
+        bCanDrag = false;
 
-        if (nStatus >= 0 && nStatus <= 5) {
-            bCanDrag = false;
-        }
+        nTimer++;
 
-        if (nStatus != 3) {
-            nTimer++;
-        } else {
-            nTimer = 0;
-        }
 
         if (nStatus == 0) {
 //            System.out.println("STATUS: Deciding order");
@@ -109,7 +101,6 @@ public class SprCustomer extends Sprite {
 
         } else if (nStatus == 3) {
 //            System.out.println("STATUS: Eating, nom nom nom");
-            nTimer++;
             batch.draw(txtDrink, objTable.getX() / 2, objTable.getY() / 3, 50, 50);
 
             if (nTimer >= 360) {

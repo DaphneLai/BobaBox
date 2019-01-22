@@ -83,9 +83,10 @@ public class SprServer extends Sprite {
         directions(batch, isCstDragged);
         this.fXG = fXG; //Goal co-ordinates
         this.fYG = fYG - 1;
+
 //        System.out.println("FXG: AND FYG: " + fXG + " + " + this.fYG);
 //        System.out.println("FX: AND FY: " + fX + " + " + fY);
-        //        System.out.println("DIRECTION: " + nDir);
+//        System.out.println("DIRECTION: " + nDir);
 
         //North
         if (fY <= fYG - 2) {
@@ -114,10 +115,9 @@ public class SprServer extends Sprite {
         }
     }
 
-    public void service(SpriteBatch batch, boolean _bHasOrder, int nClickedBar, ObjTables objTable) {
-        this.bHasOrder = _bHasOrder; //for getting drink from bar
-        sprCustomer = objTable.giveCustomer();
-        this.nStatCst = sprCustomer.updateStatus();
+    public void service(SpriteBatch batch, int nClickedBar, SprCustomer _sprCustomer) {
+        sprCustomer = _sprCustomer;
+        nStatCst = sprCustomer.updateStatus();
 
         //server can take order from customer
         if (nStatCst == 1) {
@@ -125,20 +125,23 @@ public class SprServer extends Sprite {
                 bHasOrder = true;
                 sprCustomer.serviceValues(bHasOrder, bHasDrink, bHasPaid);
             }
+        }
+
+        if(nStatCst == 2) {
+//            System.out.println("bHasOrder: " + bHasOrder);
+//            System.out.println("nClicked b ar :" + nClickedBar);
             if (bHasOrder && nClickedBar == 1) {
-                if (arrived()) {
-                    nTimer++;
+                System.out.println("THE SERVER TIMER: " + nTimer);
+                nTimer++;
+            }
+            if (nTimer >= 120) {
+                batch.draw(txtDrink, 300 + fW, 350, 50, 50);
+                if (nClickedBar >= 2) {
+                    bHasDrink = true;
                 }
             }
         }
 
-
-        if (nTimer >= 120) {
-            batch.draw(txtDrink, 300 + fW, 350, 50, 50);
-            if (nClickedBar >= 2) {
-                bHasDrink = true;
-            }
-        }
 
         if (bHasDrink) {
 //            System.out.println("HAS DRINK");

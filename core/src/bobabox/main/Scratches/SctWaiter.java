@@ -113,7 +113,7 @@ public class SctWaiter implements Screen, InputProcessor {
 
         //Checks if bar is clicked
         if (objBar.isTapped()) {
-            System.out.println("Bar is touched");
+            //System.out.println("Bar is touched");
             fXG = objBar.rBar().x + 1;
             fYG = objBar.rBar().y - 20;
             sprServer.update(fXG, fYG, batch, false); //isCstDragged is false for testing
@@ -121,7 +121,7 @@ public class SctWaiter implements Screen, InputProcessor {
 
         //Checks if Table is Clicked
         if (isTableClicked) {
-            System.out.println("X GOAL " + fXG + "Y GOAL " + fYG);
+            //System.out.println("X GOAL " + fXG + "Y GOAL " + fYG);
             sprServer.update(fXG, fYG, batch, false);
             bArrived = sprServer.arrived();
         }
@@ -173,7 +173,7 @@ public class SctWaiter implements Screen, InputProcessor {
 
                 fXG = Math.round(objTableServed.getX() + (objTableServed.getWidth() / 2 - 40));
                 fYG = Math.round(objTableServed.getY() + objTableServed.getHeight());
-                System.out.println("TABLE " + i + " WAS CLICKED");
+                //System.out.println("TABLE " + i + " WAS CLICKED");
 
                 isTableClicked = true;
             }

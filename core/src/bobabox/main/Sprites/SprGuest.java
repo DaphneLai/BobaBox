@@ -88,7 +88,7 @@ public class SprGuest extends Sprite {
     public void sittingDown(boolean _isSitting) {
         bSitting = _isSitting;
         if (bSitting) {
-            System.out.println(nTimer);
+//            System.out.println(nTimer);
             setSize(0, 0);
             bCanDrag = false;
         }

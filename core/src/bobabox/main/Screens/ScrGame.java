@@ -28,7 +28,7 @@ public class ScrGame implements Screen, InputProcessor {
 
     //Values
     private Vector2 vTouch;
-    private boolean bArrived = false, bHasOrder = false, isCstDragged = false; //boolean for server
+    private boolean bHasOrder, isCstDragged = false; //boolean for server
     private boolean isTableClicked = false, isSitting, bCustSat = false; //boolean for guests
     private int nW, nH, nGameTimer = 60, nTable; //int for game
     private int nFPS, nStatGst, nClickedBar = 0, nGstQueueTracker; //int for server
@@ -130,15 +130,13 @@ public class ScrGame implements Screen, InputProcessor {
         //Checks if Table is clicked (for Waiter)
         if (isTableClicked) {
             sprServer.update(fXG, fYG, batch, isCstDragged);
-            bArrived = sprServer.arrived();
-//            System.out.println("OBJTABLESERVED:      " + nTargetTble);
 
             //if the table has a customer sitting there, attend to their needs
-            if (!objTableServed.isAvb(isSitting, objTableServed.giveCustomer())) {
+            if (!objTableServed.isAvb(isSitting, objTableServed.giveCstI())) {
+                sprServer.service(batch, nClickedBar, arliGuestsSat.get(objTableServed.giveCstI()));
+                nStatGst = arliGuestsSat.get(objTableServed.giveCstI()).updateStatus();
+                System.out.println("Status: " + nStatGst + " for SprCustomer:" + objTableServed.giveCstI() );
 
-                sprServer.service(batch, bHasOrder, nClickedBar, objTableServed);
-                nStatGst = objTableServed.giveCustomer().updateStatus();
-                System.out.println("Status: " + nStatGst + " for " + objTableServed.giveCustomer() );
             }
         }
 
@@ -169,7 +167,7 @@ public class ScrGame implements Screen, InputProcessor {
         //ObjButton
         checkButtons();
         if (btnPause.isMousedOver() && Gdx.input.isTouched()) {
-            System.out.println("Pause");
+           // System.out.println("Pause");
             gamMenu.updateScreen(1);
         }
 
@@ -207,7 +205,6 @@ public class ScrGame implements Screen, InputProcessor {
         sprServer = new SprServer(850, 175);
         isTableClicked = false;
         nFPS = 0;
-        bArrived = false;
         bHasOrder = false;
         isCstDragged = false;
         isSitting = false;
@@ -251,7 +248,7 @@ public class ScrGame implements Screen, InputProcessor {
 
                 fXG = Math.round(objTableServed.getX() + (objTableServed.getWidth() / 2 - 40));
                 fYG = Math.round(objTableServed.getY() + objTableServed.getHeight());
-                System.out.println("TABLE " + i + " WAS CLICKED");
+                //System.out.println("TABLE " + i + " WAS CLICKED");
 
                 isTableClicked = true;
             }
@@ -283,20 +280,13 @@ public class ScrGame implements Screen, InputProcessor {
         if (isCstDragged) {
             if (sprCustMove.getBoundingRectangle().overlaps(arTables[nTable].getBoundingRectangle())) {
                 isSitting = true;
+                arTables[nTable].isAvb(isSitting, arliGuestsSat.size()); //sets table to unavailable and gives table the customer
                 arliGuestsSat.add(sprCustMove);
-                arTables[nTable].isAvb(isSitting, sprCustMove); //sets table to unavailable and gives table the customer
             }
         }
 
         for (int n = 0; n < nGstsSize; n++) {
             bCustSat = true;
-        }
-
-        //not in use, please ignore all hard coding :D
-        for (int t = 0; t <= 2; t++) {
-            if (arTables[t].getBoundingRectangle().contains(vTouch)) {
-                System.out.println("TABLE " + t + " WAS CLICKED");
-            }
         }
 
         isCstDragged = false;
@@ -305,6 +295,7 @@ public class ScrGame implements Screen, InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+
         if (sprCustMove.getBoundingRectangle().contains(vTouch)) {
             sprCustMove.drag(vTouch, viewport);
             isCstDragged = true;

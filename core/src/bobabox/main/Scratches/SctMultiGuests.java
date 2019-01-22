@@ -210,8 +210,8 @@ public class SctMultiGuests implements Screen, InputProcessor {
         if (isCstDragged) {
             if (sprCustMove.getBoundingRectangle().overlaps(arTables[nTable].getBoundingRectangle())) {
                 isSitting = true;
+                arTables[nTable].isAvb(isSitting, arliGuestsSat.size()); //<< should now be !isAvb
                 arliGuestsSat.add(sprCustMove);
-                arTables[nTable].isAvb(isSitting, sprCustMove); //<< should now be !isAvb
 
             }
         }
